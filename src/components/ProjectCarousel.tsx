@@ -36,7 +36,11 @@ const ProjectCaraousel = () => {
       <Carousel setCurrentInd={setCurrentInd}>
         <CarouselContent className="mx-16">
           {projects.map((project, index) => (
-            <CarouselItem key={index} isActive={currentInd === index}>
+            <CarouselItem
+              className="basis-64"
+              key={index}
+              isActive={currentInd === index}
+            >
               <Image
                 src={project.image}
                 alt="Project"

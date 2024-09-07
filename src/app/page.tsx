@@ -1,6 +1,8 @@
 import About from "@/sections/About";
+import Footer from "@/sections/Footer";
 import Herosection from "@/sections/Herosection";
 import Projects from "@/sections/Projects";
+import Work from "@/sections/Work";
 
 export default function Home() {
   return (
@@ -8,6 +10,8 @@ export default function Home() {
       <Herosection />
       <About />
       <Projects />
+      <Work />
+      <Footer />
     </div>
   );
 }
