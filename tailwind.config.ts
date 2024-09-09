@@ -13,8 +13,10 @@ const config: Config = {
       sm: "0.6rem",
       md: "0.75rem",
       base: "0.875rem",
-      lg: "1.95rem",
-      xl: "4.5rem",
+      lg: "1.32rem",
+      xl: "1.95rem",
+      "2xl": "4.5rem",
+      "3xl": "18rem",
     },
     extend: {
       backgroundImage: {
