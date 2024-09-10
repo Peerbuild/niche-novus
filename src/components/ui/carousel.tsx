@@ -18,8 +18,8 @@ type CarouselProps = {
   opts?: CarouselOptions;
   plugins?: CarouselPlugin;
   orientation?: "horizontal" | "vertical";
-  setCurrentInd?: (index: number) => void;
   setApi?: (api: CarouselApi) => void;
+  setCurrentInd?: (index: number) => void;
 };
 
 type CarouselContextProps = {
@@ -29,6 +29,7 @@ type CarouselContextProps = {
   scrollNext: () => void;
   canScrollPrev: boolean;
   canScrollNext: boolean;
+  isActive: number;
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
@@ -69,6 +70,7 @@ const Carousel = React.forwardRef<
     );
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
+    const [isActive, setIsActive] = React.useState(0);
 
     const onSelect = React.useCallback(
       (api: CarouselApi) => {
@@ -78,7 +80,7 @@ const Carousel = React.forwardRef<
 
         setCanScrollPrev(api.canScrollPrev());
         setCanScrollNext(api.canScrollNext());
-        console.log("selected", api.selectedScrollSnap());
+        setIsActive(api.selectedScrollSnap());
         setCurrentInd && setCurrentInd(api.selectedScrollSnap());
       },
       [setCurrentInd]
@@ -139,6 +141,7 @@ const Carousel = React.forwardRef<
           scrollNext,
           canScrollPrev,
           canScrollNext,
+          isActive,
         }}
       >
         <div
@@ -161,10 +164,10 @@ const CarouselContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const { carouselRef, orientation, api } = useCarousel();
+  const { carouselRef, orientation } = useCarousel();
 
   return (
-    <div ref={carouselRef}>
+    <div ref={carouselRef} className="overflow-hidden">
       <div
         ref={ref}
         className={cn(
@@ -181,9 +184,9 @@ CarouselContent.displayName = "CarouselContent";
 
 const CarouselItem = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { isActive: boolean }
->(({ className, isActive, ...props }, ref) => {
-  const { orientation } = useCarousel();
+  React.HTMLAttributes<HTMLDivElement> & { index: number; isActive: boolean }
+>(({ className, index, isActive, ...props }, ref) => {
+  const { orientation, api } = useCarousel();
 
   return (
     <div
@@ -191,9 +194,9 @@ const CarouselItem = React.forwardRef<
       role="group"
       aria-roledescription="slide"
       className={cn(
-        "min-w-0 shrink-0 grow-0 basis-full transition-all ",
+        "min-w-0 shrink-0 grow-0 basis-full transition-opacity",
         orientation === "horizontal" ? "pl-4" : "pt-4",
-        isActive ? "opacity-100 scale-100" : "opacity-20 scale-90",
+        isActive ? "opacity-100 " : "opacity-20 ",
         className
       )}
       {...props}
@@ -214,9 +217,9 @@ const CarouselPrevious = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute hidden lg:block h-8 w-8 rounded-full",
+        "  h-8 w-8 rounded-full",
         orientation === "horizontal"
-          ? "-left-12 top-1/2 -translate-y-1/2"
+          ? ""
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
@@ -243,9 +246,9 @@ const CarouselNext = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute hidden lg:block h-8 w-8 rounded-full",
+        " h-8 w-8 rounded-full",
         orientation === "horizontal"
-          ? "-right-12 top-1/2 -translate-y-1/2"
+          ? ""
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
