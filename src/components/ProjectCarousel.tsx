@@ -53,7 +53,6 @@ const ProjectCaraousel = () => {
         <CarouselContent className="mx-16 md:mx-0">
           {projects.map((project, index) => (
             <CarouselItem
-              index={index}
               isActive={currentInd === index}
               className="basis-[24rem] pl-8"
               key={index}

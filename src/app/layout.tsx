@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${montserrat.className} text-base font`}>
+      <body className={`${montserrat.className} text-base overflow-x-hidden`}>
         <Header />
         {children}
       </body>
