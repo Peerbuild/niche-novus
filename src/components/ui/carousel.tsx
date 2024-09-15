@@ -167,7 +167,7 @@ const CarouselContent = React.forwardRef<
   const { carouselRef, orientation } = useCarousel();
 
   return (
-    <div ref={carouselRef} className="overflow-hidden">
+    <div ref={carouselRef} className="">
       <div
         ref={ref}
         className={cn(
@@ -194,9 +194,9 @@ const CarouselItem = React.forwardRef<
       role="group"
       aria-roledescription="slide"
       className={cn(
-        "min-w-0 shrink-0 grow-0 basis-full transition-opacity",
+        "min-w-0 shrink-0 grow-0 basis-full transition-[filter] duration-500",
         orientation === "horizontal" ? "pl-4" : "pt-4",
-        isActive ? "opacity-100 " : "opacity-20 ",
+        isActive ? "brightness-100" : "brightness-[0.2] saturate-0",
         className
       )}
       {...props}

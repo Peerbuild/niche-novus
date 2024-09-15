@@ -2,8 +2,18 @@ import React from "react";
 
 const Herosection = () => {
   return (
-    <section>
-      <main className="flex relative flex-col gap-14 md:gap-[20rem] max-w-sm md:max-w-screen-xl  mx-auto py-16">
+    <section className="relative">
+      <div className="absolute w-screen -z-10  left-1/2 -top-40 -translate-x-1/2 h-[60rem] inset-0 overflow-hidden">
+        <div className="bg-gradient-to-t from-background via-background/50 to-background/80 absolute w-full h-full inset-0"></div>
+        <video
+          src="/bg/bg-1.mp4"
+          autoPlay
+          muted
+          loop
+          className="object-cover h-full w-full"
+        />
+      </div>
+      <main className="flex relative flex-col gap-14 md:gap-[20rem] max-w-sm md:max-w-screen-xl  mx-auto py-28">
         <div className="max-w-56 space-y-20 md:self-end">
           <p className="  text-md md:text-base w-[10ch] md:w-auto">
             may my words find you well

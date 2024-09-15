@@ -1,5 +1,7 @@
 import Image from "next/image";
 import React from "react";
+import FeahterIcon from "feather-icons-react";
+import FeatherIcon from "feather-icons-react";
 
 const navLinks = [
   {
@@ -18,7 +20,7 @@ const navLinks = [
 
 const Header = () => {
   return (
-    <header className="pt-16 justify-between pb-8 flex gap-20 w-full max-w-screen-sm mx-auto">
+    <header className="mt-16 backdrop-blur bg-background/40 justify-between items-center py-6 px-14 flex  w-full max-w-screen-lg mx-auto">
       <div>
         <Image
           className="mx-auto "
@@ -30,12 +32,12 @@ const Header = () => {
       </div>
       <ul className="md:flex gap-20 text-lg hidden">
         {navLinks.map((link) => (
-          <li key={link.label}>
+          <li key={link.label} className="content-center">
             <a href={link.href}>{link.label}</a>
           </li>
         ))}
       </ul>
-      <div></div>
+      <FeatherIcon icon="shopping-cart" />
     </header>
   );
 };
