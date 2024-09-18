@@ -11,28 +11,193 @@ import {
 
 const works = [
   {
-    title: "children of novus",
-    description:
-      "models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
-    profilePic: "/images/about.jpeg",
-    primary: "/works/work1/primary.mp4",
-    secondary: "/works/work1/secondary.mp4",
+    groupTitle: "First Group Title",
+    projects: [
+      {
+        title: "children of novus",
+        description:
+          "models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
+        profilePic: "/images/about.jpeg",
+        primary: "/works/work1/primary.mp4",
+        secondary: "/works/work1/secondary.mp4",
+      },
+      {
+        title: "children of novus",
+        description:
+          "models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
+        profilePic: "/images/about.jpeg",
+        primary: "/works/work1/primary.mp4",
+        secondary: "/works/work1/secondary.mp4",
+      },
+    ],
   },
   {
-    title: "children of novus",
-    description:
-      "models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
-    profilePic: "/images/about.jpeg",
-    primary: "/works/work1/primary.mp4",
-    secondary: "/works/work1/secondary.mp4",
+    groupTitle: "Second Group Title",
+    projects: [
+      {
+        title: "children of novus",
+        description:
+          "models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
+        profilePic: "/images/about.jpeg",
+        primary: "/works/work1/primary.mp4",
+        secondary: "/works/work1/secondary.mp4",
+      },
+    ],
   },
   {
-    title: "children of novus",
-    description:
-      "models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
-    profilePic: "/images/about.jpeg",
-    primary: "/works/work1/primary.mp4",
-    secondary: "/works/work1/secondary.mp4",
+    groupTitle: "Third Group Title",
+    projects: [
+      {
+        title: "project 3-1",
+        description: "Description for project 3-1.",
+        profilePic: "/images/project3-1.jpeg",
+        primary: "/works/work3/primary.mp4",
+        secondary: "/works/work3/secondary.mp4",
+      },
+      {
+        title: "project 3-2",
+        description: "Description for project 3-2.",
+        profilePic: "/images/project3-2.jpeg",
+        primary: "/works/work3/primary.mp4",
+        secondary: "/works/work3/secondary.mp4",
+      },
+    ],
+  },
+  {
+    groupTitle: "Fourth Group Title",
+    projects: [
+      {
+        title: "project 4-1",
+        description: "Description for project 4-1.",
+        profilePic: "/images/project4-1.jpeg",
+        primary: "/works/work4/primary.mp4",
+        secondary: "/works/work4/secondary.mp4",
+      },
+    ],
+  },
+  {
+    groupTitle: "Fifth Group Title",
+    projects: [
+      {
+        title: "project 5-1",
+        description: "Description for project 5-1.",
+        profilePic: "/images/project5-1.jpeg",
+        primary: "/works/work5/primary.mp4",
+        secondary: "/works/work5/secondary.mp4",
+      },
+      {
+        title: "project 5-2",
+        description: "Description for project 5-2.",
+        profilePic: "/images/project5-2.jpeg",
+        primary: "/works/work5/primary.mp4",
+        secondary: "/works/work5/secondary.mp4",
+      },
+    ],
+  },
+  {
+    groupTitle: "Sixth Group Title",
+    projects: [
+      {
+        title: "project 6-1",
+        description: "Description for project 6-1.",
+        profilePic: "/images/project6-1.jpeg",
+        primary: "/works/work6/primary.mp4",
+        secondary: "/works/work6/secondary.mp4",
+      },
+    ],
+  },
+  {
+    groupTitle: "Seventh Group Title",
+    projects: [
+      {
+        title: "project 7-1",
+        description: "Description for project 7-1.",
+        profilePic: "/images/project7-1.jpeg",
+        primary: "/works/work7/primary.mp4",
+        secondary: "/works/work7/secondary.mp4",
+      },
+    ],
+  },
+  {
+    groupTitle: "Eighth Group Title",
+    projects: [
+      {
+        title: "project 8-1",
+        description: "Description for project 8-1.",
+        profilePic: "/images/project8-1.jpeg",
+        primary: "/works/work8/primary.mp4",
+        secondary: "/works/work8/secondary.mp4",
+      },
+      {
+        title: "project 8-2",
+        description: "Description for project 8-2.",
+        profilePic: "/images/project8-2.jpeg",
+        primary: "/works/work8/primary.mp4",
+        secondary: "/works/work8/secondary.mp4",
+      },
+    ],
+  },
+  {
+    groupTitle: "Ninth Group Title",
+    projects: [
+      {
+        title: "project 9-1",
+        description: "Description for project 9-1.",
+        profilePic: "/images/project9-1.jpeg",
+        primary: "/works/work9/primary.mp4",
+        secondary: "/works/work9/secondary.mp4",
+      },
+    ],
+  },
+  {
+    groupTitle: "Tenth Group Title",
+    projects: [
+      {
+        title: "project 10-1",
+        description: "Description for project 10-1.",
+        profilePic: "/images/project10-1.jpeg",
+        primary: "/works/work10/primary.mp4",
+        secondary: "/works/work10/secondary.mp4",
+      },
+      {
+        title: "project 10-2",
+        description: "Description for project 10-2.",
+        profilePic: "/images/project10-2.jpeg",
+        primary: "/works/work10/primary.mp4",
+        secondary: "/works/work10/secondary.mp4",
+      },
+    ],
+  },
+  {
+    groupTitle: "Eleventh Group Title",
+    projects: [
+      {
+        title: "project 11-1",
+        description: "Description for project 11-1.",
+        profilePic: "/images/project11-1.jpeg",
+        primary: "/works/work11/primary.mp4",
+        secondary: "/works/work11/secondary.mp4",
+      },
+    ],
+  },
+  {
+    groupTitle: "Twelfth Group Title",
+    projects: [
+      {
+        title: "project 12-1",
+        description: "Description for project 12-1.",
+        profilePic: "/images/project12-1.jpeg",
+        primary: "/works/work12/primary.mp4",
+        secondary: "/works/work12/secondary.mp4",
+      },
+      {
+        title: "project 12-2",
+        description: "Description for project 12-2.",
+        profilePic: "/images/project12-2.jpeg",
+        primary: "/works/work12/primary.mp4",
+        secondary: "/works/work12/secondary.mp4",
+      },
+    ],
   },
 ];
 
@@ -40,64 +205,48 @@ const WorkCarousel = () => {
   const [currentInd, setCurrentInd] = useState(0);
 
   return (
-    <div className="w-screen max-w-screen-xl  -left-8 md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-visible">
-      <Carousel
-        opts={{ loop: true }}
-        setCurrentInd={setCurrentInd}
-        className="mx-10 "
-      >
-        <CarouselContent className="">
+    <div className="w-screen max-w-screen-xl space-y-20  -left-8 md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-visible">
+      <Carousel opts={{ loop: true }} setCurrentInd={setCurrentInd}>
+        <CarouselContent>
           {works.map((work, index) => (
             <CarouselItem
-              className="flex flex-col relative md:flex-row-reverse justify-center items-start gap-6 md:gap-20  basis-[95%] md:basis-full"
-              key={index}
-              isActive={currentInd === index}
+              className="basis-auto"
+              isActive={index === currentInd}
+              key={work.groupTitle}
             >
-              <video
-                src={work.primary}
-                width={500}
-                height={300}
-                className="basis-full"
-                autoPlay
-                loop
-                muted
-              />
-              <div className="flex md:flex-col-reverse basis-1/3 gap-8 ">
-                <div className="space-y-2">
-                  <div className="flex gap-2 items-center">
-                    <div className="size-6 overflow-hidden rounded-full ">
-                      <Image
-                        src={work.profilePic}
-                        alt="profile pic"
-                        width={40}
-                        height={40}
-                      />
-                    </div>
-                    <h3>{work.title}</h3>
-                  </div>
-                  <p className="text-justify w-40 md:w-full font-light">
-                    {work.description}
-                  </p>
-                </div>
-                <div>
-                  <video
-                    src={work.secondary}
-                    width={400}
-                    height={300}
-                    autoPlay
-                    muted
-                    loop
-                  />
-                </div>
-              </div>
+              <div className="text-lg uppercase">{work.groupTitle}</div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="absolute w-full  space-x-4   left-1/2 bottom-0 -translate-x-1/2">
-          <CarouselPrevious />
-          <CarouselNext />
-        </div>
       </Carousel>
+      <div className="flex gap-24 items-center">
+        <div className="flex-[0.4_0_0%]">
+          <div className="space-y-5">
+            <video
+              src={works[currentInd].projects[0].secondary}
+              width={400}
+              height={250}
+              autoPlay
+              muted
+            />
+            <div className="space-y-2">
+              <h3>{works[currentInd].projects[0].title}</h3>
+              <p>{works[currentInd].projects[0].description}</p>
+            </div>
+          </div>
+          <div></div>
+        </div>
+        <div className="flex-1">
+          <video
+            src={works[currentInd].projects[0].primary}
+            width={600}
+            height={400}
+            autoPlay
+            muted
+            className="w-full"
+          />
+        </div>
+      </div>
     </div>
   );
 };
