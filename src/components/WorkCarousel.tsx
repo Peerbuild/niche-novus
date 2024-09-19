@@ -8,6 +8,8 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "./ui/carousel";
+import { Button } from "./ui/button";
+import { ArrowRightIcon } from "lucide-react";
 
 const works = [
   {
@@ -16,15 +18,23 @@ const works = [
       {
         title: "children of novus",
         description:
-          "models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
+          "1models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
         profilePic: "/images/about.jpeg",
         primary: "/works/work1/primary.mp4",
         secondary: "/works/work1/secondary.mp4",
       },
       {
-        title: "children of novus",
+        title: "3children of novus",
         description:
-          "models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
+          "2models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
+        profilePic: "/images/about.jpeg",
+        primary: "/works/work1/primary.mp4",
+        secondary: "/works/work1/secondary.mp4",
+      },
+      {
+        title: "2children of novus",
+        description:
+          "3models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
         profilePic: "/images/about.jpeg",
         primary: "/works/work1/primary.mp4",
         secondary: "/works/work1/secondary.mp4",
@@ -35,9 +45,25 @@ const works = [
     groupTitle: "Second Group Title",
     projects: [
       {
-        title: "children of novus",
+        title: "1children of novus",
         description:
           "models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
+        profilePic: "/images/about.jpeg",
+        primary: "/works/work1/primary.mp4",
+        secondary: "/works/work1/secondary.mp4",
+      },
+      {
+        title: "3children of novus",
+        description:
+          "2models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
+        profilePic: "/images/about.jpeg",
+        primary: "/works/work1/primary.mp4",
+        secondary: "/works/work1/secondary.mp4",
+      },
+      {
+        title: "4children of novus",
+        description:
+          "3models and Artworks made by my Architecture and Design students in the course that i taught called D.A.R.T. - Digital Art and Rendering Techniques.",
         profilePic: "/images/about.jpeg",
         primary: "/works/work1/primary.mp4",
         secondary: "/works/work1/secondary.mp4",
@@ -51,8 +77,8 @@ const works = [
         title: "project 3-1",
         description: "Description for project 3-1.",
         profilePic: "/images/project3-1.jpeg",
-        primary: "/works/work3/primary.mp4",
-        secondary: "/works/work3/secondary.mp4",
+        primary: "/works/work1/primary.mp4",
+        secondary: "/works/work1/secondary.mp4",
       },
       {
         title: "project 3-2",
@@ -202,16 +228,21 @@ const works = [
 ];
 
 const WorkCarousel = () => {
-  const [currentInd, setCurrentInd] = useState(0);
+  const [currentGroupInd, setCurrentGroupInd] = useState(0);
+  const [currentProjectInd, setCurrentProjectInd] = useState(0);
 
   return (
-    <div className="w-screen max-w-screen-xl space-y-20  -left-8 md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-visible">
-      <Carousel opts={{ loop: true }} setCurrentInd={setCurrentInd}>
+    <div className="w-screen  space-y-20  -left-8 md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-visible">
+      <Carousel
+        opts={{ loop: true }}
+        setCurrentInd={setCurrentGroupInd}
+        setNestedInd={setCurrentProjectInd}
+      >
         <CarouselContent>
           {works.map((work, index) => (
             <CarouselItem
               className="basis-auto"
-              isActive={index === currentInd}
+              isActive={index === currentGroupInd}
               key={work.groupTitle}
             >
               <div className="text-lg uppercase">{work.groupTitle}</div>
@@ -219,26 +250,47 @@ const WorkCarousel = () => {
           ))}
         </CarouselContent>
       </Carousel>
-      <div className="flex gap-24 items-center">
+      <div className="flex gap-24 items-center max-w-screen-xl mx-auto">
         <div className="flex-[0.4_0_0%]">
           <div className="space-y-5">
             <video
-              src={works[currentInd].projects[0].secondary}
+              src={works[currentGroupInd].projects[currentProjectInd].secondary}
               width={400}
               height={250}
               autoPlay
               muted
             />
             <div className="space-y-2">
-              <h3>{works[currentInd].projects[0].title}</h3>
-              <p>{works[currentInd].projects[0].description}</p>
+              <Carousel
+                setApi={(api) => {
+                  api?.scrollTo(currentProjectInd);
+                }}
+                setCurrentInd={setCurrentProjectInd}
+              >
+                <CarouselContent>
+                  {works[currentGroupInd].projects.map((project, index) => (
+                    <CarouselItem
+                      className="basis-auto"
+                      isActive={index === currentProjectInd}
+                      key={project.title}
+                    >
+                      <h3>{works[currentGroupInd].projects[index].title}</h3>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+              <p>
+                {works[currentGroupInd].projects[currentProjectInd].description}
+              </p>
             </div>
           </div>
-          <div></div>
+          <div>
+            <NextProjectButton />
+          </div>
         </div>
         <div className="flex-1">
           <video
-            src={works[currentInd].projects[0].primary}
+            src={works[currentGroupInd].projects[currentProjectInd].primary}
             width={600}
             height={400}
             autoPlay
@@ -248,6 +300,15 @@ const WorkCarousel = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const NextProjectButton = () => {
+  return (
+    <Button size={"icon"} className="rounded-full" variant={"outline"}>
+      <ArrowRightIcon className="h-4 w-4" />
+      <span className="sr-only">Next slide</span>
+    </Button>
   );
 };
 
