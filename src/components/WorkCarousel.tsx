@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
 import {
   Carousel,
@@ -9,7 +9,8 @@ import {
   CarouselNext,
 } from "./ui/carousel";
 import { Button } from "./ui/button";
-import { ArrowRightIcon } from "lucide-react";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const works = [
   {
@@ -235,23 +236,34 @@ const WorkCarousel = () => {
     <div className="w-screen  space-y-20  -left-8 md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-visible">
       <Carousel
         opts={{ loop: true }}
+        setApi={(api) => {
+          api?.scrollTo(currentGroupInd);
+        }}
         setCurrentInd={setCurrentGroupInd}
         setNestedInd={setCurrentProjectInd}
       >
-        <CarouselContent>
+        <CarouselContent className="">
           {works.map((work, index) => (
             <CarouselItem
-              className="basis-auto"
+              className="basis-auto pl-10"
               isActive={index === currentGroupInd}
               key={work.groupTitle}
             >
-              <div className="text-lg uppercase">{work.groupTitle}</div>
+              <div
+                className={cn(
+                  "uppercase",
+                  index === currentGroupInd && "scale-125"
+                )}
+              >
+                {work.groupTitle}
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>
+        <div className="w-20 h-0.5 bg-foreground mx-auto mt-4 rounded-full translate-x-3"></div>
       </Carousel>
       <div className="flex gap-24 items-center max-w-screen-xl mx-auto">
-        <div className="flex-[0.4_0_0%]">
+        <div className="flex-[0.4_0_0%] space-y-6">
           <div className="space-y-5">
             <video
               src={works[currentGroupInd].projects[currentProjectInd].secondary}
@@ -259,6 +271,7 @@ const WorkCarousel = () => {
               height={250}
               autoPlay
               muted
+              loop
             />
             <div className="space-y-2">
               <Carousel
@@ -274,7 +287,9 @@ const WorkCarousel = () => {
                       isActive={index === currentProjectInd}
                       key={project.title}
                     >
-                      <h3>{works[currentGroupInd].projects[index].title}</h3>
+                      <h3 className="text-base ">
+                        {works[currentGroupInd].projects[index].title}
+                      </h3>
                     </CarouselItem>
                   ))}
                 </CarouselContent>
@@ -284,8 +299,19 @@ const WorkCarousel = () => {
               </p>
             </div>
           </div>
-          <div>
-            <NextProjectButton />
+          <div className="space-x-4">
+            <PrevProjectButton
+              currentProjectInd={currentProjectInd}
+              setCurrentProjectInd={setCurrentProjectInd}
+              currentGroupInd={currentGroupInd}
+              setCurrentGroupInd={setCurrentGroupInd}
+            />
+            <NextProjectButton
+              currentProjectInd={currentProjectInd}
+              setCurrentProjectInd={setCurrentProjectInd}
+              currentGroupInd={currentGroupInd}
+              setCurrentGroupInd={setCurrentGroupInd}
+            />
           </div>
         </div>
         <div className="flex-1">
@@ -295,6 +321,7 @@ const WorkCarousel = () => {
             height={400}
             autoPlay
             muted
+            loop
             className="w-full"
           />
         </div>
@@ -303,10 +330,70 @@ const WorkCarousel = () => {
   );
 };
 
-const NextProjectButton = () => {
+const NextProjectButton = ({
+  currentProjectInd,
+  setCurrentProjectInd,
+  currentGroupInd,
+  setCurrentGroupInd,
+}: {
+  currentProjectInd: number;
+  setCurrentProjectInd: Dispatch<SetStateAction<number>>;
+  currentGroupInd: number;
+  setCurrentGroupInd: Dispatch<SetStateAction<number>>;
+}) => {
+  const handleNextProject = () => {
+    setCurrentProjectInd(
+      (prev) => (prev + 1) % works[currentGroupInd].projects.length
+    );
+    if (currentProjectInd === works[currentGroupInd].projects.length - 1) {
+      setCurrentGroupInd((prev) => (prev + 1) % works.length);
+    }
+  };
   return (
-    <Button size={"icon"} className="rounded-full" variant={"outline"}>
+    <Button
+      onClick={handleNextProject}
+      size={"icon"}
+      className="rounded-full"
+      variant={"outline"}
+    >
       <ArrowRightIcon className="h-4 w-4" />
+      <span className="sr-only">Next slide</span>
+    </Button>
+  );
+};
+
+const PrevProjectButton = ({
+  currentProjectInd,
+  setCurrentProjectInd,
+  currentGroupInd,
+  setCurrentGroupInd,
+}: {
+  currentProjectInd: number;
+  setCurrentProjectInd: Dispatch<SetStateAction<number>>;
+  currentGroupInd: number;
+  setCurrentGroupInd: Dispatch<SetStateAction<number>>;
+}) => {
+  const handlePrevProject = () => {
+    const isFirstProject = currentProjectInd === 0;
+    const prevGroupInd = (currentGroupInd - 1 + works.length) % works.length;
+    const newGroupInd = isFirstProject ? prevGroupInd : currentGroupInd;
+    const projectsLength = works[newGroupInd].projects.length;
+
+    const newProjectInd = isFirstProject
+      ? projectsLength - 1
+      : (currentProjectInd - 1) % projectsLength;
+
+    setCurrentGroupInd(newGroupInd);
+    setCurrentProjectInd(newProjectInd);
+  };
+  return (
+    <Button
+      onClick={handlePrevProject}
+      size={"icon"}
+      className="rounded-full"
+      variant={"outline"}
+    >
+      <ArrowLeftIcon className="h-4 w-4" />
       <span className="sr-only">Next slide</span>
     </Button>
   );

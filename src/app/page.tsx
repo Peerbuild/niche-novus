@@ -10,8 +10,8 @@ export default function Home() {
     <div className="px-8 space-y-16">
       <Herosection />
       <About />
-      <Projects />
       <Work />
+      <Projects />
       <Highlights />
       <Footer />
     </div>

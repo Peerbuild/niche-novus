@@ -20,7 +20,6 @@ const HighlightCarousel = ({ images }: { images: string[] }) => {
     >
       <CarouselContent>
         {_images.map((image, index) => {
-          console.log(index, currentInd, index === currentInd + 1);
           return (
             <CarouselItem
               key={index}
