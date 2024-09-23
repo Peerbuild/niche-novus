@@ -7,8 +7,8 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-} from "./ui/carousel";
-import { Button } from "./ui/button";
+} from "@/components/ui/carousel";
+import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 

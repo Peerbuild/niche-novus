@@ -1,5 +1,5 @@
-import SectionTitle from "@/components/SectionTitle";
-import WorkCarousel from "@/components/WorkCarousel";
+import SectionTitle from "@/app/(site)/_components/SectionTitle";
+import WorkCarousel from "@/app/(site)/_components/WorkCarousel";
 import React from "react";
 
 const Work = () => {

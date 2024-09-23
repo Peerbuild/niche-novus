@@ -1,4 +1,4 @@
-import HighlightCarousel from "@/components/HighlightCarousel";
+import HighlightCarousel from "@/app/(site)/_components/HighlightCarousel";
 import fs from "fs";
 import path from "path";
 

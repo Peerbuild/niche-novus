@@ -1,5 +1,5 @@
-import ProjectCaraousel from "@/components/ProjectCarousel";
-import SectionTitle from "@/components/SectionTitle";
+import ProjectCaraousel from "@/app/(site)/_components/ProjectCarousel";
+import SectionTitle from "@/app/(site)/_components/SectionTitle";
 import React from "react";
 
 const Projects = () => {
