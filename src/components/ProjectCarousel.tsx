@@ -60,8 +60,10 @@ const ProjectCaraousel = () => {
               <video
                 src={project.image}
                 className={cn(
-                  "transition-transform",
-                  currentInd === index ? "scale-100" : "scale-90"
+                  "transition-all duration-500",
+                  currentInd === index
+                    ? "scale-100 brightness-100 saturate-100"
+                    : "scale-90 brightness-50 saturate-0"
                 )}
                 width={500}
                 height={300}

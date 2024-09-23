@@ -251,8 +251,8 @@ const WorkCarousel = () => {
             >
               <div
                 className={cn(
-                  "uppercase",
-                  index === currentGroupInd && "scale-125"
+                  "uppercase opacity-50 transition-opacity font-medium",
+                  index === currentGroupInd && "scale-125 opacity-100"
                 )}
               >
                 {work.groupTitle}
@@ -264,7 +264,7 @@ const WorkCarousel = () => {
       </Carousel>
       <div className="flex gap-24 items-center max-w-screen-xl mx-auto">
         <div className="flex-[0.4_0_0%] space-y-6">
-          <div className="space-y-5">
+          <div className="space-y-6">
             <video
               src={works[currentGroupInd].projects[currentProjectInd].secondary}
               width={400}
@@ -273,7 +273,7 @@ const WorkCarousel = () => {
               muted
               loop
             />
-            <div className="space-y-2">
+            <div className="space-y-4 overflow-hidden">
               <Carousel
                 setApi={(api) => {
                   api?.scrollTo(currentProjectInd);
@@ -287,8 +287,17 @@ const WorkCarousel = () => {
                       isActive={index === currentProjectInd}
                       key={project.title}
                     >
-                      <h3 className="text-base ">
-                        {works[currentGroupInd].projects[index].title}
+                      <h3
+                        className={cn(
+                          "text-base opacity-50 transition-opacity",
+                          index === currentProjectInd && "opacity-100"
+                        )}
+                      >
+                        {works[currentGroupInd].projects[index].title}{" "}
+                        {index !==
+                          works[currentGroupInd].projects.length - 1 && (
+                          <span className="pl-2">/</span>
+                        )}
                       </h3>
                     </CarouselItem>
                   ))}
