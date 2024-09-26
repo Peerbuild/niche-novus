@@ -8,20 +8,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { capitalize } from "@/lib/utils";
-import { fields } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js";
 import React from "react";
-("");
+import { Control } from "react-hook-form";
+
 type FieldTypes = "input" | "textarea";
 
-const TextInput = ({
-  name,
-  subtitle,
-  fields,
-}: {
+interface TextInputProps {
   name: string;
   subtitle: string;
   fields: Record<string, FieldTypes>[];
-}) => {
+}
+
+const TextInput: React.FC<TextInputProps> = ({ name, subtitle, fields }) => {
   return (
     <div className="flex gap-24 items-center max-w-xl">
       <div>

@@ -1,5 +1,4 @@
 "use client";
-import { updateAbout } from "@/app/actions/about";
 import { ActionResponse } from "@/lib/ActionResponse";
 import { useEffect } from "react";
 import { FieldValues, useForm, UseFormProps, useWatch } from "react-hook-form";
