@@ -1,4 +1,5 @@
 import { Header, Sidebar } from "@/app/(dashboard)/_components";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
 export default function Layout({
   children,
@@ -8,7 +9,7 @@ export default function Layout({
       <Sidebar />
       <div className="w-full">
         <Header />
-        {children}
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </div>
     </div>
   );

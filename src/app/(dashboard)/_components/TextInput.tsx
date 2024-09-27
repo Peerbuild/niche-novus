@@ -21,7 +21,7 @@ interface TextInputProps {
 
 const TextInput: React.FC<TextInputProps> = ({ name, subtitle, fields }) => {
   return (
-    <div className="flex gap-24 items-center max-w-xl">
+    <div className="text-left flex gap-24 items-center max-w-xl">
       <div>
         <div className="text-xl">{capitalize(name)}</div>
         <div className="text-muted-foreground">{subtitle}</div>
@@ -39,10 +39,18 @@ const TextInput: React.FC<TextInputProps> = ({ name, subtitle, fields }) => {
                     <FormControl>
                       <>
                         {fieldType === "input" && (
-                          <Input placeholder={capitalize(name)} {...field} />
+                          <Input
+                            className="min-w-64"
+                            placeholder={capitalize(name)}
+                            {...field}
+                          />
                         )}
                         {fieldType === "textarea" && (
-                          <Textarea placeholder={capitalize(name)} {...field} />
+                          <Textarea
+                            className="min-w-64"
+                            placeholder={capitalize(name)}
+                            {...field}
+                          />
                         )}
                       </>
                     </FormControl>

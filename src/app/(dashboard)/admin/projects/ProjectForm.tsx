@@ -21,13 +21,18 @@ import FeatherIcon from "feather-icons-react";
 
 const ProjectForm = ({
   project,
+  clientName,
 }: {
   project: z.infer<typeof projectSchema>;
+  clientName: string;
 }) => {
-  const form = useAutoSaveForm<z.infer<typeof projectSchema>>(updateProject, {
+  const form = useAutoSaveForm<
+    z.infer<typeof projectSchema> & { clientName: string }
+  >(updateProject, {
     resolver: zodResolver(projectSchema),
     defaultValues: {
-      name: project.name,
+      clientName,
+      title: project.title,
       description: project.description,
     },
   });
@@ -37,7 +42,7 @@ const ProjectForm = ({
       <Form {...form}>
         <form className="space-y-0 bg-neutral-900 rounded-xl">
           <Accordion className="px-8 " type="single" collapsible>
-            <AccordionItem value={project.name} className="">
+            <AccordionItem value={project.title} className="">
               <AccordionTrigger className="gap-8 py-5  ">
                 <ProjectHeader setFocus={form.setFocus} />
               </AccordionTrigger>
@@ -66,7 +71,7 @@ const ProjectHeader = ({
     <div className="flex w-full justify-between items-center">
       <div className="">
         <FormField
-          name="name"
+          name="title"
           render={({ field: { onBlur, ...field } }) => {
             return (
               <FormItem>
@@ -103,7 +108,7 @@ const ProjectControls = ({
 
   useEffect(() => {
     if (renaming) {
-      setFocus("name", { shouldSelect: true });
+      setFocus("title", { shouldSelect: true });
     }
   }, [renaming, setFocus]);
   return (
