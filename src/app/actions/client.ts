@@ -9,27 +9,27 @@ export const updateClient = async (data: Client) => {
   try {
     const parsedData = z.object({ name: z.string() }).parse(data);
 
-    const isClientExist = await prisma.client.findFirst({
-      where: {
-        name: parsedData.name,
-      },
-    });
-
-    if (!data.id || !isClientExist) {
-      await prisma.client.create({
-        data: {
-          name: parsedData.name,
+    if (data.id) {
+      const isClientExist = await prisma.client.findUnique({
+        where: {
+          id: data.id,
         },
+      });
+
+      await prisma.client.update({
+        where: {
+          id: isClientExist?.id,
+        },
+        data: parsedData,
       });
 
       return new ActionResponse("success").json();
     }
 
-    await prisma.client.update({
-      where: {
-        id: isClientExist.id,
+    await prisma.client.create({
+      data: {
+        name: parsedData.name,
       },
-      data: parsedData,
     });
 
     return new ActionResponse("success").json();

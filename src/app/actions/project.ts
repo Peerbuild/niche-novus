@@ -6,37 +6,25 @@ import { projectSchema } from "@/lib/schema";
 import { z } from "zod";
 
 export const updateProject = async (
-  data: z.infer<typeof projectSchema> & { clientName: string }
+  data: z.infer<typeof projectSchema> & { id: string; clientId: string }
 ) => {
   console.log("data", data);
+  console.log("client name", "id", data.id);
   try {
-    const { clientName, ...projectData } = data;
+    const { clientId, id, ...projectData } = data;
     const parsedData = projectSchema.parse(projectData);
 
-    const client = await prisma.client.findFirst({
+    const client = await prisma.client.findUnique({
       where: {
-        name: clientName,
+        id: clientId,
       },
     });
 
-    const isProjectExist = await prisma.project.findFirst({
-      where: {
-        title: parsedData.title,
-      },
-    });
-
-    if (isProjectExist) {
-      await prisma.project.update({
-        where: {
-          id: isProjectExist.id,
-        },
-        data: parsedData,
-      });
-    } else {
+    if (!id) {
       await prisma.project.create({
         data: {
-          videoUrl: "www.youtube.com",
           ...parsedData,
+          videoUrl: "www.youtube.com",
           client: {
             connect: {
               id: client?.id,
@@ -44,7 +32,24 @@ export const updateProject = async (
           },
         },
       });
+
+      return new ActionResponse("success").json();
     }
+
+    await prisma.project.update({
+      where: {
+        id,
+      },
+      data: {
+        ...parsedData,
+        videoUrl: "www.youtube.com",
+        client: {
+          connect: {
+            id: client?.id,
+          },
+        },
+      },
+    });
 
     return new ActionResponse("success").json();
   } catch (error: any) {

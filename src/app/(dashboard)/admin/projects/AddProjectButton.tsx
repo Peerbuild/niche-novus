@@ -1,21 +1,27 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { projectSchema } from "@/lib/schema";
+import { Project } from "@prisma/client";
 import FeatherIcon from "feather-icons-react";
 import { Dispatch, SetStateAction } from "react";
 import { z } from "zod";
 
 const AddProjectButton = ({
   setProjects,
+  clientId,
 }: {
-  setProjects: Dispatch<SetStateAction<z.infer<typeof projectSchema>[]>>;
+  setProjects: Dispatch<SetStateAction<Project[]>>;
+  clientId: string;
 }) => {
   const handleAddProject = () => {
     setProjects((prev) => [
       ...prev,
       {
+        id: "",
         title: "New Project",
         description: "Description",
+        videoUrl: "www.youtube.com",
+        clientId,
       },
     ]);
   };

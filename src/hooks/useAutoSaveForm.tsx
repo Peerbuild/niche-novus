@@ -7,7 +7,8 @@ const DEBOUNCE_TIME = 500;
 
 export default function useAutoSaveForm<T extends FieldValues>(
   submitAction: (values: T) => Promise<ActionResponse>,
-  options: UseFormProps<T>
+  options: UseFormProps<T>,
+  variables?: any
 ) {
   const form = useForm<T>(options);
 
@@ -15,7 +16,8 @@ export default function useAutoSaveForm<T extends FieldValues>(
 
   useEffect(() => {
     async function onSubmit(values: T) {
-      await submitAction(values);
+      console.log({ ...values, ...variables });
+      await submitAction({ ...values, ...variables });
     }
 
     const timeout = setTimeout(() => {

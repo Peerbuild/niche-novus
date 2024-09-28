@@ -5,12 +5,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useState } from "react";
-import ClientContent from "./ClientContent";
+import ClientContent, { ClientHeader } from "./ClientContent";
 import AddClientButton from "./AddClientButton";
 import { useMutationState, useQuery } from "@tanstack/react-query";
 import { getClients } from "@/app/actions/client";
-import { Project, Client } from "@prisma/client";
 import { ClientWithProjects } from "@/lib/types";
 
 export default function Page() {
@@ -29,11 +27,13 @@ export default function Page() {
         {query.data?.map((client, i) => {
           return (
             <AccordionItem value={client.name} key={client.name}>
-              <AccordionTrigger>{client.name}</AccordionTrigger>
+              <AccordionTrigger className="gap-4">
+                <ClientHeader client={client} />
+              </AccordionTrigger>
               <AccordionContent className="text-center">
                 <ClientContent
+                  clientId={client.id}
                   initialProjects={client.Project}
-                  clientName={client.name}
                 />
               </AccordionContent>
             </AccordionItem>
@@ -45,8 +45,8 @@ export default function Page() {
               <AccordionTrigger>{client.name}</AccordionTrigger>
               <AccordionContent className="text-center">
                 <ClientContent
+                  clientId={client.id}
                   initialProjects={client.Project}
-                  clientName={client.name}
                 />
               </AccordionContent>
             </AccordionItem>

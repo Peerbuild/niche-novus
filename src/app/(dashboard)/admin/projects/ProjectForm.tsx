@@ -18,24 +18,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UseFormSetFocus } from "react-hook-form";
 import FeatherIcon from "feather-icons-react";
+import { Project } from "@prisma/client";
 
-const ProjectForm = ({
-  project,
-  clientName,
-}: {
-  project: z.infer<typeof projectSchema>;
-  clientName: string;
-}) => {
+const ProjectForm = ({ project }: { project: Project }) => {
   const form = useAutoSaveForm<
-    z.infer<typeof projectSchema> & { clientName: string }
-  >(updateProject, {
-    resolver: zodResolver(projectSchema),
-    defaultValues: {
-      clientName,
-      title: project.title,
-      description: project.description,
+    z.infer<typeof projectSchema> & { id: string; clientId: string }
+  >(
+    updateProject,
+    {
+      resolver: zodResolver(projectSchema),
+      defaultValues: {
+        title: project.title,
+        description: project.description,
+      },
     },
-  });
+    { id: project.id, clientId: project.clientId }
+  );
 
   return (
     <div className="py-4">
