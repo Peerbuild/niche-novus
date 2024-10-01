@@ -7,14 +7,14 @@ import React, {
 } from "react";
 import AddProjectButton from "./AddProjectButton";
 import ProjectForm from "./ProjectForm";
-import { projectSchema } from "@/lib/schema";
-import { z } from "zod";
 import { Client, Project } from "@prisma/client";
-import { updateClient } from "@/app/actions/client";
+import { deleteClient, updateClient } from "@/app/actions/client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import FeatherIcon from "feather-icons-react";
 import { Input } from "@/components/ui/input";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getProjects } from "@/app/actions/project";
 
 const ClientContent = ({
   initialProjects,
@@ -23,13 +23,18 @@ const ClientContent = ({
   initialProjects: Project[];
   clientId: string;
 }) => {
-  const [projects, setProjects] = useState(initialProjects);
+  const { data: projects } = useQuery({
+    queryFn: async () => await getProjects(clientId),
+    queryKey: ["projects", { clientId }],
+    initialData: initialProjects,
+  });
+
   return (
     <div>
       {projects.map((project) => {
         return <ProjectForm key={project.title} project={project} />;
       })}
-      <AddProjectButton setProjects={setProjects} clientId={clientId} />
+      <AddProjectButton clientId={clientId} />
     </div>
   );
 };
@@ -40,6 +45,9 @@ export const ClientHeader = ({ client }: { client: Client }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (name === client.name) {
+      return;
+    }
     const timeout = setTimeout(() => {
       updateClient({
         id: client.id,
@@ -50,7 +58,7 @@ export const ClientHeader = ({ client }: { client: Client }) => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [name, client.id]);
+  }, [name, client]);
 
   return (
     <div className="flex w-full justify-between">
@@ -65,7 +73,11 @@ export const ClientHeader = ({ client }: { client: Client }) => {
         onBlur={() => renamingState[1](false)}
         ref={inputRef}
       />
-      <ClientActionButtons renamingState={renamingState} inputRef={inputRef} />
+      <ClientActionButtons
+        renamingState={renamingState}
+        inputRef={inputRef}
+        clientId={client.id}
+      />
     </div>
   );
 };
@@ -73,11 +85,23 @@ export const ClientHeader = ({ client }: { client: Client }) => {
 export const ClientActionButtons = ({
   renamingState,
   inputRef,
+  clientId,
 }: {
   renamingState: [boolean, Dispatch<SetStateAction<boolean>>];
   inputRef: React.RefObject<HTMLInputElement>;
+  clientId: string;
 }) => {
+  const queryClient = useQueryClient();
   const [renaming, setRenaming] = renamingState;
+
+  const mutation = useMutation({
+    mutationFn: async () => await deleteClient(clientId),
+    onSettled: async () => {
+      return await queryClient.invalidateQueries({ queryKey: ["clients"] });
+    },
+
+    mutationKey: ["removeClient"],
+  });
 
   useEffect(() => {
     if (renaming) {
@@ -97,7 +121,14 @@ export const ClientActionButtons = ({
       >
         <FeatherIcon icon="edit" size={20} />
       </Button>
-      <Button variant={"ghost"} size={"icon"}>
+      <Button
+        onClick={(e) => {
+          e.stopPropagation();
+          mutation.mutate();
+        }}
+        variant={"ghost"}
+        size={"icon"}
+      >
         <FeatherIcon icon="trash-2" size={20} />
       </Button>
     </div>

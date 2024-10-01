@@ -5,7 +5,6 @@ import { Client } from "@prisma/client";
 import { z } from "zod";
 
 export const updateClient = async (data: Client) => {
-  console.log("data", data);
   try {
     const parsedData = z.object({ name: z.string() }).parse(data);
 
@@ -23,6 +22,8 @@ export const updateClient = async (data: Client) => {
         data: parsedData,
       });
 
+      console.log(`Client ${data.name} has been updated`);
+
       return new ActionResponse("success").json();
     }
 
@@ -31,6 +32,8 @@ export const updateClient = async (data: Client) => {
         name: parsedData.name,
       },
     });
+
+    console.log(`New Client ${data.name} has been created`);
 
     return new ActionResponse("success").json();
   } catch (error: any) {
@@ -46,7 +49,22 @@ export const getClients = async () => {
     },
   });
 
-  console.log("clients", clients);
-
   return clients;
+};
+
+export const deleteClient = async (clientId: string) => {
+  try {
+    await prisma.client.delete({
+      where: {
+        id: clientId,
+      },
+    });
+
+    console.log(`Client with id:${clientId} has been deleted`);
+
+    return new ActionResponse("success").json();
+  } catch (error: any) {
+    console.log(error.message);
+    return new ActionResponse("error").json();
+  }
 };

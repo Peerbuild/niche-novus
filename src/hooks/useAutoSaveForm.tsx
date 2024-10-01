@@ -1,6 +1,6 @@
 "use client";
 import { ActionResponse } from "@/lib/ActionResponse";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { FieldValues, useForm, UseFormProps, useWatch } from "react-hook-form";
 
 const DEBOUNCE_TIME = 500;
@@ -16,6 +16,9 @@ export default function useAutoSaveForm<T extends FieldValues>(
 
   useEffect(() => {
     async function onSubmit(values: T) {
+      if (!form.formState.isDirty) {
+        return;
+      }
       console.log({ ...values, ...variables });
       await submitAction({ ...values, ...variables });
     }
