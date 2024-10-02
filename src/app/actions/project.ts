@@ -26,7 +26,6 @@ export const updateProject = async (
       await prisma.project.create({
         data: {
           ...parsedData,
-          videoUrl: "www.youtube.com",
           client: {
             connect: {
               id: client?.id,
@@ -46,7 +45,6 @@ export const updateProject = async (
       },
       data: {
         ...parsedData,
-        videoUrl: "www.youtube.com",
         client: {
           connect: {
             id: client?.id,

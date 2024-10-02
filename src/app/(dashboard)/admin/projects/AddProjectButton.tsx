@@ -38,7 +38,8 @@ const AddProjectButton = ({ clientId }: { clientId: string }) => {
           clientId,
           description: "Description",
           title: "New Project",
-          videoUrl: "wwww.youtube.com",
+          primaryVideoUrl: "",
+          secondaryVideoUrl: "",
         })
       }
       size={"lg"}

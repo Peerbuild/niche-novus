@@ -26,10 +26,18 @@ model Client {
 }
 
 model Project {
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  primaryVideoUrl   String
+  secondaryVideoUrl String
+  title             String
+  description       String
+  client            Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId          String @db.ObjectId
+}
+
+model Work {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   videoUrl    String
   title       String
   description String
-  client      Client @relation(fields: [clientId], references: [id])
-  clientId    String @db.ObjectId
 }

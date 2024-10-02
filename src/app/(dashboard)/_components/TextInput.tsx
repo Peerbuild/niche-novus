@@ -19,10 +19,14 @@ interface TextInputProps {
   fields: Record<string, FieldTypes>[];
 }
 
-const TextInput: React.FC<TextInputProps> = ({ name, subtitle, fields }) => {
+export const TextInput: React.FC<TextInputProps> = ({
+  name,
+  subtitle,
+  fields,
+}) => {
   return (
     <div className="text-left flex gap-24 items-center max-w-xl">
-      <div>
+      <div className="space-y-2">
         <div className="text-xl">{capitalize(name)}</div>
         <div className="text-muted-foreground">{subtitle}</div>
       </div>
@@ -64,5 +68,3 @@ const TextInput: React.FC<TextInputProps> = ({ name, subtitle, fields }) => {
     </div>
   );
 };
-
-export default TextInput;

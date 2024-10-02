@@ -4,7 +4,7 @@ import { projectSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { z } from "zod";
-import TextInput from "../../_components/TextInput";
+import { TextInput, VideoInput } from "../../_components";
 import { deleteProject, updateProject } from "@/app/actions/project";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import {
@@ -31,6 +31,8 @@ const ProjectForm = ({ project }: { project: Project }) => {
       defaultValues: {
         title: project.title,
         description: project.description,
+        primaryVideoUrl: project.primaryVideoUrl,
+        secondaryVideoUrl: project.secondaryVideoUrl,
       },
     },
     { id: project.id, clientId: project.clientId }
@@ -45,7 +47,19 @@ const ProjectForm = ({ project }: { project: Project }) => {
               <AccordionTrigger className="gap-8 py-5">
                 <ProjectHeader setFocus={form.setFocus} project={project} />
               </AccordionTrigger>
-              <AccordionContent className="py-8 border-t-2 border-border">
+              <AccordionContent className="py-8 border-t-2 border-border space-y-10">
+                <VideoInput
+                  name="Primary Video"
+                  subtitle="Size Limit: 1.5mb"
+                  fieldName="primaryVideoUrl"
+                  setValue={form.setValue}
+                />
+                <VideoInput
+                  name="Secondary Video"
+                  subtitle="Size Limit: 1.5mb"
+                  fieldName="secondaryVideoUrl"
+                  setValue={form.setValue}
+                />
                 <TextInput
                   name="description"
                   subtitle="Edit personal info"
