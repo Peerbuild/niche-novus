@@ -3,6 +3,7 @@ import { ActionResponse } from "@/lib/ActionResponse";
 import prisma from "@/lib/prisma";
 import { Client } from "@prisma/client";
 import { z } from "zod";
+import { deleteProject } from "./project";
 
 export const updateClient = async (data: Client) => {
   try {
@@ -54,6 +55,19 @@ export const getClients = async () => {
 
 export const deleteClient = async (clientId: string) => {
   try {
+    const projects = await prisma.project.findMany({
+      where: {
+        clientId,
+      },
+    });
+
+    const deleteProjects = [];
+    for (const project of projects) {
+      deleteProjects.push(deleteProject(project.id));
+    }
+
+    await Promise.all(deleteProjects);
+
     await prisma.client.delete({
       where: {
         id: clientId,

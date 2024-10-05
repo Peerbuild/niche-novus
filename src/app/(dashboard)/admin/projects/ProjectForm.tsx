@@ -22,7 +22,8 @@ import { Project } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const ProjectForm = ({ project }: { project: Project }) => {
-  const form = useAutoSaveForm<
+  console.log(project.primaryVideoUrl);
+  const { form, progress } = useAutoSaveForm<
     z.infer<typeof projectSchema> & { id: string; clientId: string }
   >(
     updateProject,
@@ -41,7 +42,7 @@ const ProjectForm = ({ project }: { project: Project }) => {
   return (
     <div className="py-4">
       <Form {...form}>
-        <form className="space-y-0 bg-neutral-900 rounded-xl">
+        <form className=" bg-card rounded-xl">
           <Accordion className="px-8 " type="single" collapsible>
             <AccordionItem value={project.title}>
               <AccordionTrigger className="gap-8 py-5">
@@ -52,13 +53,19 @@ const ProjectForm = ({ project }: { project: Project }) => {
                   name="Primary Video"
                   subtitle="Size Limit: 1.5mb"
                   fieldName="primaryVideoUrl"
-                  setValue={form.setValue}
+                  register={form.register}
+                  videoUrl={project.primaryVideoUrl}
+                  uploadProgress={progress["primaryVideoUrl"]}
+                  aspectRatio={9 / 16}
                 />
                 <VideoInput
                   name="Secondary Video"
                   subtitle="Size Limit: 1.5mb"
                   fieldName="secondaryVideoUrl"
-                  setValue={form.setValue}
+                  register={form.register}
+                  videoUrl={project.secondaryVideoUrl}
+                  uploadProgress={progress["secondaryVideoUrl"]}
+                  aspectRatio={9 / 16}
                 />
                 <TextInput
                   name="description"
@@ -124,10 +131,21 @@ const ProjectControls = ({
   setFocus: UseFormSetFocus<z.infer<typeof projectSchema>>;
   project: Project;
 }) => {
+  const projectId = project.id;
   const [renaming, setRenaming] = renamingState;
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async () => await deleteProject(project.id),
+    mutationFn: async () => await deleteProject(projectId),
+    onMutate: () => {
+      queryClient.setQueryData<Project[]>(
+        ["projects", { clientId: project.clientId }],
+        (prev) => {
+          if (prev === undefined) return [];
+          return prev.filter((project) => project.id !== projectId);
+        }
+      );
+    },
+
     onSettled: async () => {
       return await queryClient.invalidateQueries({
         queryKey: ["projects", { clientId: project.clientId }],

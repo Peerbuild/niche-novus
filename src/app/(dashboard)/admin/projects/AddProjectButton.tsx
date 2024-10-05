@@ -36,7 +36,7 @@ const AddProjectButton = ({ clientId }: { clientId: string }) => {
         mutation.mutate({
           id: "",
           clientId,
-          description: "Description",
+          description: "",
           title: "New Project",
           primaryVideoUrl: "",
           secondaryVideoUrl: "",

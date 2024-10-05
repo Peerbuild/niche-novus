@@ -12,6 +12,13 @@ const AddClientButton = ({}: {}) => {
   const { mutate } = useMutation({
     mutationFn: async (newClient: { Project: Project[] } & Client) =>
       await updateClient(newClient),
+    onMutate: () => {
+      queryClient.setQueryData<ClientWithProjects[]>(["clients"], (prev) => {
+        if (prev === undefined)
+          return [{ id: "", name: "New Client", Project: [] }];
+        return [...prev, { id: "", name: "New Client", Project: [] }];
+      });
+    },
     onSettled: async () => {
       return await queryClient.invalidateQueries({ queryKey: ["clients"] });
     },

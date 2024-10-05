@@ -2,36 +2,25 @@
 
 import prisma from "@/lib/prisma";
 import { ActionResponse } from "@/lib/ActionResponse";
-import { projectSchema } from "@/lib/schema";
-import { z } from "zod";
 import { Project } from "@prisma/client";
+import cloudinary, { getCloudinaryId } from "@/lib/cloudinary";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export const updateProject = async (
-  data: z.infer<typeof projectSchema> & { id: string; clientId: string }
-) => {
+export const updateProject = async (data: Project) => {
   try {
     // await sleep(2000);
-    const { clientId, id, ...projectData } = data;
-    const parsedData = projectSchema.parse(projectData);
+    const { id, ...projectData } = data;
 
     const client = await prisma.client.findUnique({
       where: {
-        id: clientId,
+        id: projectData.clientId,
       },
     });
 
     if (!id) {
       await prisma.project.create({
-        data: {
-          ...parsedData,
-          client: {
-            connect: {
-              id: client?.id,
-            },
-          },
-        },
+        data: projectData,
       });
 
       console.log("New Project has been created!", data);
@@ -43,14 +32,7 @@ export const updateProject = async (
       where: {
         id,
       },
-      data: {
-        ...parsedData,
-        client: {
-          connect: {
-            id: client?.id,
-          },
-        },
-      },
+      data: projectData,
     });
 
     console.log("Project has been updated!", data);
@@ -79,11 +61,28 @@ export const getProjects = async (clientId: string): Promise<Project[]> => {
 
 export const deleteProject = async (projectId: string) => {
   try {
-    await prisma.project.delete({
+    const project = await prisma.project.delete({
       where: {
         id: projectId,
       },
     });
+
+    const { primaryVideoUrl, secondaryVideoUrl } = project;
+
+    const deletePrimaryVideo = cloudinary.uploader.destroy(
+      getCloudinaryId(primaryVideoUrl),
+      {
+        resource_type: "video",
+      }
+    );
+    const deleteSecondaryVideo = cloudinary.uploader.destroy(
+      getCloudinaryId(secondaryVideoUrl),
+      {
+        resource_type: "video",
+      }
+    );
+
+    await Promise.all([deletePrimaryVideo, deleteSecondaryVideo]);
 
     console.log("Project has been deleted");
 

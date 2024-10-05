@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import { ActionResponse } from "@/lib/ActionResponse";
 import { aboutSchema } from "@/lib/schema";
 import { z } from "zod";
+import { About } from "@prisma/client";
 
 export const getAbout = async () => {
   try {
@@ -15,10 +16,8 @@ export const getAbout = async () => {
   }
 };
 
-export const updateAbout = async (data: z.infer<typeof aboutSchema>) => {
+export const updateAbout = async (data: About) => {
   try {
-    const parsedData = aboutSchema.parse(data);
-
     const oldAbout = await prisma.about.findFirst();
 
     if (oldAbout) {
@@ -26,11 +25,11 @@ export const updateAbout = async (data: z.infer<typeof aboutSchema>) => {
         where: {
           id: oldAbout.id,
         },
-        data: parsedData,
+        data,
       });
     } else {
       await prisma.about.create({
-        data: parsedData,
+        data,
       });
     }
 

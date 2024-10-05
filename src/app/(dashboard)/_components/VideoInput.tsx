@@ -1,34 +1,41 @@
-import { capitalize } from "@/lib/utils";
+"use client";
+import { capitalize, cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import React from "react";
-import { Label } from "@/components/ui/label";
-import { UseFormSetValue } from "react-hook-form";
+import React, { useEffect } from "react";
+import { UseFormRegister } from "react-hook-form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 
 type VideoInputProps = {
   name: string;
   subtitle: string;
   fieldName: string;
-  setValue: UseFormSetValue<any>;
+  register: UseFormRegister<any>;
+  videoUrl: string;
+  aspectRatio?: number;
+  uploadProgress: number;
 };
 
 export const VideoInput = ({
   name,
   subtitle,
   fieldName,
-  setValue,
+  register,
+  videoUrl,
+  aspectRatio,
+  uploadProgress,
 }: VideoInputProps) => {
-  const [video, setVideo] = React.useState<string>("");
-  const handleVideoInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const [video, setVideo] = React.useState<string>(videoUrl || "");
 
-    const url = URL.createObjectURL(file);
+  useEffect(() => {
+    setVideo(videoUrl);
+  }, [videoUrl]);
 
-    console.log(url.slice(5));
-    setValue(fieldName, url.slice(5), { shouldDirty: true });
-
-    setVideo(url);
-  };
+  const fileRef = register(fieldName);
 
   return (
     <div className="flex text-left gap-24 items-center max-w-xl">
@@ -36,25 +43,42 @@ export const VideoInput = ({
         <div className="text-xl">{capitalize(name)}</div>
         <div className="text-muted-foreground">{subtitle}</div>
       </div>
-      <Input
-        type="file"
-        accept="video/*"
-        className="hidden"
-        id={fieldName}
-        onChange={handleVideoInput}
+      <FormField
+        name={fieldName}
+        render={({ field }) => {
+          return (
+            <FormItem>
+              <FormLabel
+                style={{ aspectRatio }}
+                className={cn(
+                  "w-16 block  rounded-lg relative bg-muted overflow-hidden outline-1  outline-dashed outline-border",
+                  aspectRatio === 16 / 9 && "w-32"
+                )}
+              >
+                <div
+                  className="bg-black/50 absolute right-0  h-full top-0"
+                  style={{ width: `${100 - uploadProgress}%` }}
+                ></div>
+                <video src={video} className="w-full h-full"></video>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept="video/*"
+                  className="hidden"
+                  {...fileRef}
+                  onChange={(e) => {
+                    if (e.target.files?.[0]) {
+                      setVideo(URL.createObjectURL(e.target.files?.[0]));
+                    }
+                    field.onChange(e.target.files?.[0] ?? undefined);
+                  }}
+                />
+              </FormControl>
+            </FormItem>
+          );
+        }}
       />
-      <Label
-        htmlFor={fieldName}
-        className="w-32 aspect-video rounded-lg bg-muted overflow-hidden outline-1  outline-dashed outline-border"
-      >
-        <video
-          src={video}
-          className="w-full h-full"
-          muted
-          loop
-          autoPlay
-        ></video>
-      </Label>
     </div>
   );
 };

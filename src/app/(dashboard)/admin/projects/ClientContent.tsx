@@ -96,6 +96,12 @@ export const ClientActionButtons = ({
 
   const mutation = useMutation({
     mutationFn: async () => await deleteClient(clientId),
+    onMutate: () => {
+      queryClient.setQueryData<Client[]>(["clients"], (prev) => {
+        if (prev === undefined) return [];
+        return prev.filter((client) => client.id !== clientId);
+      });
+    },
     onSettled: async () => {
       return await queryClient.invalidateQueries({ queryKey: ["clients"] });
     },

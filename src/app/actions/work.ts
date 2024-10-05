@@ -1,20 +1,16 @@
 "use server";
 import { ActionResponse } from "@/lib/ActionResponse";
 import prisma from "@/lib/prisma";
-import { workSchema } from "@/lib/schema";
-import { z } from "zod";
+import { Work } from "@prisma/client";
 
-export const updateWork = async (
-  data: z.infer<typeof workSchema> & { id: string }
-) => {
+export const updateWork = async (data: Work) => {
   try {
-    const parsedData = workSchema.parse(data);
-
+    const { id, ...workData } = data;
     await prisma.work.update({
       where: {
-        id: data.id,
+        id: id,
       },
-      data: parsedData,
+      data: workData,
     });
 
     return new ActionResponse("success").json();
@@ -24,13 +20,12 @@ export const updateWork = async (
   }
 };
 
-export const createWork = async (data: z.infer<typeof workSchema>) => {
+export const createWork = async (data: Work) => {
   console.log(data);
   try {
-    const parsedData = workSchema.parse(data);
-
+    const { id, ...workData } = data;
     await prisma.work.create({
-      data: { ...parsedData, videoUrl: "www.youtube.com" },
+      data: workData,
     });
 
     return new ActionResponse("success").json();

@@ -15,14 +15,17 @@ export default function AboutPage() {
     queryFn: async () => await getAbout(),
   });
 
-  const form = useAutoSaveForm<z.infer<typeof aboutSchema>>(updateAbout, {
-    resolver: zodResolver(aboutSchema),
-    defaultValues: {
-      introduction: "",
-      videoUrl: "",
-    },
-    values: query.data,
-  });
+  const { form, progress } = useAutoSaveForm<z.infer<typeof aboutSchema>>(
+    updateAbout,
+    {
+      resolver: zodResolver(aboutSchema),
+      defaultValues: {
+        introduction: "",
+        videoUrl: "",
+      },
+      values: query.data,
+    }
+  );
 
   return (
     <div className="py-10">
@@ -32,7 +35,10 @@ export default function AboutPage() {
             name="about video"
             subtitle="Size Limit:1.5mb"
             fieldName="videoUrl"
-            setValue={form.setValue}
+            register={form.register}
+            uploadProgress={progress["videoUrl"]}
+            aspectRatio={16 / 9}
+            videoUrl={query.data?.videoUrl}
           />
           <TextInput
             name="introduction"
