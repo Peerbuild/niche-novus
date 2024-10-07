@@ -4,8 +4,8 @@ import React from "react";
 
 const Projects = () => {
   return (
-    <section className="space-y-20  pt-10 pb-24 relative">
-      <div className="absolute w-screen h-full left-1/2 inset-0 -translate-x-1/2 ">
+    <section className="space-y-20 sticky top-0  pt-10 pb-24  bg-background">
+      <div className="absolute  h-full left-1/2 inset-0 -translate-x-1/2 ">
         <video
           src="/projects/project1.mp4"
           autoPlay

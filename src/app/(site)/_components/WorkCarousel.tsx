@@ -233,7 +233,7 @@ const WorkCarousel = () => {
   const [currentProjectInd, setCurrentProjectInd] = useState(0);
 
   return (
-    <div className="w-screen  space-y-20  -left-8 md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-visible">
+    <div className="w-full space-y-20  -left-8 md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-hidden">
       <Carousel
         opts={{ loop: true }}
         setApi={(api) => {

@@ -48,7 +48,7 @@ const ProjectCaraousel = () => {
   const [currentInd, setCurrentInd] = useState(0);
 
   return (
-    <div className="w-screen  max-w-screen-lg mx-auto -left-8 lg:left-0 py-20 relative overflow-hidden">
+    <div className="w-full  max-w-screen-lg mx-auto -left-8 lg:left-0 py-20 relative overflow-hidden">
       <Carousel opts={{ loop: true }} setCurrentInd={setCurrentInd}>
         <CarouselContent className="mx-16 md:mx-0">
           {projects.map((project, index) => (

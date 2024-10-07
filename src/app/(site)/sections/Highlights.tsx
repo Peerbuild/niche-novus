@@ -8,7 +8,7 @@ const images = fs
 
 const Highlights = () => {
   return (
-    <section>
+    <section className="h-[44rem] overflow-x-hidden">
       <HighlightCarousel images={images} />
     </section>
   );

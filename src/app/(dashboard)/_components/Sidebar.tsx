@@ -33,7 +33,7 @@ export const Sidebar = () => {
   return (
     <div
       className={cn(
-        "bg-card absolute z-20 w-0 translate-x-[110%] transition-transform md:translate-x-0  h-[97svh] md:relative rounded-xl m-4  overflow-hidden md:w-[16rem] md:px-8 py-10 space-y-14",
+        "bg-card absolute z-20 w-0 translate-x-[110%] transition-transform md:translate-x-0  h-[97svh] md:h-auto md:relative rounded-xl m-4  overflow-hidden md:w-[16rem] md:px-8 py-10 space-y-14",
         isOpen && "translate-x-3 w-[16rem] px-8"
       )}
     >

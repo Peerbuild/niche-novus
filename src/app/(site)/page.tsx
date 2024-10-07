@@ -7,11 +7,13 @@ import Work from "@/app/(site)/sections/Work";
 
 export default function Home() {
   return (
-    <div className="px-8 space-y-16">
-      <Herosection />
-      <About />
-      <Work />
-      <Projects />
+    <div className="space-y-16">
+      <div>
+        <Herosection />
+        <About />
+        <Work />
+        <Projects />
+      </div>
       <Highlights />
       <Footer />
     </div>

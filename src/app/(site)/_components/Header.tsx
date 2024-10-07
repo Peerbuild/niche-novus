@@ -1,7 +1,8 @@
+"use client";
+import useToggleNavbar from "@/hooks/useToggleNavbar";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
-import FeahterIcon from "feather-icons-react";
-import FeatherIcon from "feather-icons-react";
 
 const navLinks = [
   {
@@ -16,11 +17,32 @@ const navLinks = [
     label: "work",
     href: "#work",
   },
+  {
+    label: "shop",
+    href: "#",
+  },
 ];
 
 const Header = () => {
+  const { showNav, isTransparent } = useToggleNavbar();
   return (
-    <header className="mt-16 backdrop-blur bg-background/40 justify-between items-center py-6 px-14 flex  w-full max-w-screen-lg mx-auto">
+    <header
+      className={cn(
+        "mt-16 left-1/2 -translate-y-[9.5rem] duration-500 text-lg -translate-x-1/2 z-50 fixed backdrop-blur bg-background/40 justify-between items-center py-6 px-20 flex  w-full max-w-screen-lg mx-auto transition-all",
+        showNav && "translate-y-0",
+        isTransparent && "bg-background/0 backdrop-blur-none"
+      )}
+    >
+      <ul className="contents">
+        {navLinks.map((link, i) => {
+          if (i > 1) return null;
+          return (
+            <li key={link.label} className="content-center">
+              <a href={link.href}>{link.label}</a>
+            </li>
+          );
+        })}
+      </ul>
       <div>
         <Image
           className="mx-auto "
@@ -30,14 +52,16 @@ const Header = () => {
           height={35}
         />
       </div>
-      <ul className="md:flex gap-20 text-lg hidden">
-        {navLinks.map((link) => (
-          <li key={link.label} className="content-center">
-            <a href={link.href}>{link.label}</a>
-          </li>
-        ))}
+      <ul className="contents">
+        {navLinks.map((link, i) => {
+          if (i < 2) return null;
+          return (
+            <li key={link.label} className="content-center">
+              <a href={link.href}>{link.label}</a>
+            </li>
+          );
+        })}
       </ul>
-      <FeatherIcon icon="shopping-cart" />
     </header>
   );
 };
