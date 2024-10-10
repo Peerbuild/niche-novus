@@ -7,7 +7,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import Autoplay from "embla-carousel-autoplay";
 import { useState } from "react";
 
 const projects = [
@@ -49,7 +49,16 @@ const ProjectCaraousel = () => {
 
   return (
     <div className="w-full  max-w-screen-lg mx-auto -left-8 lg:left-0 py-20 relative overflow-hidden">
-      <Carousel opts={{ loop: true }} setCurrentInd={setCurrentInd}>
+      <Carousel
+        opts={{ loop: true }}
+        plugins={[
+          Autoplay({
+            delay: 5000,
+            stopOnInteraction: true,
+          }),
+        ]}
+        setCurrentInd={setCurrentInd}
+      >
         <CarouselContent className="mx-16 md:mx-0">
           {projects.map((project, index) => (
             <CarouselItem
