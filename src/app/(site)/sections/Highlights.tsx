@@ -8,7 +8,7 @@ const images = fs
 
 const Highlights = () => {
   return (
-    <section className="h-[44rem] overflow-x-hidden">
+    <section className="py-40 md:py-60 absolute w-full  overflow-hidden">
       <HighlightCarousel images={images} />
     </section>
   );

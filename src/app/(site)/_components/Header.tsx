@@ -28,12 +28,12 @@ const Header = () => {
   return (
     <header
       className={cn(
-        "mt-16 left-1/2 -translate-y-[9.5rem] duration-500 text-lg -translate-x-1/2 z-50 fixed backdrop-blur bg-background/40 justify-between items-center py-6 px-20 flex  w-full max-w-screen-lg mx-auto transition-all",
-        showNav && "translate-y-0",
+        "mt-16 left-1/2 md:-translate-y-[9.5rem] duration-500 text-lg -translate-x-1/2  z-50 absolute md:fixed backdrop-blur w-[90vw] bg-background/40 justify-center md:justify-between items-center py-6 px-20 flex  lg:w-full max-w-screen-lg mx-auto transition-all",
+        showNav && "md:translate-y-0",
         isTransparent && "bg-background/0 backdrop-blur-none"
       )}
     >
-      <ul className="contents">
+      <ul className="md:contents hidden">
         {navLinks.map((link, i) => {
           if (i > 1) return null;
           return (
@@ -52,7 +52,7 @@ const Header = () => {
           height={35}
         />
       </div>
-      <ul className="contents">
+      <ul className="md:contents hidden">
         {navLinks.map((link, i) => {
           if (i < 2) return null;
           return (

@@ -234,7 +234,7 @@ const WorkCarousel = () => {
   const [currentProjectInd, setCurrentProjectInd] = useState(0);
 
   return (
-    <div className="w-full space-y-20  -left-8 md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-hidden">
+    <div className="w-full space-y-20   md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-hidden">
       <Carousel
         opts={{ loop: true }}
         setApi={(api) => {
@@ -253,9 +253,9 @@ const WorkCarousel = () => {
           {works.map((work, index) => (
             <CarouselItem
               className={cn(
-                "basis-auto pl-10",
-                index === currentGroupInd && "pl-16 pr-6",
-                index === 0 && "pl-16"
+                "basis-auto  md:pl-10 pl-6",
+                index === currentGroupInd && "md:pl-16 md:pr-6",
+                index === 0 && "md:pl-16"
               )}
               isActive={index === currentGroupInd}
               key={work.groupTitle}
@@ -263,7 +263,8 @@ const WorkCarousel = () => {
               <div
                 className={cn(
                   "uppercase opacity-50 transition-opacity cursor-pointer  font-medium",
-                  index === currentGroupInd && "scale-125  opacity-100 "
+                  index === currentGroupInd &&
+                    "scale-110 md:scale-125  opacity-100 "
                 )}
                 onClick={() => {
                   setCurrentGroupInd(index);
@@ -277,13 +278,14 @@ const WorkCarousel = () => {
         </CarouselContent>
         <div className="w-20 h-0.5 bg-foreground mx-auto mt-4 rounded-full translate-x-3"></div>
       </Carousel>
-      <div className="flex gap-24 items-center max-w-screen-2xl mx-auto">
+      <div className="flex gap-6 md:gap-12 lg:gap-24 px-4 flex-col-reverse md:flex-row  items-center max-w-screen-2xl mx-auto">
         <div className="flex-[0.4_0_0%] space-y-6">
-          <div className="space-y-6 overflow-hidden">
+          <div className=" overflow-hidden flex flex-row-reverse md:flex-col gap-4">
             <Carousel
               setApi={(api) => {
                 api?.scrollTo(currentProjectInd);
               }}
+              className="overflow-hidden"
             >
               <CarouselContent>
                 {works[currentGroupInd].projects.map((project, index) => {
@@ -294,7 +296,7 @@ const WorkCarousel = () => {
                         src={project.secondary}
                         width={400}
                         height={250}
-                        className="w-full"
+                        className="w-64 md:w-full"
                         autoPlay
                         muted
                         loop
@@ -341,7 +343,7 @@ const WorkCarousel = () => {
                   ))}
                 </CarouselContent>
               </Carousel>
-              <p>
+              <p className="md:text-base text-md">
                 {works[currentGroupInd].projects[currentProjectInd].description}
               </p>
             </div>

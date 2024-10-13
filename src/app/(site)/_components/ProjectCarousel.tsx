@@ -7,8 +7,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
-import Autoplay from "embla-carousel-autoplay";
+import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import Autoplay from "embla-carousel-autoplay";
 
 const projects = [
   {
@@ -48,7 +50,7 @@ const ProjectCaraousel = () => {
   const [currentInd, setCurrentInd] = useState(0);
 
   return (
-    <div className="w-full  max-w-screen-lg mx-auto -left-8 lg:left-0 py-20 relative overflow-hidden">
+    <div className="w-full  max-w-screen-lg mx-auto   py-20 relative overflow-hidden">
       <Carousel
         opts={{ loop: true }}
         plugins={[
@@ -59,11 +61,11 @@ const ProjectCaraousel = () => {
         ]}
         setCurrentInd={setCurrentInd}
       >
-        <CarouselContent className="mx-16 md:mx-0">
+        <CarouselContent className="">
           {projects.map((project, index) => (
             <CarouselItem
               isActive={currentInd === index}
-              className="basis-[24rem] pl-8"
+              className="basis-[16rem] md:basis-[24rem] pl-4 md:pl-8"
               key={index}
             >
               <video
@@ -83,20 +85,31 @@ const ProjectCaraousel = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="absolute -bottom-20 left-1/2 -translate-x-1/2">
-          <div>
-            {projects.map((project, index) => (
-              <div
-                key={index}
-                className={cn(
-                  " hidden max-w-44 md:max-w-64 mt-4 space-y-2 mx-auto text-base",
-                  currentInd === index && "block"
-                )}
+        <div className="  max-w-44 md:max-w-64 mt-10 space-y-2 mx-auto text-base ">
+          <div className="-translate-y-36">
+            <AnimatePresence>
+              <motion.h2
+                key={currentInd}
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -10, opacity: 0 }}
+                className="absolute text-xl font-semibold"
               >
-                <h3 className="font-semibold md:text-xl">{project.title}</h3>
-                <p>{project.description}</p>
-              </div>
-            ))}
+                {projects[currentInd].title}
+              </motion.h2>
+            </AnimatePresence>
+            <AnimatePresence>
+              <motion.p
+                key={currentInd}
+                initial={{ y: 60, opacity: 0 }}
+                animate={{ y: 50, opacity: 1 }}
+                exit={{ y: 40, opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="text-base absolute"
+              >
+                {projects[currentInd].description}
+              </motion.p>
+            </AnimatePresence>
           </div>
           <div className=" hidden mt-6  lg:block w-fit mx-auto space-x-4">
             <CarouselPrevious />
