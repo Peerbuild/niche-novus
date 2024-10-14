@@ -8,7 +8,7 @@ const images = fs
 
 const Highlights = () => {
   return (
-    <section className="pt-10 pb-40 md:py-60 absolute w-full  overflow-hidden">
+    <section className="pt-10 pb-40 md:pt-40 md:pb-60 absolute  w-full  overflow-hidden">
       <HighlightCarousel images={images} />
     </section>
   );

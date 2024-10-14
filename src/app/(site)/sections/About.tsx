@@ -1,10 +1,11 @@
 import FeatherIcon from "feather-icons-react";
 import Image from "next/image";
 import React from "react";
+import SectionWrapper from "../_components/SectionWrapper";
 
 const About = () => {
   return (
-    <section className="py-32  sticky top-0">
+    <SectionWrapper>
       <div className="absolute w-full inset-0 h-full left-1/2 -translate-x-1/2 -z-10">
         <div className="w-full h-full absolute inset-0 bg-gradient-to-t from-background via-background/80 to-80% to-background"></div>
         <Image
@@ -49,7 +50,7 @@ const About = () => {
           </div>
         </div>
       </main>
-    </section>
+    </SectionWrapper>
   );
 };
 

@@ -1,6 +1,9 @@
 import ProjectCaraousel from "@/app/(site)/_components/ProjectCarousel";
 import SectionTitle from "@/app/(site)/_components/SectionTitle";
 import React from "react";
+import SectionWrapper from "../_components/SectionWrapper";
+import Highlights from "./Highlights";
+import Footer from "./Footer";
 
 const Projects = () => {
   return (
@@ -19,6 +22,8 @@ const Projects = () => {
         subtitle="The Visionary Sculptor of Reality and Surreality, Crafting Worlds that Blur the Line Between the Known and the Enigmatic"
       />
       <ProjectCaraousel />
+      <Highlights />
+      <Footer />
     </section>
   );
 };

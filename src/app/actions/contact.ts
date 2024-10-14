@@ -34,7 +34,7 @@ export const saveContact = async (contact: {
       where: {
         ip,
         updatedAt: {
-          gte: new Date(new Date().getTime() - 1000 * 60 * 1),
+          gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 24),
         },
       },
     });
