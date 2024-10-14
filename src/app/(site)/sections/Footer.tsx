@@ -3,7 +3,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className=" text-center   flex flex-col justify-end gap-3 py-10 md:py-20 h-[40rem] md:h-[100vh]">
+    <footer className=" text-center   flex flex-col justify-end gap-3 py-10 md:py-20 h-[30rem] md:h-[100vh]">
       <Image
         src="/logo.svg"
         alt="logo"

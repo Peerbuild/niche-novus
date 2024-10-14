@@ -33,7 +33,7 @@ const HighlightCarousel = ({ images }: { images: string[] }) => {
               key={index}
               isActive
               className={cn(
-                "basis-[12rem] sm:basis-1/4 overflow-visible pr-4 pl-6  md:pl-16"
+                "basis-[16rem] sm:basis-1/4 overflow-visible pr-4 pl-6  md:pl-16"
               )}
             >
               <Image

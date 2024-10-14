@@ -12,9 +12,7 @@ export default function Layout({
         <Sidebar />
         <div className="w-full px-4">
           <Header />
-          <ReactQueryProvider>
-            <div className="my-4 max-w-screen-2xl">{children}</div>
-          </ReactQueryProvider>
+          <div className="my-4 max-w-screen-2xl">{children}</div>
         </div>
       </SidebarProvider>
     </div>

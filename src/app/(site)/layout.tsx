@@ -1,4 +1,5 @@
 import Header from "@/app/(site)/_components/Header";
+import Contact from "./_components/Contact";
 
 export default function Layout({
   children,
@@ -6,6 +7,7 @@ export default function Layout({
   return (
     <div className={``}>
       <Header />
+      <Contact />
       {children}
     </div>
   );
