@@ -13,7 +13,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { cn } from "@/lib/utils";
+import { cn, isUploading } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UseFormSetFocus } from "react-hook-form";
@@ -46,7 +46,11 @@ const ProjectForm = ({ project }: { project: Project }) => {
           <Accordion className="px-8 " type="single" collapsible>
             <AccordionItem value={project.title}>
               <AccordionTrigger className="gap-8 py-5">
-                <ProjectHeader setFocus={form.setFocus} project={project} />
+                <ProjectHeader
+                  setFocus={form.setFocus}
+                  uploadProgress={progress}
+                  project={project}
+                />
               </AccordionTrigger>
               <AccordionContent className="py-8 border-t-2 border-border space-y-10">
                 <VideoInput
@@ -56,7 +60,7 @@ const ProjectForm = ({ project }: { project: Project }) => {
                   register={form.register}
                   videoUrl={project.primaryVideoUrl}
                   uploadProgress={progress["primaryVideoUrl"]}
-                  aspectRatio={9 / 16}
+                  aspectRatio={16 / 9}
                 />
                 <VideoInput
                   name="Secondary Video"
@@ -65,12 +69,13 @@ const ProjectForm = ({ project }: { project: Project }) => {
                   register={form.register}
                   videoUrl={project.secondaryVideoUrl}
                   uploadProgress={progress["secondaryVideoUrl"]}
-                  aspectRatio={9 / 16}
+                  aspectRatio={16 / 9}
                 />
                 <TextInput
                   name="description"
                   subtitle="Edit personal info"
                   fields={[{ description: "textarea" }]}
+                  uploadProgress={progress}
                 />
               </AccordionContent>
             </AccordionItem>
@@ -84,9 +89,11 @@ const ProjectForm = ({ project }: { project: Project }) => {
 const ProjectHeader = ({
   setFocus,
   project,
+  uploadProgress,
 }: {
   setFocus: UseFormSetFocus<z.infer<typeof projectSchema>>;
   project: Project;
+  uploadProgress: Record<string, number>;
 }) => {
   const renamingState = React.useState(false);
   return (
@@ -99,7 +106,7 @@ const ProjectHeader = ({
               <FormItem>
                 <FormControl>
                   <Input
-                    disabled={!renamingState[0]}
+                    disabled={!renamingState[0] || isUploading(uploadProgress)}
                     className={cn(
                       "bg-transparent text-lg focus-visible:ring-0 p-0 pointer-events-none",
                       renamingState[0] && "pointer-events-auto"

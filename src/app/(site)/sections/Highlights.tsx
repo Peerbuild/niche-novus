@@ -1,15 +1,11 @@
 import HighlightCarousel from "@/app/(site)/_components/HighlightCarousel";
-import fs from "fs";
-import path from "path";
+import { getGallery } from "@/app/actions/gallery";
 
-const images = fs
-  .readdirSync(path.join(process.cwd(), "/public/images/highlights"))
-  .filter((image) => image.split(".")[1] === "jpg");
-
-const Highlights = () => {
+const Highlights = async () => {
+  const gallery = await getGallery();
   return (
     <section className="pt-10 pb-40 md:pt-40 md:pb-60 absolute  w-full  overflow-hidden">
-      <HighlightCarousel images={images} />
+      <HighlightCarousel images={gallery} />
     </section>
   );
 };

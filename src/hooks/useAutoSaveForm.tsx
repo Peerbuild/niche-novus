@@ -10,6 +10,7 @@ import {
   UseFormProps,
   useWatch,
 } from "react-hook-form";
+import { isUploading } from "@/lib/utils";
 
 const DEBOUNCE_TIME = 500;
 
@@ -22,10 +23,14 @@ export default function useAutoSaveForm<T extends FieldValues>(
   const [progress, setProgress] = useState<Record<string, number>>({});
 
   const watchValues = useWatch({ control: form.control });
+  const isDirty = form.formState.isDirty;
+
+  console.log("error", form.formState.errors);
 
   useEffect(() => {
     async function onSubmit(values: T) {
-      if (!form.formState.isDirty) {
+      console.log("onSubmit");
+      if (!isDirty || isUploading(progress)) {
         return;
       }
 
@@ -40,6 +45,9 @@ export default function useAutoSaveForm<T extends FieldValues>(
         console.log("Values", typeof values[key]);
         if (typeof values[key] === "object") {
           const file = values[key] as File;
+          const type = file.type.split("/")[0];
+
+          console.log(key);
 
           const formData = new FormData();
 
@@ -52,7 +60,7 @@ export default function useAutoSaveForm<T extends FieldValues>(
           formData.append("timestamp", timestamp.toString());
           formData.append("folder", "nichenovus");
 
-          const endpoint = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload`;
+          const endpoint = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/${type}/upload`;
           uploadRequests.push(
             axios.post(endpoint, formData, {
               onUploadProgress: (progressEvent) => {
@@ -60,7 +68,7 @@ export default function useAutoSaveForm<T extends FieldValues>(
                   const percentCompleted = Math.round(
                     (progressEvent.loaded * 100) / progressEvent.total
                   );
-
+                  console.log(percentCompleted);
                   setProgress((prev) => ({ ...prev, [key]: percentCompleted }));
                 }
               },
@@ -91,7 +99,7 @@ export default function useAutoSaveForm<T extends FieldValues>(
     return () => {
       clearTimeout(timeout);
     };
-  }, [watchValues, form, submitAction]);
+  }, [watchValues, form, submitAction, isDirty]);
 
   return { form, progress };
 }

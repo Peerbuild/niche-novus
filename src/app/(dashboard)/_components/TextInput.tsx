@@ -7,7 +7,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { capitalize } from "@/lib/utils";
+import { capitalize, isUploading } from "@/lib/utils";
+import { progress } from "framer-motion";
 import React from "react";
 import { Control } from "react-hook-form";
 
@@ -17,12 +18,14 @@ interface TextInputProps {
   name: string;
   subtitle: string;
   fields: Record<string, FieldTypes>[];
+  uploadProgress: Record<string, number>;
 }
 
 export const TextInput: React.FC<TextInputProps> = ({
   name,
   subtitle,
   fields,
+  uploadProgress,
 }) => {
   return (
     <div className="text-left flex md:flex-row flex-col gap-8 md:gap-24 md:items-center max-w-xl">
@@ -46,6 +49,7 @@ export const TextInput: React.FC<TextInputProps> = ({
                           <Input
                             className="min-w-64"
                             placeholder={capitalize(name)}
+                            disabled={isUploading(uploadProgress)}
                             {...field}
                           />
                         )}
@@ -53,6 +57,7 @@ export const TextInput: React.FC<TextInputProps> = ({
                           <Textarea
                             className="min-w-64"
                             placeholder={capitalize(name)}
+                            disabled={isUploading(uploadProgress)}
                             {...field}
                           />
                         )}

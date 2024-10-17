@@ -11,6 +11,7 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Autoplay from "embla-carousel-autoplay";
+import Video from "./Video";
 
 const projects = [
   {
@@ -56,7 +57,6 @@ const ProjectCaraousel = () => {
         plugins={[
           Autoplay({
             delay: 5000,
-            stopOnInteraction: true,
           }),
         ]}
         setCurrentInd={setCurrentInd}
@@ -68,7 +68,7 @@ const ProjectCaraousel = () => {
               className="basis-[16rem] md:basis-[24rem] pl-4 md:pl-8"
               key={index}
             >
-              <video
+              <Video
                 src={project.image}
                 className={cn(
                   "transition-all duration-500",

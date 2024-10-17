@@ -24,6 +24,10 @@ const links = [
     name: "Gallery",
     link: "/gallery",
   },
+  {
+    name: "Emails",
+    link: "/contacts",
+  },
 ];
 
 export const Sidebar = () => {
@@ -57,7 +61,7 @@ export const Sidebar = () => {
               {"/admin" + link.link === path && (
                 <motion.span
                   layoutId="sidebar-active"
-                  className="bg-accent absolute -left-3 top-1 h-4 w-1 inline-block rounded-full"
+                  className="bg-accent absolute -left-3 top-0.5 h-4 w-1 inline-block rounded-full"
                 ></motion.span>
               )}
               <Link

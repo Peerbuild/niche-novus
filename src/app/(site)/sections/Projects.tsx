@@ -4,12 +4,13 @@ import React from "react";
 import SectionWrapper from "../_components/SectionWrapper";
 import Highlights from "./Highlights";
 import Footer from "./Footer";
+import Video from "../_components/Video";
 
 const Projects = () => {
   return (
     <section className="space-y-20 sticky top-0  pt-10 pb-24  bg-background">
       <div className="absolute w-full h-full left-1/2 inset-0 -translate-x-1/2 ">
-        <video
+        <Video
           src="/projects/project1.mp4"
           autoPlay
           muted

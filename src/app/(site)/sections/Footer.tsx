@@ -3,16 +3,10 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className=" text-center   flex flex-col justify-end gap-3 py-10 md:py-2 h-[30rem] md:h-[90vh]">
-      <Image
-        src="/logo.svg"
-        alt="logo"
-        className="mx-auto"
-        width={20}
-        height={20}
-      />
-      <h2>Niche Novus</h2>
-      <span className="text-md">© All Right Reserved</span>
+    <footer className=" text-center flex flex-col justify-end gap-3  h-[30rem] md:h-[85vh]">
+      <h2>
+        Niche Novus <span className="mx-2">©</span> All Right Reserved
+      </h2>
     </footer>
   );
 };

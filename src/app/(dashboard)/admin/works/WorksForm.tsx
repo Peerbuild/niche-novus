@@ -7,6 +7,7 @@ import { workSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { updateWork } from "@/app/actions/work";
+import { progress } from "framer-motion";
 
 const WorksForm = ({ work }: { work: Work }) => {
   const { form, progress } = useAutoSaveForm<
@@ -41,6 +42,7 @@ const WorksForm = ({ work }: { work: Work }) => {
             name="Description"
             subtitle="Edit personal info"
             fields={[{ title: "input" }, { description: "textarea" }]}
+            uploadProgress={progress}
           />
         </form>
       </Form>

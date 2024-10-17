@@ -10,8 +10,7 @@ import { z } from "zod";
 const AddWorkButton = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async (newWork: z.infer<typeof workSchema>) =>
-      await createWork(newWork),
+    mutationFn: async (newWork: Work) => await createWork(newWork),
 
     onMutate: () => {
       const newWork = {
@@ -40,8 +39,10 @@ const AddWorkButton = () => {
       size={"lg"}
       onClick={() =>
         mutation.mutate({
+          id: "",
           title: "New Work",
           description: "Description",
+          videoUrl: "",
         })
       }
       className="gap-2"
