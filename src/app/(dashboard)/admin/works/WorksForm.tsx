@@ -43,6 +43,7 @@ const WorksForm = ({ work }: { work: Work }) => {
             subtitle="Edit personal info"
             fields={[{ title: "input" }, { description: "textarea" }]}
             uploadProgress={progress}
+            maxLimit={{ title: 50, description: 150 }}
           />
         </form>
       </Form>

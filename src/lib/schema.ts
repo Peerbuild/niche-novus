@@ -69,7 +69,7 @@ export const workSchema = z.object({
 });
 
 export const gallerySchema = z.object({
-  title: z.string().min(1),
+  title: z.string().min(1).max(36),
   imageUrl: z.union([
     typeof window === "undefined"
       ? z.any()

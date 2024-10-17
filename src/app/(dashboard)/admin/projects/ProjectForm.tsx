@@ -76,6 +76,7 @@ const ProjectForm = ({ project }: { project: Project }) => {
                   subtitle="Edit personal info"
                   fields={[{ description: "textarea" }]}
                   uploadProgress={progress}
+                  maxLimit={{ description: 150 }}
                 />
               </AccordionContent>
             </AccordionItem>

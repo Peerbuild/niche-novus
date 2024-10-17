@@ -11,6 +11,7 @@ import {
   useWatch,
 } from "react-hook-form";
 import { isUploading } from "@/lib/utils";
+import { useSync } from "@/providers/SyncProvider";
 
 const DEBOUNCE_TIME = 500;
 
@@ -19,6 +20,7 @@ export default function useAutoSaveForm<T extends FieldValues>(
   options: UseFormProps<T>,
   variables?: any
 ) {
+  const { setSyncing } = useSync();
   const form = useForm<T>(options);
   const [progress, setProgress] = useState<Record<string, number>>({});
 
@@ -29,12 +31,11 @@ export default function useAutoSaveForm<T extends FieldValues>(
 
   useEffect(() => {
     async function onSubmit(values: T) {
-      console.log("onSubmit");
       if (!isDirty || isUploading(progress)) {
         return;
       }
 
-      console.log("Submit", form.formState.dirtyFields);
+      setSyncing(true);
 
       const { timestamp, signature } = await getSignature();
 
@@ -90,6 +91,7 @@ export default function useAutoSaveForm<T extends FieldValues>(
       }
 
       await submitAction({ ...values, ...variables });
+      setSyncing(false);
     }
 
     const timeout = setTimeout(() => {

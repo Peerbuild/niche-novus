@@ -1,7 +1,8 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/providers/SidebarProvider";
-import { motion } from "framer-motion";
+import { useSync } from "@/providers/SyncProvider";
+import { motion, sync } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -33,6 +34,7 @@ const links = [
 export const Sidebar = () => {
   const path = usePathname();
   const { isOpen } = useSidebar();
+  const { syncing } = useSync();
 
   return (
     <div
@@ -50,7 +52,12 @@ export const Sidebar = () => {
           height={24}
         />
         <div className="space-x-2 text-center">
-          <span className="size-2 bg-accent inline-block rounded-full"></span>
+          <span
+            className={cn(
+              "size-2 bg-accent inline-block rounded-full",
+              syncing && "bg-destructive"
+            )}
+          ></span>
           <span className="text-muted-foreground">nichenovus.in</span>
         </div>
       </div>

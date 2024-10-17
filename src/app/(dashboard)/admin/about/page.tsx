@@ -44,6 +44,8 @@ export default function AboutPage() {
             name="introduction"
             subtitle="Edit personal info"
             fields={[{ introduction: "textarea" }]}
+            uploadProgress={progress}
+            maxLimit={{ introduction: 200 }}
           />
         </form>
       </Form>

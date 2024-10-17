@@ -7,10 +7,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { capitalize, isUploading } from "@/lib/utils";
+import { capitalize, cn, isUploading } from "@/lib/utils";
 import { progress } from "framer-motion";
 import React from "react";
-import { Control } from "react-hook-form";
+import { Control, useFormContext } from "react-hook-form";
 
 type FieldTypes = "input" | "textarea";
 
@@ -19,6 +19,7 @@ interface TextInputProps {
   subtitle: string;
   fields: Record<string, FieldTypes>[];
   uploadProgress: Record<string, number>;
+  maxLimit?: Record<string, number>;
 }
 
 export const TextInput: React.FC<TextInputProps> = ({
@@ -26,7 +27,9 @@ export const TextInput: React.FC<TextInputProps> = ({
   subtitle,
   fields,
   uploadProgress,
+  maxLimit,
 }) => {
+  const { getValues } = useFormContext();
   return (
     <div className="text-left flex md:flex-row flex-col gap-8 md:gap-24 md:items-center max-w-xl">
       <div className="space-y-2">
@@ -41,27 +44,52 @@ export const TextInput: React.FC<TextInputProps> = ({
               key={fieldName}
               name={fieldName}
               render={({ field }) => {
+                const charCount = getValues(fieldName).length;
                 return (
                   <FormItem className="flex gap-24 max-w-xl items-center">
                     <FormControl>
-                      <>
+                      <div>
                         {fieldType === "input" && (
-                          <Input
-                            className="min-w-64"
-                            placeholder={capitalize(name)}
-                            disabled={isUploading(uploadProgress)}
-                            {...field}
-                          />
+                          <div className="relative">
+                            <Input
+                              className="min-w-64"
+                              placeholder={capitalize(name)}
+                              disabled={isUploading(uploadProgress)}
+                              {...field}
+                            />
+                            {maxLimit && (
+                              <span
+                                className={cn(
+                                  "absolute -right-2 text-muted-foreground translate-x-full bottom-0",
+                                  charCount > maxLimit && "text-destructive"
+                                )}
+                              >
+                                {charCount}/{maxLimit[fieldName]}
+                              </span>
+                            )}
+                          </div>
                         )}
                         {fieldType === "textarea" && (
-                          <Textarea
-                            className="min-w-64"
-                            placeholder={capitalize(name)}
-                            disabled={isUploading(uploadProgress)}
-                            {...field}
-                          />
+                          <div className="relative">
+                            <Textarea
+                              className="min-w-64"
+                              placeholder={capitalize(name)}
+                              disabled={isUploading(uploadProgress)}
+                              {...field}
+                            />
+                            {maxLimit && (
+                              <span
+                                className={cn(
+                                  "absolute -right-2 text-muted-foreground translate-x-full bottom-0",
+                                  charCount > maxLimit && "text-destructive"
+                                )}
+                              >
+                                {charCount}/{maxLimit[fieldName]}
+                              </span>
+                            )}
+                          </div>
                         )}
-                      </>
+                      </div>
                     </FormControl>
                   </FormItem>
                 );
