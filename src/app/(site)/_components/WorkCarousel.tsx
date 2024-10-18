@@ -234,7 +234,7 @@ const WorkCarousel = () => {
   const [currentProjectInd, setCurrentProjectInd] = useState(0);
 
   return (
-    <div className="w-full space-y-20   md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-hidden">
+    <div className="w-full space-y-14 md:space-y-20  md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-hidden">
       <Carousel
         opts={{ loop: true }}
         setApi={(api) => {
@@ -242,18 +242,20 @@ const WorkCarousel = () => {
         }}
         setCurrentInd={setCurrentGroupInd}
         setNestedInd={setCurrentProjectInd}
-        plugins={[
-          Autoplay({
-            delay: 5000 * works[currentGroupInd].projects.length - 300,
-            stopOnInteraction: true,
-          }),
-        ]}
+        plugins={
+          [
+            // Autoplay({
+            //   delay: 5000 * works[currentGroupInd].projects.length - 300,
+            //   stopOnInteraction: true,
+            // }),
+          ]
+        }
       >
         <CarouselContent className="">
           {works.map((work, index) => (
             <CarouselItem
               className={cn(
-                "basis-auto  md:pl-10 pl-6",
+                "basis-auto  md:pl-10 pl-8",
                 index === currentGroupInd && "md:pl-16 md:pr-6",
                 index === 0 && "md:pl-16"
               )}
@@ -276,16 +278,16 @@ const WorkCarousel = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="w-20 h-0.5 bg-foreground mx-auto mt-4 rounded-full translate-x-3"></div>
+        <div className="w-20 h-0.5 bg-foreground/40 mx-auto mt-4 rounded-full translate-x-3"></div>
       </Carousel>
-      <div className="flex gap-6 md:gap-12 lg:gap-24 px-4 flex-col-reverse md:flex-row  items-center max-w-screen-2xl mx-auto">
+      <div className="flex gap-6 md:gap-6 2xl:gap-24  px-8 flex-col-reverse md:flex-row  items-center max-w-screen-2xl mx-auto">
         <div className="flex-[0.4_0_0%] space-y-6">
-          <div className=" overflow-hidden flex flex-row-reverse md:flex-col gap-4">
+          <div className=" overflow-hidden flex flex-row-reverse md:flex-col gap-6">
             <Carousel
               setApi={(api) => {
                 api?.scrollTo(currentProjectInd);
               }}
-              className="overflow-hidden"
+              className="overflow-hidden flex-[0_0_40%]"
             >
               <CarouselContent>
                 {works[currentGroupInd].projects.map((project, index) => {
@@ -296,7 +298,7 @@ const WorkCarousel = () => {
                         src={project.secondary}
                         width={400}
                         height={250}
-                        className="w-64 md:w-full"
+                        className="w-44 md:w-full"
                         autoPlay
                         muted
                         loop
@@ -306,7 +308,7 @@ const WorkCarousel = () => {
                 })}
               </CarouselContent>
             </Carousel>
-            <div className="space-y-4 overflow-hidden">
+            <div className="space-y-4 overflow-hidden flex-1">
               <Carousel
                 setApi={(api) => {
                   api?.scrollTo(currentProjectInd);
@@ -328,7 +330,7 @@ const WorkCarousel = () => {
                     >
                       <h3
                         className={cn(
-                          "text-base opacity-50 transition-opacity cursor-pointer",
+                          "text-sm  lg:text-base opacity-50 transition-opacity  cursor-pointer",
                           index === currentProjectInd && "opacity-100"
                         )}
                         onClick={() => setCurrentProjectInd(index)}
@@ -343,12 +345,12 @@ const WorkCarousel = () => {
                   ))}
                 </CarouselContent>
               </Carousel>
-              <p className="md:text-base text-md">
+              <p className="lg:text-base  text-sm text-justify">
                 {works[currentGroupInd].projects[currentProjectInd].description}
               </p>
             </div>
           </div>
-          <div className="space-x-4">
+          <div className="space-x-8 text-center  pt-8 md:pt-0">
             <PrevProjectButton
               currentProjectInd={currentProjectInd}
               setCurrentProjectInd={setCurrentProjectInd}
@@ -384,7 +386,7 @@ const WorkCarousel = () => {
                       autoPlay
                       muted
                       loop
-                      className="w-full"
+                      className="w-full h-full"
                     />
                   </CarouselItem>
                 );

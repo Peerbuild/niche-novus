@@ -86,14 +86,14 @@ const ProjectCaraousel = () => {
           ))}
         </CarouselContent>
         <div className="  max-w-44 md:max-w-64 mt-10 space-y-2 mx-auto text-base ">
-          <div className="-translate-y-36">
+          <div className="-translate-y-28">
             <AnimatePresence>
               <motion.h2
                 key={currentInd}
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -10, opacity: 0 }}
-                className="absolute text-xl font-semibold"
+                className="absolute  text-lg md:text-xl font-semibold"
               >
                 {projects[currentInd].title}
               </motion.h2>
@@ -101,19 +101,19 @@ const ProjectCaraousel = () => {
             <AnimatePresence>
               <motion.p
                 key={currentInd}
-                initial={{ y: 60, opacity: 0 }}
-                animate={{ y: 50, opacity: 1 }}
-                exit={{ y: 40, opacity: 0 }}
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -10, opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="text-base absolute"
+                className="text-base text-justify absolute mt-9 md:mt-12"
               >
                 {projects[currentInd].description}
               </motion.p>
             </AnimatePresence>
           </div>
-          <div className=" hidden mt-6  lg:block w-fit mx-auto space-x-4">
-            <CarouselPrevious />
-            <CarouselNext />
+          <div className=" pt-20  lg:block w-fit mx-auto space-x-8">
+            <CarouselPrevious size={"icon"} variant={"outline"} />
+            <CarouselNext size={"icon"} variant={"outline"} />
           </div>
         </div>
       </Carousel>

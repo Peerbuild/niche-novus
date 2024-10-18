@@ -8,7 +8,7 @@ import Video from "../_components/Video";
 
 const Projects = () => {
   return (
-    <section className="space-y-20 sticky top-0  pt-10 pb-24  bg-background">
+    <section className="space-y-6 md:space-y-20 sticky top-0  pt-10 pb-24 md:pb-0   bg-background">
       <div className="absolute w-full h-full left-1/2 inset-0 -translate-x-1/2 ">
         <Video
           src="/projects/project1.mp4"
@@ -24,7 +24,6 @@ const Projects = () => {
       />
       <ProjectCaraousel />
       <Highlights />
-      <Footer />
     </section>
   );
 };

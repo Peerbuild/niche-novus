@@ -19,6 +19,9 @@ const config: Config = {
       "3xl": "18rem",
     },
     extend: {
+      screens: {
+        "2xl": "1750px",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
