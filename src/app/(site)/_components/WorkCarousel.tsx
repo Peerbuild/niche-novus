@@ -280,7 +280,7 @@ const WorkCarousel = () => {
         </CarouselContent>
         <div className="w-20 h-0.5 bg-foreground/40 mx-auto mt-4 rounded-full translate-x-3"></div>
       </Carousel>
-      <div className="flex gap-6 md:gap-6 2xl:gap-24  px-40 flex-col-reverse md:flex-row  items-center max-w-screen-2xl mx-auto">
+      <div className="flex gap-6 md:gap-6 2xl:gap-24  px-48 flex-col-reverse md:flex-row  items-center max-w-screen-2xl mx-auto">
         <div className="flex-[0.4_0_0%] space-y-6">
           <div className=" overflow-hidden flex flex-row-reverse md:flex-col gap-6">
             <Carousel
