@@ -236,7 +236,7 @@ const WorkCarousel = () => {
   return (
     <div className="w-full space-y-14 md:space-y-20  md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-hidden">
       <Carousel
-        opts={{ loop: true }}
+        opts={{ loop: true, watchDrag: true }}
         setApi={(api) => {
           api?.scrollTo(currentGroupInd);
         }}
@@ -280,7 +280,7 @@ const WorkCarousel = () => {
         </CarouselContent>
         <div className="w-20 h-0.5 bg-foreground/40 mx-auto mt-4 rounded-full translate-x-3"></div>
       </Carousel>
-      <div className="flex gap-6 md:gap-6 2xl:gap-24  px-48 flex-col-reverse md:flex-row  items-center max-w-screen-2xl mx-auto">
+      <div className="flex gap-6 md:gap-6 2xl:gap-24  px-8   xl:px-48 flex-col-reverse md:flex-row  items-center max-w-screen-2xl mx-auto">
         <div className="flex-[0.4_0_0%] space-y-6">
           <div className=" overflow-hidden flex flex-row-reverse md:flex-col gap-6">
             <Carousel
@@ -310,6 +310,7 @@ const WorkCarousel = () => {
             </Carousel>
             <div className="space-y-4 overflow-hidden flex-1">
               <Carousel
+                opts={{ watchDrag: true }}
                 setApi={(api) => {
                   api?.scrollTo(currentProjectInd);
                 }}

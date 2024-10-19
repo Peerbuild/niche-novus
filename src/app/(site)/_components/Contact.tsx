@@ -33,7 +33,7 @@ const Contact = () => {
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent className="py-20 px-14 max-w-md bg-background/60 backdrop-blur-xl">
+      <DialogContent className="py-20  px-14 max-w-md bg-background/60 backdrop-blur-xl w-[90svw] md:w-full">
         <DialogHeader className="mb-10 max-w-64 mx-auto">
           <DialogTitle className=" leading-snug">
             letter to the creator.
