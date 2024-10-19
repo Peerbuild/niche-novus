@@ -43,9 +43,15 @@ const SectionWrapper = ({
       className={cn(
         "py-32  sticky top-0 transition-all duration-500",
         className,
-        isOutOfView && "blur"
+        isOutOfView && "blur-md"
       )}
     >
+      <div
+        className={cn(
+          "absolute  inset-0 w-full h-full z-20 transition-opacity pointer-events-none duration-500 bg-background opacity-0",
+          isOutOfView && "opacity-80 "
+        )}
+      ></div>
       {children}
     </section>
   );
