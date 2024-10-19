@@ -5,10 +5,12 @@ import React, { useEffect, useState } from "react";
 import SectionWrapper from "../_components/SectionWrapper";
 import { Button } from "@/components/ui/button";
 import Player from "../_components/ReactPlayer";
+import { cn } from "@/lib/utils";
 
 const About = () => {
   const [isVideo, setIsVideo] = useState({ state: false, count: 0 });
   const [showTransition, setShowTransition] = useState(false);
+  const transitionRef = React.useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     if (isVideo.count === 0) {
@@ -16,6 +18,7 @@ const About = () => {
     }
     console.log("isVideo", isVideo);
     setShowTransition(true);
+    transitionRef.current?.play();
 
     const timeout = setTimeout(() => {
       setShowTransition(false);
@@ -37,14 +40,16 @@ const About = () => {
       </div>
       <main className="max-w-screen-md space-y-8 mx-auto">
         <div className="aspect-video relative">
-          {showTransition && (
-            <video
-              src="/transition.mp4"
-              className="w-full absolute inset-0 z-50 h-full"
-              muted
-              autoPlay
-            />
-          )}
+          <video
+            src="/transition.mp4"
+            className={cn(
+              "w-full absolute inset-0 z-50 h-full opacity-0",
+              showTransition && "opacity-100"
+            )}
+            ref={transitionRef}
+            muted
+            autoPlay
+          />
           {isVideo.state ? (
             <Player videoId="xKLKl3H9rro" />
           ) : (

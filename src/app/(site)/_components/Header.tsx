@@ -28,9 +28,9 @@ const Header = () => {
   return (
     <header
       className={cn(
-        "mt-16 left-1/2 md:-translate-y-[9.5rem] duration-500 text-lg -translate-x-1/2  z-50 absolute md:fixed backdrop-blur w-[90vw] bg-background/40 justify-center md:justify-between items-center py-6 px-20 flex  lg:w-full max-w-screen-lg mx-auto transition-all",
-        showNav && "md:translate-y-0",
-        isTransparent && "bg-background/0 backdrop-blur-none"
+        "mt-16 left-1/2 md:-translate-y-0 duration-500 text-lg -translate-x-1/2  z-50 absolute md:absolute backdrop-blur w-[90vw] bg-background/40 justify-center md:justify-between items-center py-6 px-20 flex  lg:w-full max-w-screen-lg mx-auto transition-all",
+        // showNav && "md:translate-y-0",
+        true && "bg-background/0 backdrop-blur-none"
       )}
     >
       <ul className="md:contents hidden">

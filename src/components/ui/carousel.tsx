@@ -240,7 +240,7 @@ const CarouselNext = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
 >(({ className, variant = "outline", size = "icon", ...props }, ref) => {
-  const { orientation, scrollNext, canScrollNext } = useCarousel();
+  const { orientation, scrollNext, canScrollNext, api } = useCarousel();
 
   return (
     <Button
@@ -255,7 +255,10 @@ const CarouselNext = React.forwardRef<
         className
       )}
       disabled={!canScrollNext}
-      onClick={scrollNext}
+      onClick={(e) => {
+        scrollNext();
+        api?.plugins().autoplay.stop();
+      }}
       {...props}
     >
       <ArrowRightIcon className="h-4 w-4" />

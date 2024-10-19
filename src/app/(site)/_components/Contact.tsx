@@ -23,7 +23,7 @@ const Contact = () => {
       }}
     >
       <DialogTrigger>
-        <div className="hidden cursor-pointer  gap-8 px-7 py-6 items-center fixed z-20 right-8 bottom-8 bg-background/60 backdrop-blur-lg">
+        <div className="flex cursor-pointer  gap-8 px-7 py-6 items-center fixed z-20 right-8 bottom-8 bg-background/60 backdrop-blur-lg">
           <div>
             <FeatherIcon icon="user-plus" />
           </div>

@@ -23,7 +23,7 @@ const SectionWrapper = ({
       const scrollPosition = window.scrollY;
       const sectionHeight = section.clientHeight;
 
-      if (scrollPosition > sectionTop + sectionHeight / 5) {
+      if (scrollPosition > sectionTop + sectionHeight / 3) {
         setIsOutOfView(true);
       } else {
         setIsOutOfView(false);

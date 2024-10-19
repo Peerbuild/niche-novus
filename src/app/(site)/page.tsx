@@ -8,7 +8,7 @@ import Work from "@/app/(site)/sections/Work";
 export default function Home() {
   return (
     <div className="space-y-8">
-      <div>
+      <div className="space-y-80">
         <Herosection />
         <About />
         <Work />
