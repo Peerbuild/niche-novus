@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="space-y-8">
       <Herosection />
-      <div className="space-y-80">
+      <div className="space-y-40">
         <About />
         <Work />
         <Projects />
