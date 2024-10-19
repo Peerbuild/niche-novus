@@ -51,7 +51,7 @@ const ProjectCaraousel = () => {
   const [currentInd, setCurrentInd] = useState(0);
 
   return (
-    <div className="w-full  max-w-screen-md mx-auto   py-20 relative overflow-hidden">
+    <div className="w-full  max-w-screen-lg mx-auto   py-20 relative overflow-hidden">
       <Carousel
         opts={{ loop: true }}
         plugins={[
@@ -65,7 +65,7 @@ const ProjectCaraousel = () => {
           {projects.map((project, index) => (
             <CarouselItem
               isActive={currentInd === index}
-              className="basis-[16rem] md:basis-[rem] pl-4 md:pl-8"
+              className="basis-[16rem] md:basis-[22rem] pl-4 md:pl-8"
               key={index}
             >
               <Video

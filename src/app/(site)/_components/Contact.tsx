@@ -27,7 +27,7 @@ const Contact = () => {
           <div>
             <FeatherIcon icon="user-plus" />
           </div>
-          <div>
+          <div className="text-left">
             <div>More about Niche Novus!</div>
             <div>Get in touch.</div>
           </div>
