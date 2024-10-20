@@ -6,6 +6,7 @@ import SectionWrapper from "../_components/SectionWrapper";
 import { Button } from "@/components/ui/button";
 import Player from "../_components/ReactPlayer";
 import { cn } from "@/lib/utils";
+import { Icons } from "../_components/Icons";
 
 const About = () => {
   const [isVideo, setIsVideo] = useState({ state: false, count: 0 });
@@ -106,8 +107,18 @@ const About = () => {
             />
           </Button>
           <div className="flex gap-6 items-center">
-            <FeatherIcon icon="instagram" size={18} />
-            <FeatherIcon icon="twitter" size={18} />
+            <a href="https://www.instagram.com/nichenovus/">
+              <FeatherIcon icon="instagram" size={18} />
+            </a>
+            <a href="">
+              <FeatherIcon icon="twitter" size={18} />
+            </a>
+            <a href="">
+              <Icons.behance />
+            </a>
+            <a href="https://www.artstation.com/nichenovus">
+              <Icons.artstation />
+            </a>
           </div>
         </div>
       </main>
