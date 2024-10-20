@@ -111,7 +111,7 @@ const ProjectCaraousel = () => {
               </motion.p>
             </AnimatePresence>
           </div>
-          <div className=" pt-20  lg:block w-fit mx-auto space-x-8">
+          <div className=" pt-14  lg:block w-fit mx-auto space-x-8">
             <CarouselPrevious size={"icon"} variant={"outline"} />
             <CarouselNext size={"icon"} variant={"outline"} />
           </div>

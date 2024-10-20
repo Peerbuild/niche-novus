@@ -34,7 +34,7 @@ const HighlightCarousel = ({ images }: { images: Gallery[] }) => {
               key={image.id}
               isActive
               className={cn(
-                "basis-[18rem] relative lg:basis-[25%]  pr-3 pl-5  lg:pl-12 lg:pr-8"
+                "basis-[20rem] relative lg:basis-[25%]  pr-5 pl-7  lg:pl-12 lg:pr-8"
               )}
             >
               <Image

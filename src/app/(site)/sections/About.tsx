@@ -11,12 +11,31 @@ const About = () => {
   const [isVideo, setIsVideo] = useState({ state: false, count: 0 });
   const [showTransition, setShowTransition] = useState(false);
   const transitionRef = React.useRef<HTMLVideoElement | null>(null);
+  const [videoId, setVideoId] = useState<string>("");
 
   useEffect(() => {
     if (isVideo.count === 0) {
       return;
     }
-    console.log("isVideo", isVideo);
+    const fetchLatestVideo = async () => {
+      const url =
+        "https://yt-api.p.rapidapi.com/channel/videos?id=UCGy35-fzwsvocifL1cvAacQ";
+      const options = {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": process.env.NEXT_PUBLIC_YOUTUBE_API_KEY!,
+          "x-rapidapi-host": "yt-api.p.rapidapi.com",
+        },
+      };
+
+      const response = await fetch(url, options);
+      const result = await response.json();
+
+      setVideoId(result.data[0].videoId);
+    };
+
+    fetchLatestVideo();
+
     setShowTransition(true);
     transitionRef.current?.play();
 
@@ -51,7 +70,7 @@ const About = () => {
             autoPlay
           />
           {isVideo.state ? (
-            <Player videoId="xKLKl3H9rro" />
+            <Player videoId={videoId} />
           ) : (
             <Image
               src={"/images/about.jpeg"}
