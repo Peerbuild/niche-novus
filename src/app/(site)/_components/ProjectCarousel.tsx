@@ -30,6 +30,21 @@ const projects = [
     description: "One-stop3",
     image: "/projects/project3.mp4",
   },
+  {
+    title: "the architect3.",
+    description: "One-stop3",
+    image: "/projects/project1.mp4",
+  },
+  {
+    title: "the architect3.",
+    description: "One-stop3",
+    image: "/projects/project2.mp4",
+  },
+  {
+    title: "the architect3.",
+    description: "One-stop3",
+    image: "/projects/project3.mp4",
+  },
 ];
 
 const ProjectCaraousel = () => {
@@ -70,15 +85,15 @@ const ProjectCaraousel = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="  max-w-44 md:max-w-64 mt-10 space-y-2 mx-auto text-base ">
-          <div className="-translate-y-28">
+        <div className="  max-w-40 md:max-w-64 mt-10 space-y-2 mx-auto text-base ">
+          <div className="-translate-y-20 md:-translate-y-28">
             <AnimatePresence>
               <motion.h2
                 key={currentInd}
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -10, opacity: 0 }}
-                className="absolute  text-lg md:text-xl font-semibold"
+                className="absolute md:text-xl font-semibold"
               >
                 {projects[currentInd].title}
               </motion.h2>
@@ -90,7 +105,7 @@ const ProjectCaraousel = () => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -10, opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="text-base text-justify absolute mt-9 md:mt-12"
+                className="text-sm md:text-base text-justify absolute mt-6 md:mt-12"
               >
                 {projects[currentInd].description}
               </motion.p>

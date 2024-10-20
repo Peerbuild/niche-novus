@@ -258,7 +258,9 @@ const CarouselNext = React.forwardRef<
       disabled={!canScrollNext}
       onClick={(e) => {
         scrollNext();
-        api?.plugins().autoplay.stop();
+        if (api?.plugins().autoplay) {
+          api?.plugins().autoplay.stop();
+        }
       }}
       {...props}
     >

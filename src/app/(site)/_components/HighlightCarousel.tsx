@@ -34,7 +34,7 @@ const HighlightCarousel = ({ images }: { images: Gallery[] }) => {
               key={image.id}
               isActive
               className={cn(
-                "basis-[16rem] relative lg:basis-[25%]  pr-4 pl-6  lg:pl-12 lg:pr-8"
+                "basis-[18rem] relative lg:basis-[25%]  pr-3 pl-5  lg:pl-12 lg:pr-8"
               )}
             >
               <Image
@@ -44,13 +44,13 @@ const HighlightCarousel = ({ images }: { images: Gallery[] }) => {
                   "transition-all w-full h-full object-cover duration-1000 ",
                   (index === currentInd + 1 ||
                     index === currentInd + 1 - images.length) &&
-                    "rotate-12 translate-y-6 md:translate-y-[15%]",
+                    "rotate-12 translate-y-8 md:translate-y-[15%]",
                   (index === currentInd + 2 ||
                     index === currentInd + 2 - images.length) &&
                     "rotate-[25deg] translate-y-[58%]",
                   (index === currentInd - 1 ||
                     index === images.length + (currentInd - 1)) &&
-                    "-rotate-12 translate-y-6 md:translate-y-[15%]",
+                    "-rotate-12 translate-y-8 md:translate-y-[15%]",
                   (index === currentInd - 2 ||
                     index === images.length + (currentInd - 2)) &&
                     "-rotate-[25deg] translate-y-[58%]",
@@ -65,8 +65,10 @@ const HighlightCarousel = ({ images }: { images: Gallery[] }) => {
       </CarouselContent>
       <div className="w-fit flex gap-14 mx-auto translate-y-20">
         <CarouselPrevious />
-        <div className="w-20 flex justify-center   text-lg">
-          <span className="w-fit text-left">{images[currentInd].title}</span>
+        <div className="w-20 flex justify-center items-center   md:text-lg">
+          <span className="w-fit text-left  h-fit">
+            {images[currentInd].title}
+          </span>
         </div>
         <CarouselNext />
       </div>
