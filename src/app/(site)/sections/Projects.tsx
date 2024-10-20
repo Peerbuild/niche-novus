@@ -10,13 +10,13 @@ const Projects = () => {
   return (
     <section className="space-y-6 md:space-y-20 sticky top-0  pt-10 pb-24 md:pb-0   bg-background">
       <div className="absolute w-full h-full left-1/2 inset-0 -translate-x-1/2 ">
-        {/* <Video
+        <Video
           src="/projects/project1.mp4"
           autoPlay
           muted
           loop
-          className="object-cover h-full w-full opacity-5"
-        /> */}
+          className="object-cover hidden md:block h-full w-full opacity-5"
+        />
       </div>
       <SectionTitle
         title="projects"

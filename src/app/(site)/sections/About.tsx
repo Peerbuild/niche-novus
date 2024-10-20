@@ -57,7 +57,7 @@ const About = () => {
           className="object-cover relative -z-10 "
         />
       </div>
-      <main className="max-w-screen-md space-y-8 mx-auto">
+      <main className="max-w-screen-md space-y-8 mx-auto ">
         <div className="aspect-video relative">
           <video
             src="/transition.mp4"
@@ -94,7 +94,7 @@ const About = () => {
               setIsVideo({ state: !isVideo.state, count: isVideo.count + 1 })
             }
             variant={"link"}
-            className="text-yellow-500 p-0  gap-2 "
+            className="text-yellow-500 p-0 h-fit gap-2 "
           >
             <span className="md:text-base text-md">
               {isVideo.state ? "BACK TO ABOUT" : "DISCOVER LATEST ON YOUTUBE"}
