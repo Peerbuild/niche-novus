@@ -41,7 +41,7 @@ const SectionWrapper = ({
     <section
       ref={sectionRef}
       className={cn(
-        "py-32  sticky top-0 transition-all duration-500",
+        " sticky top-0 transition-all duration-500",
         className,
         isOutOfView && "blur-md"
       )}

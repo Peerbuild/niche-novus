@@ -30,21 +30,6 @@ const projects = [
     description: "One-stop3",
     image: "/projects/project3.mp4",
   },
-  {
-    title: "the architect4.",
-    description: "One-stop3",
-    image: "/projects/project1.mp4",
-  },
-  {
-    title: "the architect5.",
-    description: "One-stop3",
-    image: "/projects/project2.mp4",
-  },
-  {
-    title: "the architect6.",
-    description: "One-stop3",
-    image: "/projects/project3.mp4",
-  },
 ];
 
 const ProjectCaraousel = () => {

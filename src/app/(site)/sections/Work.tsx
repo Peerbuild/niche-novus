@@ -4,7 +4,7 @@ import SectionWrapper from "../_components/SectionWrapper";
 
 const Work = () => {
   return (
-    <SectionWrapper className="space-y-16 min-h-screen flex justify-center items-center sticky top-0  py-32 bg-background">
+    <SectionWrapper className=" min-h-screen flex justify-center items-center    bg-background">
       <WorkCarousel />
     </SectionWrapper>
   );

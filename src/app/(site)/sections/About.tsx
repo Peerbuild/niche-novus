@@ -28,7 +28,7 @@ const About = () => {
   }, [isVideo]);
 
   return (
-    <SectionWrapper className="px-16">
+    <SectionWrapper className="px-16 min-h-screen flex justify-center items-center">
       <div className="absolute w-full inset-0 h-full left-1/2 -translate-x-1/2 -z-10">
         <div className="w-full h-full absolute inset-0 bg-gradient-to-t from-background via-background/80 to-80% to-background"></div>
         <Image

@@ -1,5 +1,6 @@
 import Header from "@/app/(site)/_components/Header";
 import Contact from "./_components/Contact";
+import SmoothScroll from "@/providers/SmoothScroll";
 
 export default function Layout({
   children,
@@ -8,7 +9,7 @@ export default function Layout({
     <div className={``}>
       <Header />
       <Contact />
-      {children}
+      <SmoothScroll>{children}</SmoothScroll>
     </div>
   );
 }
