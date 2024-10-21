@@ -15,7 +15,7 @@ datasource db {
 
 model About {
   id           String @id @default(auto()) @map("_id") @db.ObjectId
-  videoUrl     String
+  image        String
   introduction String
 }
 

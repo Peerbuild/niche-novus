@@ -1,6 +1,5 @@
 import { Header, Sidebar } from "@/app/(dashboard)/_components";
-import ReactQueryProvider from "@/providers/ReactQueryProvider";
-import "./admin.css";
+import "../../admin.css";
 import SidebarProvider from "@/providers/SidebarProvider";
 import SyncProvider from "@/providers/SyncProvider";
 

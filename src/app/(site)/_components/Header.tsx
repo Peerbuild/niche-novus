@@ -1,5 +1,10 @@
 "use client";
-import useToggleNavbar from "@/hooks/useToggleNavbar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useLenis } from "@studio-freight/react-lenis";
 import Image from "next/image";
@@ -17,10 +22,6 @@ const navLinks = [
   {
     label: "projects",
     href: "#projects",
-  },
-  {
-    label: "shop",
-    href: "#",
   },
 ];
 
@@ -60,6 +61,7 @@ const Header = () => {
       <ul className="md:contents hidden">
         {navLinks.map((link, i) => {
           if (i < 2) return null;
+
           return (
             <li
               onClick={() => lenis?.scrollTo(link.href)}
@@ -70,6 +72,14 @@ const Header = () => {
             </li>
           );
         })}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>shop</TooltipTrigger>
+            <TooltipContent>
+              <p>coming soon</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </ul>
     </header>
   );

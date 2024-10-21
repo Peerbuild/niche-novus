@@ -90,6 +90,8 @@ export default function useAutoSaveForm<T extends FieldValues>(
         });
       }
 
+      console.log("Submit", values);
+
       await submitAction({ ...values, ...variables });
       setSyncing(false);
     }

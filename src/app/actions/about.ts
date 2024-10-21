@@ -5,18 +5,21 @@ import { ActionResponse } from "@/lib/ActionResponse";
 import { aboutSchema } from "@/lib/schema";
 import { z } from "zod";
 import { About } from "@prisma/client";
+import { auth } from "@/lib/auth";
 
 export const getAbout = async () => {
-  try {
-    const about = await prisma.about.findFirst();
-    return about;
-  } catch (error: any) {
-    console.error(error.message);
-    return new ActionResponse("error").json();
+  const about = await prisma.about.findFirst();
+  if (!about) {
+    return undefined;
   }
+  return about;
 };
 
 export const updateAbout = async (data: About) => {
+  const session = await auth();
+  if (!session) {
+    return new ActionResponse("error").json();
+  }
   try {
     const oldAbout = await prisma.about.findFirst();
 

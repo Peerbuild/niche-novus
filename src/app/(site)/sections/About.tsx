@@ -8,12 +8,18 @@ import Player from "../_components/ReactPlayer";
 import { cn } from "@/lib/utils";
 import { Icons } from "../_components/Icons";
 import EncryptText from "../_components/EncryptText";
+import { useQuery } from "@tanstack/react-query";
+import { getAbout } from "@/app/actions/about";
 
 const About = () => {
   const [isVideo, setIsVideo] = useState({ state: false, count: 0 });
   const [showTransition, setShowTransition] = useState(false);
   const transitionRef = React.useRef<HTMLVideoElement | null>(null);
   const [videoId, setVideoId] = useState<string>("");
+  const query = useQuery({
+    queryFn: async () => await getAbout(),
+    queryKey: ["about"],
+  });
 
   useEffect(() => {
     if (isVideo.count === 0) {
@@ -87,11 +93,7 @@ const About = () => {
           )}
         </div>
         <div className="space-y-2">
-          <p className="text-justify">
-            Niche Novus (Ar. Nishad Kela) weaves a tapestry of visual
-            enchantment that defies conventional artistic boundaries, offering a
-            tantalizing blend of realism and surrealism.
-          </p>
+          <p className="text-justify">{query.data?.introduction}</p>
         </div>
         <div className="text-yellow-500 flex justify-between flex-col gap-5 md:flex-row items-center">
           <Button

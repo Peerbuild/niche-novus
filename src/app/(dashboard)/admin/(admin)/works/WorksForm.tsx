@@ -1,7 +1,7 @@
 import { Form } from "@/components/ui/form";
 import { Work } from "@prisma/client";
 import React from "react";
-import { TextInput, VideoInput } from "../../_components";
+import { TextInput, VideoInput } from "../../../_components";
 import useAutoSaveForm from "@/hooks/useAutoSaveForm";
 import { workSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";

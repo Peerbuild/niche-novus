@@ -4,8 +4,13 @@ import prisma from "@/lib/prisma";
 import { Client } from "@prisma/client";
 import { z } from "zod";
 import { deleteProject } from "./project";
+import { auth } from "@/lib/auth";
 
 export const updateClient = async (data: Client) => {
+  const session = await auth();
+  if (!session) {
+    return new ActionResponse("error").json();
+  }
   try {
     const parsedData = z.object({ name: z.string() }).parse(data);
 
@@ -54,6 +59,10 @@ export const getClients = async () => {
 };
 
 export const deleteClient = async (clientId: string) => {
+  const session = await auth();
+  if (!session) {
+    return new ActionResponse("error").json();
+  }
   try {
     const projects = await prisma.project.findMany({
       where: {

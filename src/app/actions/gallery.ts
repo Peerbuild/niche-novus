@@ -1,13 +1,16 @@
 "use server";
 
 import { ActionResponse } from "@/lib/ActionResponse";
+import { auth } from "@/lib/auth";
 import cloudinary, { getCloudinaryId } from "@/lib/cloudinary";
 import prisma from "@/lib/prisma";
-import { gallerySchema } from "@/lib/schema";
 import { Gallery } from "@prisma/client";
-import { z } from "zod";
 
 export const deleteImage = async (image: Gallery) => {
+  const session = await auth();
+  if (!session) {
+    return new ActionResponse("error").json();
+  }
   try {
     await cloudinary.uploader.destroy(getCloudinaryId(image.imageUrl));
     await prisma.gallery.delete({
@@ -30,6 +33,10 @@ export const getGallery = async () => {
 
 export const updateGallery = async (data: Gallery) => {
   console.log("Update gallery", data);
+  const session = await auth();
+  if (!session) {
+    return new ActionResponse("error").json();
+  }
   try {
     if (data.id) {
       await prisma.gallery.update({

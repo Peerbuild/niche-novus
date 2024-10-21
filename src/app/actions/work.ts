@@ -1,9 +1,14 @@
 "use server";
 import { ActionResponse } from "@/lib/ActionResponse";
+import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { Work } from "@prisma/client";
 
 export const updateWork = async (data: Work) => {
+  const session = await auth();
+  if (!session) {
+    return new ActionResponse("error").json();
+  }
   try {
     const { id, ...workData } = data;
     await prisma.work.update({
@@ -21,6 +26,10 @@ export const updateWork = async (data: Work) => {
 };
 
 export const createWork = async (data: Work) => {
+  const session = await auth();
+  if (!session) {
+    return new ActionResponse("error").json();
+  }
   console.log(data);
   try {
     const { id, ...workData } = data;
@@ -42,6 +51,10 @@ export const getWorks = async () => {
 };
 
 export const removeWork = async (id: string) => {
+  const session = await auth();
+  if (!session) {
+    return new ActionResponse("error").json();
+  }
   try {
     await prisma.work.delete({
       where: {

@@ -45,6 +45,7 @@ export const TextInput: React.FC<TextInputProps> = ({
               name={fieldName}
               render={({ field }) => {
                 const charCount = getValues(fieldName).length;
+                console.log(charCount);
                 return (
                   <FormItem className="flex gap-24 max-w-xl items-center">
                     <FormControl>
@@ -61,7 +62,8 @@ export const TextInput: React.FC<TextInputProps> = ({
                               <span
                                 className={cn(
                                   "absolute -right-2 text-muted-foreground translate-x-full bottom-0",
-                                  charCount > maxLimit && "text-destructive"
+                                  charCount > maxLimit[fieldName] &&
+                                    "text-destructive"
                                 )}
                               >
                                 {charCount}/{maxLimit[fieldName]}
@@ -81,7 +83,8 @@ export const TextInput: React.FC<TextInputProps> = ({
                               <span
                                 className={cn(
                                   "absolute -right-2 text-muted-foreground translate-x-full bottom-0",
-                                  charCount > maxLimit && "text-destructive"
+                                  charCount > maxLimit[fieldName] &&
+                                    "text-destructive"
                                 )}
                               >
                                 {charCount}/{maxLimit[fieldName]}

@@ -4,7 +4,7 @@ import { projectSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { z } from "zod";
-import { TextInput, VideoInput } from "../../_components";
+import { TextInput, VideoInput } from "../../../_components";
 import { deleteProject, updateProject } from "@/app/actions/project";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import {

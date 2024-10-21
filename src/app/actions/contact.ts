@@ -4,8 +4,13 @@ import { ActionResponse } from "@/lib/ActionResponse";
 import prisma from "@/lib/prisma";
 import { headers } from "next/headers";
 import { sendEmail } from "./sendEmail";
+import { auth } from "@/lib/auth";
 
 export const fetchContacts = async (page?: number) => {
+  const session = await auth();
+  if (!session) {
+    return [];
+  }
   const skip = page ? (page - 1) * 10 : 0;
   const take = page ? 10 : undefined;
   const contacts = await prisma.contact.findMany({

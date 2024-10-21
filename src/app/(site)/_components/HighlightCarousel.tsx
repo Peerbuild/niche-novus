@@ -8,12 +8,14 @@ import {
 } from "@/components/ui/carousel";
 import React, { useState } from "react";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { cn, isInView } from "@/lib/utils";
 import { Gallery } from "@prisma/client";
 
 const HighlightCarousel = ({ images }: { images: Gallery[] }) => {
   const [currentInd, setCurrentInd] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [slidesInView, setSlidesInView] = useState<number[]>([]);
+
   return (
     <Carousel
       opts={{ loop: true, duration: 28 }}
@@ -32,13 +34,16 @@ const HighlightCarousel = ({ images }: { images: Gallery[] }) => {
           return (
             <CarouselItem
               key={image.id}
-              isActive
               className={cn(
                 "basis-[20rem] relative lg:basis-[25%]  pr-5 pl-7  lg:pl-12 lg:pr-8"
               )}
             >
               <Image
-                src={image.imageUrl}
+                src={
+                  isInView(currentInd, index, 3, images.length)
+                    ? image.imageUrl
+                    : ""
+                }
                 alt="Highlights"
                 className={cn(
                   "transition-all w-full h-full object-cover duration-1000 ",

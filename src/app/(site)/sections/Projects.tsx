@@ -5,8 +5,10 @@ import SectionWrapper from "../_components/SectionWrapper";
 import Highlights from "./Highlights";
 import Footer from "./Footer";
 import Video from "../_components/Video";
+import { getWorks } from "@/app/actions/work";
 
-const Projects = () => {
+const Projects = async () => {
+  const projects = await getWorks();
   return (
     <section
       id="projects"
@@ -25,7 +27,7 @@ const Projects = () => {
         title="projects"
         subtitle="The Visionary Sculptor of Reality and Surreality, Crafting Worlds that Blur the Line Between the Known and the Enigmatic"
       />
-      <ProjectCaraousel />
+      <ProjectCaraousel projects={projects} />
       <Highlights />
     </section>
   );

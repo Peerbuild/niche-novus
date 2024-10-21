@@ -4,7 +4,7 @@ const MAX_UPLOAD_SIZE = 25 * 1024 * 1024;
 
 export const aboutSchema = z.object({
   introduction: z.string().min(1).max(200),
-  videoUrl: z.union([
+  image: z.union([
     typeof window === "undefined"
       ? z.any()
       : z
@@ -13,8 +13,8 @@ export const aboutSchema = z.object({
             return !file || file.size <= MAX_UPLOAD_SIZE;
           }, "File size must be less than 1.5mb")
           .refine((file) => {
-            return file.type.includes("video");
-          }, "File must be a video"),
+            return file.type.includes("image");
+          }, "File must be a image"),
     z.string().min(1),
   ]),
 });

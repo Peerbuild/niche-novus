@@ -10,8 +10,10 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, isInView } from "@/lib/utils";
 import Autoplay from "embla-carousel-autoplay";
+import { Project, Work } from "@prisma/client";
+import { ClientWithProjects } from "@/types/types";
 
 const works = [
   {
@@ -229,9 +231,10 @@ const works = [
   },
 ];
 
-const WorkCarousel = () => {
+const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
   const [currentGroupInd, setCurrentGroupInd] = useState(0);
   const [currentProjectInd, setCurrentProjectInd] = useState(0);
+  const [slidesInView, setSlidesInView] = useState<number[]>([]);
 
   return (
     <div className="w-full space-y-14 md:space-y-20  md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-hidden">
@@ -251,8 +254,8 @@ const WorkCarousel = () => {
           ]
         }
       >
-        <CarouselContent className="">
-          {works.map((work, index) => (
+        <CarouselContent className="justify-center">
+          {works?.map((work, index) => (
             <CarouselItem
               className={cn(
                 "basis-auto  md:pl-10 pl-8",
@@ -260,7 +263,7 @@ const WorkCarousel = () => {
                 index === 0 && "md:pl-16"
               )}
               isActive={index === currentGroupInd}
-              key={work.groupTitle}
+              key={work.name}
             >
               <div
                 className={cn(
@@ -273,7 +276,7 @@ const WorkCarousel = () => {
                   setCurrentProjectInd(0);
                 }}
               >
-                {work.groupTitle}
+                {work.name}
               </div>
             </CarouselItem>
           ))}
@@ -290,12 +293,21 @@ const WorkCarousel = () => {
               className="overflow-hidden flex-[0_0_40%]"
             >
               <CarouselContent>
-                {works[currentGroupInd].projects.map((project, index) => {
+                {works[currentGroupInd].Project.map((project, index) => {
                   return (
                     <CarouselItem isActive key={index} className="pl-0">
                       <video
                         key={index}
-                        src={project.secondary}
+                        src={
+                          isInView(
+                            currentProjectInd,
+                            index,
+                            1,
+                            works[currentGroupInd].Project.length
+                          )
+                            ? project.secondaryVideoUrl
+                            : ""
+                        }
                         width={400}
                         height={250}
                         className="w-44 md:w-full"
@@ -323,7 +335,7 @@ const WorkCarousel = () => {
                 ]}
               >
                 <CarouselContent>
-                  {works[currentGroupInd].projects.map((project, index) => (
+                  {works[currentGroupInd].Project.map((project, index) => (
                     <CarouselItem
                       className="basis-auto"
                       isActive={index === currentProjectInd}
@@ -336,9 +348,9 @@ const WorkCarousel = () => {
                         )}
                         onClick={() => setCurrentProjectInd(index)}
                       >
-                        {works[currentGroupInd].projects[index].title}{" "}
+                        {works[currentGroupInd].Project[index].title}{" "}
                         {index !==
-                          works[currentGroupInd].projects.length - 1 && (
+                          works[currentGroupInd].Project.length - 1 && (
                           <span className="pl-2">/</span>
                         )}
                       </h3>
@@ -347,7 +359,7 @@ const WorkCarousel = () => {
                 </CarouselContent>
               </Carousel>
               <p className="lg:text-base  text-sm text-justify">
-                {works[currentGroupInd].projects[currentProjectInd].description}
+                {works[currentGroupInd].Project[currentProjectInd].description}
               </p>
             </div>
           </div>
@@ -357,8 +369,10 @@ const WorkCarousel = () => {
               setCurrentProjectInd={setCurrentProjectInd}
               currentGroupInd={currentGroupInd}
               setCurrentGroupInd={setCurrentGroupInd}
+              works={works}
             />
             <NextProjectButton
+              works={works}
               currentProjectInd={currentProjectInd}
               setCurrentProjectInd={setCurrentProjectInd}
               currentGroupInd={currentGroupInd}
@@ -373,7 +387,7 @@ const WorkCarousel = () => {
             }}
           >
             <CarouselContent>
-              {works[currentGroupInd].projects.map((project, index) => {
+              {works[currentGroupInd].Project.map((project, index) => {
                 return (
                   <CarouselItem
                     isActive={index === currentProjectInd}
@@ -381,7 +395,16 @@ const WorkCarousel = () => {
                     className="pl-0"
                   >
                     <video
-                      src={project.primary}
+                      src={
+                        isInView(
+                          currentProjectInd,
+                          index,
+                          1,
+                          works[currentGroupInd].Project.length
+                        )
+                          ? project.primaryVideoUrl
+                          : ""
+                      }
                       width={600}
                       height={400}
                       autoPlay
@@ -405,17 +428,19 @@ const NextProjectButton = ({
   setCurrentProjectInd,
   currentGroupInd,
   setCurrentGroupInd,
+  works,
 }: {
   currentProjectInd: number;
   setCurrentProjectInd: Dispatch<SetStateAction<number>>;
   currentGroupInd: number;
   setCurrentGroupInd: Dispatch<SetStateAction<number>>;
+  works: ClientWithProjects[];
 }) => {
   const handleNextProject = () => {
     setCurrentProjectInd(
-      (prev) => (prev + 1) % works[currentGroupInd].projects.length
+      (prev) => (prev + 1) % works[currentGroupInd].Project.length
     );
-    if (currentProjectInd === works[currentGroupInd].projects.length - 1) {
+    if (currentProjectInd === works[currentGroupInd].Project.length - 1) {
       setCurrentGroupInd((prev) => (prev + 1) % works.length);
     }
   };
@@ -437,17 +462,19 @@ const PrevProjectButton = ({
   setCurrentProjectInd,
   currentGroupInd,
   setCurrentGroupInd,
+  works,
 }: {
   currentProjectInd: number;
   setCurrentProjectInd: Dispatch<SetStateAction<number>>;
   currentGroupInd: number;
   setCurrentGroupInd: Dispatch<SetStateAction<number>>;
+  works: ClientWithProjects[];
 }) => {
   const handlePrevProject = () => {
     const isFirstProject = currentProjectInd === 0;
     const prevGroupInd = (currentGroupInd - 1 + works.length) % works.length;
     const newGroupInd = isFirstProject ? prevGroupInd : currentGroupInd;
-    const projectsLength = works[newGroupInd].projects.length;
+    const projectsLength = works[newGroupInd].Project.length;
 
     const newProjectInd = isFirstProject
       ? projectsLength - 1

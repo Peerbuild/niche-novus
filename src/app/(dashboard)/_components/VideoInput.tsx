@@ -9,6 +9,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
+import Image from "next/image";
 
 type VideoInputProps = {
   name: string;
@@ -18,6 +19,7 @@ type VideoInputProps = {
   videoUrl: string;
   aspectRatio?: number;
   uploadProgress: number;
+  type?: "image" | "video";
 };
 
 export const VideoInput = ({
@@ -28,6 +30,7 @@ export const VideoInput = ({
   videoUrl,
   aspectRatio,
   uploadProgress,
+  type = "video",
 }: VideoInputProps) => {
   const [video, setVideo] = React.useState<string>(videoUrl || "");
 
@@ -59,12 +62,22 @@ export const VideoInput = ({
                   className="bg-black/50 absolute right-0  h-full top-0"
                   style={{ width: `${100 - uploadProgress}%` }}
                 ></div>
-                <video src={video} className="w-full h-full"></video>
+                {type === "image" ? (
+                  <Image
+                    src={video}
+                    alt="about image"
+                    width={200}
+                    height={100}
+                    className="w-full h-full object-cover object-[50%_30%]"
+                  />
+                ) : (
+                  <video src={video} className="w-full h-full"></video>
+                )}
               </FormLabel>
               <FormControl>
                 <Input
                   type="file"
-                  accept="video/*"
+                  accept={type === "image" ? "image/*" : "video/*"}
                   className="hidden"
                   {...fileRef}
                   onChange={(e) => {

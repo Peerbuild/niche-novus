@@ -2,12 +2,12 @@
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { TextInput } from "../../_components";
+import { TextInput } from "../../../_components";
 import useAutoSaveForm from "@/hooks/useAutoSaveForm";
 import { getAbout, updateAbout } from "@/app/actions/about";
 import { aboutSchema } from "@/lib/schema";
 import { useQuery } from "@tanstack/react-query";
-import { VideoInput } from "../../_components";
+import { VideoInput } from "../../../_components";
 
 export default function AboutPage() {
   const query = useQuery({
@@ -21,24 +21,26 @@ export default function AboutPage() {
       resolver: zodResolver(aboutSchema),
       defaultValues: {
         introduction: "",
-        videoUrl: "",
+        image: "",
       },
       values: query.data,
     }
   );
 
+  console.log(query.data);
   return (
     <div className="py-10">
       <Form {...form}>
         <form className="space-y-8">
           <VideoInput
-            name="about video"
+            name="about image"
             subtitle="Size Limit:1.5mb"
-            fieldName="videoUrl"
+            fieldName="image"
             register={form.register}
-            uploadProgress={progress["videoUrl"]}
+            uploadProgress={progress["image"]}
             aspectRatio={16 / 9}
-            videoUrl={query.data?.videoUrl}
+            videoUrl={query.data?.image || ""}
+            type="image"
           />
           <TextInput
             name="introduction"

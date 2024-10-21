@@ -6,12 +6,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
+import { cn, isInView } from "@/lib/utils";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Autoplay from "embla-carousel-autoplay";
 import Video from "./Video";
+import { Work } from "@prisma/client";
 
 const projects = [
   {
@@ -47,11 +48,12 @@ const projects = [
   },
 ];
 
-const ProjectCaraousel = () => {
+const ProjectCaraousel = ({ projects }: { projects: Work[] }) => {
   const [currentInd, setCurrentInd] = useState(0);
+  const [slidesInView, setSlidesInView] = useState<number[]>([]);
 
   return (
-    <div className="w-full  max-w-screen-lg mx-auto   py-20 relative overflow-hidden">
+    <div className="w-full  max-w-[55rem] mx-auto   py-20 relative overflow-hidden">
       <Carousel
         opts={{ loop: true }}
         plugins={[
@@ -62,28 +64,33 @@ const ProjectCaraousel = () => {
         setCurrentInd={setCurrentInd}
       >
         <CarouselContent className="">
-          {projects.map((project, index) => (
-            <CarouselItem
-              isActive={currentInd === index}
-              className="basis-[16rem] md:basis-[22rem] pl-4 md:pl-8"
-              key={index}
-            >
-              <Video
-                src={project.image}
-                className={cn(
-                  "transition-all duration-500",
-                  currentInd === index
-                    ? "scale-100 brightness-100 saturate-100"
-                    : "scale-90 brightness-50 saturate-0"
-                )}
-                width={500}
-                height={300}
-                muted
-                autoPlay
-                loop
-              />
-            </CarouselItem>
-          ))}
+          {projects.map((project, index) => {
+            return (
+              <CarouselItem
+                className="basis-[16rem] md:basis-[22rem] pl-4 md:pl-8"
+                key={index}
+              >
+                <Video
+                  src={
+                    isInView(currentInd, index, 2, projects.length)
+                      ? project.videoUrl
+                      : ""
+                  }
+                  className={cn(
+                    "transition-all duration-500",
+                    currentInd === index
+                      ? "scale-100 brightness-100 saturate-100"
+                      : "scale-90 brightness-50 saturate-0"
+                  )}
+                  width={500}
+                  height={300}
+                  muted
+                  autoPlay
+                  loop
+                />
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
         <div className="  max-w-40 md:max-w-64 mt-10 space-y-2 mx-auto text-base ">
           <div className="-translate-y-20 md:-translate-y-28">

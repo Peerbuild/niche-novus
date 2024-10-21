@@ -4,10 +4,13 @@ import prisma from "@/lib/prisma";
 import { ActionResponse } from "@/lib/ActionResponse";
 import { Project } from "@prisma/client";
 import cloudinary, { getCloudinaryId } from "@/lib/cloudinary";
-
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+import { auth } from "@/lib/auth";
 
 export const updateProject = async (data: Project) => {
+  const session = await auth();
+  if (!session) {
+    return new ActionResponse("error").json();
+  }
   try {
     // await sleep(2000);
     const { id, ...projectData } = data;
@@ -60,6 +63,10 @@ export const getProjects = async (clientId: string): Promise<Project[]> => {
 };
 
 export const deleteProject = async (projectId: string) => {
+  const session = await auth();
+  if (!session) {
+    return new ActionResponse("error").json();
+  }
   try {
     const project = await prisma.project.delete({
       where: {
