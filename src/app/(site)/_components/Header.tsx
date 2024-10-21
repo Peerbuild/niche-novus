@@ -1,6 +1,7 @@
 "use client";
 import useToggleNavbar from "@/hooks/useToggleNavbar";
 import { cn } from "@/lib/utils";
+import { useLenis } from "@studio-freight/react-lenis";
 import Image from "next/image";
 import React from "react";
 
@@ -10,12 +11,12 @@ const navLinks = [
     href: "#about",
   },
   {
-    label: "projects",
-    href: "#projects",
-  },
-  {
     label: "work",
     href: "#work",
+  },
+  {
+    label: "projects",
+    href: "#projects",
   },
   {
     label: "shop",
@@ -24,7 +25,7 @@ const navLinks = [
 ];
 
 const Header = () => {
-  const { showNav, isTransparent } = useToggleNavbar();
+  const lenis = useLenis();
   return (
     <header
       className={cn(
@@ -37,7 +38,11 @@ const Header = () => {
         {navLinks.map((link, i) => {
           if (i > 1) return null;
           return (
-            <li key={link.label} className="content-center">
+            <li
+              onClick={() => lenis?.scrollTo(link.href)}
+              key={link.label}
+              className="content-center"
+            >
               <a href={link.href}>{link.label}</a>
             </li>
           );
@@ -56,7 +61,11 @@ const Header = () => {
         {navLinks.map((link, i) => {
           if (i < 2) return null;
           return (
-            <li key={link.label} className="content-center">
+            <li
+              onClick={() => lenis?.scrollTo(link.href)}
+              key={link.label}
+              className="content-center"
+            >
               <a href={link.href}>{link.label}</a>
             </li>
           );

@@ -4,7 +4,10 @@ import SectionWrapper from "../_components/SectionWrapper";
 
 const Work = () => {
   return (
-    <SectionWrapper className=" min-h-screen flex justify-center items-center    bg-background">
+    <SectionWrapper
+      id="work"
+      className=" min-h-screen flex justify-center items-center    bg-background"
+    >
       <WorkCarousel />
     </SectionWrapper>
   );

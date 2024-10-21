@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Player from "../_components/ReactPlayer";
 import { cn } from "@/lib/utils";
 import { Icons } from "../_components/Icons";
+import EncryptText from "../_components/EncryptText";
 
 const About = () => {
   const [isVideo, setIsVideo] = useState({ state: false, count: 0 });
@@ -48,7 +49,10 @@ const About = () => {
   }, [isVideo]);
 
   return (
-    <SectionWrapper className="px-16 min-h-screen flex justify-center items-center">
+    <SectionWrapper
+      id="about"
+      className="px-16 min-h-screen flex justify-center items-center"
+    >
       <div className="absolute w-full inset-0 h-full left-1/2 -translate-x-1/2 -z-10">
         <div className="w-full h-full absolute inset-0 bg-gradient-to-t from-background via-background/80 to-80% to-background"></div>
         <Image
@@ -97,13 +101,13 @@ const About = () => {
             variant={"link"}
             className="text-yellow-500 p-0 h-fit gap-2 "
           >
-            <span className="md:text-base text-md">
-              {isVideo.state ? "BACK TO ABOUT" : "DISCOVER LATEST ON YOUTUBE"}
-            </span>
-            <FeatherIcon
-              icon="arrow-up-right"
-              className="inline-block "
-              size={14}
+            <EncryptText
+              TARGET_TEXT={
+                isVideo.state ? "BACK TO ABOUT" : "DISCOVER LATEST ON YOUTUBE"
+              }
+              INITIAL_TEXT={
+                isVideo.state ? "DISCOVER LATEST ON YOUTUBE" : "BACK TO ABOUT"
+              }
             />
           </Button>
           <div className="flex gap-6 items-center">

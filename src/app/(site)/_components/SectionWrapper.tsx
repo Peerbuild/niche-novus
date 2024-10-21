@@ -1,14 +1,18 @@
 "use client";
 import { cn } from "@/lib/utils";
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, {
+  HTMLAttributes,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 const SectionWrapper = ({
   children,
   className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) => {
+  id,
+}: HTMLAttributes<HTMLDivElement>) => {
   const [sectionTop, setSectionTop] = useState<number | undefined>(undefined);
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const [isOutOfView, setIsOutOfView] = useState(false);
@@ -23,7 +27,7 @@ const SectionWrapper = ({
       const scrollPosition = window.scrollY;
       const sectionHeight = section.clientHeight;
 
-      if (scrollPosition > sectionTop + sectionHeight / 3) {
+      if (scrollPosition + sectionHeight > sectionTop + sectionHeight / 3) {
         setIsOutOfView(true);
       } else {
         setIsOutOfView(false);
@@ -39,6 +43,7 @@ const SectionWrapper = ({
 
   return (
     <section
+      id={id}
       ref={sectionRef}
       className={cn(
         " sticky top-0 transition-all duration-500",
