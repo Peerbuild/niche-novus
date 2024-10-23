@@ -73,7 +73,7 @@ const About = () => {
           <video
             src="/transition.mp4"
             className={cn(
-              "w-full absolute inset-0 z-50 h-full opacity-0",
+              "w-full absolute inset-0 z-50 h-full opacity-0 pointer-events-none",
               showTransition && "opacity-100"
             )}
             ref={transitionRef}

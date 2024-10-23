@@ -58,6 +58,7 @@ export default function useAutoSaveForm<T extends FieldValues>(
             process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!
           );
           formData.append("signature", signature);
+          formData.append("transformation", "w_600,f_webp");
           formData.append("timestamp", timestamp.toString());
           formData.append("folder", "nichenovus");
 
