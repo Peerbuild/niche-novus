@@ -10,6 +10,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import Image from "next/image";
+import image from "next/image";
 
 type VideoInputProps = {
   name: string;
@@ -32,10 +33,11 @@ export const VideoInput = ({
   uploadProgress,
   type = "video",
 }: VideoInputProps) => {
-  const [video, setVideo] = React.useState<string>(videoUrl || "");
+  const [video, setVideo] = React.useState<string>("");
+  const [image, setImage] = React.useState<string>("");
 
   useEffect(() => {
-    setVideo(videoUrl);
+    setImage(videoUrl);
   }, [videoUrl]);
 
   const fileRef = register(fieldName);
@@ -62,16 +64,22 @@ export const VideoInput = ({
                   className="bg-black/50 absolute right-0  h-full top-0"
                   style={{ width: `${100 - uploadProgress}%` }}
                 ></div>
-                {type === "image" ? (
+                {!video ? (
                   <Image
-                    src={video}
+                    src={image}
                     alt="about image"
                     width={200}
                     height={100}
                     className="w-full h-full object-cover object-[50%_30%]"
                   />
                 ) : (
-                  <video src={video} className="w-full h-full"></video>
+                  <video
+                    src={video}
+                    className="w-full h-full"
+                    muted
+                    autoPlay
+                    loop
+                  ></video>
                 )}
               </FormLabel>
               <FormControl>

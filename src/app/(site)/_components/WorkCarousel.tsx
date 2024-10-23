@@ -296,7 +296,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                 {works[currentGroupInd].Project.map((project, index) => {
                   return (
                     <CarouselItem isActive key={index} className="pl-0">
-                      <video
+                      <Image
                         key={index}
                         src={
                           isInView(
@@ -308,12 +308,10 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                             ? project.secondaryVideoUrl
                             : ""
                         }
+                        alt={project.title}
                         width={400}
                         height={250}
-                        className="w-44 md:w-full"
-                        autoPlay
-                        muted
-                        loop
+                        className="w-44 md:w-full aspect-video"
                       />
                     </CarouselItem>
                   );
@@ -394,7 +392,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                     key={index}
                     className="pl-0"
                   >
-                    <video
+                    <Image
                       src={
                         isInView(
                           currentProjectInd,
@@ -405,12 +403,10 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                           ? project.primaryVideoUrl
                           : ""
                       }
-                      width={600}
-                      height={400}
-                      autoPlay
-                      muted
-                      loop
-                      className="w-full h-full"
+                      alt={project.title}
+                      width={800}
+                      height={600}
+                      className="w-full aspect-video"
                     />
                   </CarouselItem>
                 );

@@ -43,3 +43,19 @@ export const getTimeOfDay = () => {
     return "Evening";
   }
 };
+
+export function createWebpDeliveryUrl(secureUrl: string) {
+  const uploadIndex = secureUrl.indexOf("/upload/");
+  if (uploadIndex === -1) {
+    throw new Error("Invalid Cloudinary secure_url");
+  }
+
+  const baseUrl = secureUrl.slice(0, uploadIndex + 8);
+  const restOfUrl = secureUrl.slice(uploadIndex + 8);
+
+  const transformation = "w_800/f_webp,fl_animated,fl_awebp/e_loop";
+
+  const transformedUrl = `${baseUrl}${transformation}/${restOfUrl}`;
+
+  return transformedUrl;
+}

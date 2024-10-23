@@ -6,11 +6,12 @@ import { useEffect, useMemo, useState } from "react";
 import {
   FieldValues,
   Path,
+  PathValue,
   useForm,
   UseFormProps,
   useWatch,
 } from "react-hook-form";
-import { isUploading } from "@/lib/utils";
+import { createWebpDeliveryUrl, isUploading } from "@/lib/utils";
 import { useSync } from "@/providers/SyncProvider";
 
 const DEBOUNCE_TIME = 500;
@@ -58,7 +59,7 @@ export default function useAutoSaveForm<T extends FieldValues>(
             process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!
           );
           formData.append("signature", signature);
-          formData.append("transformation", "w_600,f_webp");
+          formData.append("transformation", "w_800");
           formData.append("timestamp", timestamp.toString());
           formData.append("folder", "nichenovus");
 
@@ -85,9 +86,14 @@ export default function useAutoSaveForm<T extends FieldValues>(
 
       for (let i = 0; i < results.length; i++) {
         const { secure_url } = results[i].data;
-        values[fileKeys[i] as keyof T] = secure_url;
+        values[fileKeys[i] as keyof T] = createWebpDeliveryUrl(
+          secure_url
+        ) as any;
         form.resetField(fileKeys[i] as any as Path<T>, {
-          defaultValue: secure_url,
+          defaultValue: createWebpDeliveryUrl(secure_url) as PathValue<
+            T,
+            Path<T>
+          >,
         });
       }
 
