@@ -30,6 +30,7 @@ const GalleryForm = ({ item }: { item?: Gallery }) => {
         imageUrl: image,
       },
     },
+    ["gallery"],
     { id: item?.id || "" }
   );
   const fileRef = form.register("imageUrl");

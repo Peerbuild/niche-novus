@@ -36,6 +36,7 @@ const ProjectForm = ({ project }: { project: Project }) => {
         secondaryVideoUrl: project.secondaryVideoUrl,
       },
     },
+    ["projects", project.clientId],
     { id: project.id, clientId: project.clientId }
   );
 

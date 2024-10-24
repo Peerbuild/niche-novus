@@ -24,10 +24,10 @@ export default function AboutPage() {
         image: "",
       },
       values: query.data,
-    }
+    },
+    ["about"]
   );
 
-  console.log(query.data);
   return (
     <div className="py-10">
       <Form {...form}>

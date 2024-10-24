@@ -36,12 +36,12 @@ export const VideoInput = ({
   const [image, setImage] = React.useState<string>("");
 
   useEffect(() => {
-    if (isTransformedWebp(videoUrl)) {
+    if (isTransformedWebp(videoUrl) || type === "image") {
       setImage(videoUrl);
     } else {
       setVideo(videoUrl);
     }
-  }, [videoUrl]);
+  }, [videoUrl, type]);
 
   const fileRef = register(fieldName);
 

@@ -13,15 +13,18 @@ import {
 } from "react-hook-form";
 import { createWebpDeliveryUrl, isUploading } from "@/lib/utils";
 import { useSync } from "@/providers/SyncProvider";
+import { useQueryClient } from "@tanstack/react-query";
 
 const DEBOUNCE_TIME = 500;
 
 export default function useAutoSaveForm<T extends FieldValues>(
   submitAction: (values: any) => Promise<ActionResponse>,
   options: UseFormProps<T>,
+  queryKey: string[],
   variables?: any,
   shouldTransform: boolean = false
 ) {
+  const queryClient = useQueryClient();
   const { setSyncing } = useSync();
   const form = useForm<T>(options);
   const [progress, setProgress] = useState<Record<string, number>>({});
@@ -99,6 +102,7 @@ export default function useAutoSaveForm<T extends FieldValues>(
       console.log("Submit", values);
 
       await submitAction({ ...values, ...variables });
+      await queryClient.invalidateQueries({ queryKey });
       setSyncing(false);
     }
 

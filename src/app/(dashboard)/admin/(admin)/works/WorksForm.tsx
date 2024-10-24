@@ -23,6 +23,7 @@ const WorksForm = ({ work }: { work: Work }) => {
         videoUrl: work.videoUrl,
       },
     },
+    ["works"],
     { id: work.id }
   );
 
