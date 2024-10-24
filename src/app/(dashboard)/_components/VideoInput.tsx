@@ -1,5 +1,5 @@
 "use client";
-import { capitalize, cn } from "@/lib/utils";
+import { capitalize, cn, isTransformedWebp } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import React, { useEffect } from "react";
 import { UseFormRegister } from "react-hook-form";
@@ -10,7 +10,6 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import Image from "next/image";
-import image from "next/image";
 
 type VideoInputProps = {
   name: string;
@@ -37,7 +36,11 @@ export const VideoInput = ({
   const [image, setImage] = React.useState<string>("");
 
   useEffect(() => {
-    setImage(videoUrl);
+    if (isTransformedWebp(videoUrl)) {
+      setImage(videoUrl);
+    } else {
+      setVideo(videoUrl);
+    }
   }, [videoUrl]);
 
   const fileRef = register(fieldName);

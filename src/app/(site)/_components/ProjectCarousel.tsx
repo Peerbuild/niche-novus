@@ -50,10 +50,9 @@ const projects = [
 
 const ProjectCaraousel = ({ projects }: { projects: Work[] }) => {
   const [currentInd, setCurrentInd] = useState(0);
-  const [slidesInView, setSlidesInView] = useState<number[]>([]);
 
   return (
-    <div className="w-full  max-w-[55rem] mx-auto   py-20 relative overflow-hidden">
+    <div className="w-full  max-w-[58rem] mx-auto   py-20 relative overflow-hidden">
       <Carousel
         opts={{ loop: true }}
         plugins={[
@@ -68,7 +67,7 @@ const ProjectCaraousel = ({ projects }: { projects: Work[] }) => {
             return (
               <CarouselItem
                 className="basis-[16rem] md:basis-[22rem] pl-4 md:pl-8"
-                key={index}
+                key={project.id}
               >
                 <Video
                   src={

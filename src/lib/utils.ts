@@ -59,3 +59,7 @@ export function createWebpDeliveryUrl(secureUrl: string) {
 
   return transformedUrl;
 }
+
+export function isTransformedWebp(url: string) {
+  return url.includes("f_webp");
+}

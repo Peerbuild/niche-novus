@@ -14,6 +14,7 @@ import { cn, isInView } from "@/lib/utils";
 import Autoplay from "embla-carousel-autoplay";
 import { Project, Work } from "@prisma/client";
 import { ClientWithProjects } from "@/types/types";
+import ImageCustom from "./ImageCustom";
 
 const works = [
   {
@@ -295,8 +296,12 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
               <CarouselContent>
                 {works[currentGroupInd].Project.map((project, index) => {
                   return (
-                    <CarouselItem isActive key={index} className="pl-0">
-                      <Image
+                    <CarouselItem
+                      isActive
+                      key={project.secondaryVideoUrl}
+                      className="pl-0"
+                    >
+                      <ImageCustom
                         key={index}
                         src={
                           isInView(
@@ -389,10 +394,10 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                 return (
                   <CarouselItem
                     isActive={index === currentProjectInd}
-                    key={index}
+                    key={project.primaryVideoUrl}
                     className="pl-0"
                   >
-                    <Image
+                    <ImageCustom
                       src={
                         isInView(
                           currentProjectInd,
@@ -406,6 +411,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                       alt={project.title}
                       width={800}
                       height={600}
+                      onLoad={() => console.log("loaded")}
                       className="w-full aspect-video"
                     />
                   </CarouselItem>

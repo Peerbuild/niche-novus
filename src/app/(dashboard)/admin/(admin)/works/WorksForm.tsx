@@ -10,6 +10,7 @@ import { updateWork } from "@/app/actions/work";
 import { progress } from "framer-motion";
 
 const WorksForm = ({ work }: { work: Work }) => {
+  console.log(work);
   const { form, progress } = useAutoSaveForm<
     z.infer<typeof workSchema> & { id: string }
   >(

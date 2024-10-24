@@ -19,7 +19,8 @@ const DEBOUNCE_TIME = 500;
 export default function useAutoSaveForm<T extends FieldValues>(
   submitAction: (values: any) => Promise<ActionResponse>,
   options: UseFormProps<T>,
-  variables?: any
+  variables?: any,
+  shouldTransform: boolean = false
 ) {
   const { setSyncing } = useSync();
   const form = useForm<T>(options);
@@ -38,7 +39,7 @@ export default function useAutoSaveForm<T extends FieldValues>(
 
       setSyncing(true);
 
-      const { timestamp, signature } = await getSignature();
+      const { timestamp, signature } = await getSignature({ shouldTransform });
 
       const uploadRequests = [];
       const fileKeys = [];
@@ -59,7 +60,7 @@ export default function useAutoSaveForm<T extends FieldValues>(
             process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!
           );
           formData.append("signature", signature);
-          formData.append("transformation", "w_800");
+          shouldTransform && formData.append("transformation", "w_800");
           formData.append("timestamp", timestamp.toString());
           formData.append("folder", "nichenovus");
 
@@ -71,7 +72,6 @@ export default function useAutoSaveForm<T extends FieldValues>(
                   const percentCompleted = Math.round(
                     (progressEvent.loaded * 100) / progressEvent.total
                   );
-                  console.log(percentCompleted);
                   setProgress((prev) => ({ ...prev, [key]: percentCompleted }));
                 }
               },
@@ -86,14 +86,13 @@ export default function useAutoSaveForm<T extends FieldValues>(
 
       for (let i = 0; i < results.length; i++) {
         const { secure_url } = results[i].data;
-        values[fileKeys[i] as keyof T] = createWebpDeliveryUrl(
-          secure_url
-        ) as any;
+        values[fileKeys[i] as keyof T] = shouldTransform
+          ? createWebpDeliveryUrl(secure_url)
+          : (secure_url as any);
         form.resetField(fileKeys[i] as any as Path<T>, {
-          defaultValue: createWebpDeliveryUrl(secure_url) as PathValue<
-            T,
-            Path<T>
-          >,
+          defaultValue: shouldTransform
+            ? (createWebpDeliveryUrl(secure_url) as PathValue<T, Path<T>>)
+            : (secure_url as PathValue<T, Path<T>>),
         });
       }
 
