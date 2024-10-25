@@ -32,8 +32,8 @@ export const projectSchema = z.object({
             return !file || file.size <= MAX_UPLOAD_SIZE;
           }, "File size must be less than 1.5mb")
           .refine((file) => {
-            return file.type.includes("video");
-          }, "File must be a video"),
+            return file.type.includes("video") || file.type.includes("image");
+          }, "file must be a video or image"),
     z.string().min(1),
   ]),
   secondaryVideoUrl: z.union([
@@ -45,8 +45,8 @@ export const projectSchema = z.object({
             return !file || file.size <= MAX_UPLOAD_SIZE;
           }, "File size must be less than 1.5mb")
           .refine((file) => {
-            return file.type.includes("video");
-          }, "File must be a video"),
+            return file.type.includes("video") || file.type.includes("image");
+          }, "file must be a video or image"),
     z.string().min(1),
   ]),
 });

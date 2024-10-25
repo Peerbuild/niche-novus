@@ -41,6 +41,7 @@ const ClientContent = ({
 
 export const ClientHeader = ({ client }: { client: Client }) => {
   const renamingState = useState(false);
+  const queryClient = useQueryClient();
   const [name, setName] = useState(client.name);
   const inputRef = useRef<HTMLInputElement>(null);
 

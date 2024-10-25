@@ -42,8 +42,6 @@ export default function useAutoSaveForm<T extends FieldValues>(
 
       setSyncing(true);
 
-      const { timestamp, signature } = await getSignature({ shouldTransform });
-
       const uploadRequests = [];
       const fileKeys = [];
 
@@ -53,7 +51,9 @@ export default function useAutoSaveForm<T extends FieldValues>(
           const file = values[key] as File;
           const type = file.type.split("/")[0];
 
-          console.log(key);
+          const { timestamp, signature } = await getSignature({
+            shouldTransform: shouldTransform && type !== "image",
+          });
 
           const formData = new FormData();
 
@@ -63,7 +63,9 @@ export default function useAutoSaveForm<T extends FieldValues>(
             process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!
           );
           formData.append("signature", signature);
-          shouldTransform && formData.append("transformation", "w_800");
+          shouldTransform &&
+            type !== "image" &&
+            formData.append("transformation", "w_800");
           formData.append("timestamp", timestamp.toString());
           formData.append("folder", "nichenovus");
 

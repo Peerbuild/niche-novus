@@ -37,7 +37,8 @@ const ProjectForm = ({ project }: { project: Project }) => {
       },
     },
     ["projects", project.clientId],
-    { id: project.id, clientId: project.clientId }
+    { id: project.id, clientId: project.clientId },
+    true
   );
 
   return (
@@ -55,8 +56,8 @@ const ProjectForm = ({ project }: { project: Project }) => {
               </AccordionTrigger>
               <AccordionContent className="py-8 border-t-2 border-border space-y-10">
                 <VideoInput
-                  name="Primary Video"
-                  subtitle="Size Limit: 1.5mb"
+                  name="Primary Media"
+                  subtitle="Size Limit: 25mb"
                   fieldName="primaryVideoUrl"
                   register={form.register}
                   videoUrl={project.primaryVideoUrl}
@@ -64,8 +65,8 @@ const ProjectForm = ({ project }: { project: Project }) => {
                   aspectRatio={16 / 9}
                 />
                 <VideoInput
-                  name="Secondary Video"
-                  subtitle="Size Limit: 1.5mb"
+                  name="Secondary Media"
+                  subtitle="Size Limit: 25mb"
                   fieldName="secondaryVideoUrl"
                   register={form.register}
                   videoUrl={project.secondaryVideoUrl}

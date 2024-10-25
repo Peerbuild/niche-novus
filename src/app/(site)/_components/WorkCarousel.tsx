@@ -235,7 +235,6 @@ const works = [
 const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
   const [currentGroupInd, setCurrentGroupInd] = useState(0);
   const [currentProjectInd, setCurrentProjectInd] = useState(0);
-  const [slidesInView, setSlidesInView] = useState<number[]>([]);
 
   return (
     <div className="w-full space-y-14 md:space-y-20  md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-hidden">
@@ -246,6 +245,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
         }}
         setCurrentInd={setCurrentGroupInd}
         setNestedInd={setCurrentProjectInd}
+        className="max-w-screen-xl mx-auto overflow-hidden"
         plugins={
           [
             // Autoplay({
@@ -255,7 +255,8 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
           ]
         }
       >
-        <CarouselContent className="justify-center">
+        <div className="absolute w-full h-full bg-gradient-to-l from-background via-transparent to-background z-20"></div>
+        <CarouselContent className=" ">
           {works?.map((work, index) => (
             <CarouselItem
               className={cn(
@@ -264,7 +265,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                 index === 0 && "md:pl-16"
               )}
               isActive={index === currentGroupInd}
-              key={work.name}
+              key={work.id}
             >
               <div
                 className={cn(
@@ -299,7 +300,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                     <CarouselItem
                       isActive
                       key={project.secondaryVideoUrl}
-                      className="pl-0"
+                      className="pl-0 bg-black aspect-video overflow-hidden relative"
                     >
                       <ImageCustom
                         key={index}
@@ -316,7 +317,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                         alt={project.title}
                         width={400}
                         height={250}
-                        className="w-44 md:w-full aspect-video"
+                        className="w-44 md:w-auto mx-auto h-full"
                       />
                     </CarouselItem>
                   );

@@ -1,17 +1,23 @@
-import { Loader2 } from "lucide-react";
+import { PlayCircleIcon } from "lucide-react";
 import Image, { ImageProps } from "next/image";
 import React, { useState } from "react";
 
 const ImageCustom = ({ alt, ...props }: ImageProps) => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
   return (
-    <div className="relative">
+    <div className="relative h-full w-full">
       {isLoaded && (
-        <div className="absolute bg-background/20 backdrop-blur w-full h-full flex justify-center items-center">
-          <Loader2 className="animate-spin" />
+        <div className="absolute bg-muted/40 animate-pulse backdrop-blur w-full h-full flex justify-center items-center">
+          <PlayCircleIcon className="text-muted-foreground" />
         </div>
       )}
-      <Image {...props} alt={alt} onLoad={() => setIsLoaded(false)} />
+      <Image
+        {...props}
+        alt={alt}
+        onLoad={() => {
+          setIsLoaded(false);
+        }}
+      />
     </div>
   );
 };

@@ -67,7 +67,7 @@ export const VideoInput = ({
                   className="bg-black/50 absolute right-0  h-full top-0"
                   style={{ width: `${100 - uploadProgress}%` }}
                 ></div>
-                {!video ? (
+                {!video && image ? (
                   <Image
                     src={image}
                     alt="about image"
@@ -88,12 +88,16 @@ export const VideoInput = ({
               <FormControl>
                 <Input
                   type="file"
-                  accept={type === "image" ? "image/*" : "video/*"}
+                  accept={"video/*,image/*"}
                   className="hidden"
                   {...fileRef}
                   onChange={(e) => {
                     if (e.target.files?.[0]) {
-                      setVideo(URL.createObjectURL(e.target.files?.[0]));
+                      if (e.target.files?.[0].type.includes("image")) {
+                        setImage(URL.createObjectURL(e.target.files?.[0]));
+                      } else {
+                        setVideo(URL.createObjectURL(e.target.files?.[0]));
+                      }
                     }
                     field.onChange(e.target.files?.[0] ?? undefined);
                   }}
