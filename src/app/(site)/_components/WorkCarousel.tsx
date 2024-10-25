@@ -255,7 +255,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
           ]
         }
       >
-        <div className="absolute w-full h-full bg-gradient-to-l from-background via-transparent to-background z-20"></div>
+        <div className="absolute w-full h-full bg-gradient-to-l pointer-events-none from-background via-transparent to-background z-20"></div>
         <CarouselContent className=" ">
           {works?.map((work, index) => (
             <CarouselItem
