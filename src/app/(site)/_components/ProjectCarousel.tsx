@@ -71,7 +71,7 @@ const ProjectCaraousel = ({ projects }: { projects: Work[] }) => {
               >
                 <Video
                   src={
-                    isInView(currentInd, index, 1, projects.length)
+                    isInView(currentInd, index, 2, projects.length)
                       ? project.videoUrl
                       : ""
                   }

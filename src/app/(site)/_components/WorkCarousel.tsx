@@ -16,7 +16,7 @@ import { Project, Work } from "@prisma/client";
 import { ClientWithProjects } from "@/types/types";
 import ImageCustom from "./ImageCustom";
 
-const works = [
+const _works = [
   {
     groupTitle: "First Group Title",
     projects: [
@@ -296,19 +296,6 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
             >
               <CarouselContent className="ml-0">
                 {works[currentGroupInd].Project.map((project, index) => {
-                  console.log(
-                    currentProjectInd,
-                    index,
-                    works[currentGroupInd].Project.length,
-                    isInView(
-                      currentProjectInd,
-                      index,
-                      0,
-                      works[currentGroupInd].Project.length,
-                      false
-                    ),
-                    works[currentGroupInd].Project[index].title
-                  );
                   return (
                     <CarouselItem
                       isActive
@@ -318,7 +305,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                       {isInView(
                         currentProjectInd,
                         index,
-                        0,
+                        1,
                         works[currentGroupInd].Project.length,
                         false
                       ) && (
@@ -397,7 +384,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
             />
           </div>
         </div>
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden w-full">
           <Carousel
             setApi={(api) => {
               api?.scrollTo(currentProjectInd);
@@ -409,12 +396,12 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                   <CarouselItem
                     isActive={index === currentProjectInd}
                     key={project.primaryVideoUrl}
-                    className="pl-0"
+                    className="pl-0 w-full aspect-video "
                   >
                     {isInView(
                       currentProjectInd,
                       index,
-                      0,
+                      1,
                       works[currentGroupInd].Project.length,
                       false
                     ) && (
@@ -425,7 +412,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                         height={600}
                         loaderSize={0.6}
                         onLoad={() => console.log("loaded")}
-                        className="w-full aspect-video"
+                        className="w-full"
                       />
                     )}
                   </CarouselItem>
@@ -453,6 +440,10 @@ const NextProjectButton = ({
   works: ClientWithProjects[];
 }) => {
   const handleNextProject = () => {
+    console.log(
+      "next ind",
+      (currentProjectInd + 1) % works[currentGroupInd].Project.length
+    );
     setCurrentProjectInd(
       (prev) => (prev + 1) % works[currentGroupInd].Project.length
     );
