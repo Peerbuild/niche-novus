@@ -71,7 +71,7 @@ const ProjectCaraousel = ({ projects }: { projects: Work[] }) => {
               >
                 <Video
                   src={
-                    isInView(currentInd, index, 2, projects.length)
+                    isInView(currentInd, index, 1, projects.length)
                       ? project.videoUrl
                       : ""
                   }
@@ -81,10 +81,10 @@ const ProjectCaraousel = ({ projects }: { projects: Work[] }) => {
                       ? "scale-100 brightness-100 saturate-100"
                       : "scale-90 brightness-50 saturate-0"
                   )}
+                  isActive={currentInd === index}
                   width={500}
                   height={300}
                   muted
-                  autoPlay
                   loop
                 />
               </CarouselItem>

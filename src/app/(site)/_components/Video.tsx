@@ -1,10 +1,21 @@
 "use client";
-import { useEffect, useRef, VideoHTMLAttributes } from "react";
+import { use, useEffect, useRef, VideoHTMLAttributes } from "react";
 
 const timestamp = 10;
 
-const Video = (props: VideoHTMLAttributes<HTMLVideoElement>) => {
+const Video = ({
+  isActive,
+  ...props
+}: VideoHTMLAttributes<HTMLVideoElement> & { isActive?: boolean }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (isActive) {
+      videoRef.current?.play();
+    } else {
+      videoRef.current?.pause();
+    }
+  }, [isActive]);
 
   useEffect(() => {
     const video = videoRef.current;

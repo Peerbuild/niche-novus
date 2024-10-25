@@ -18,16 +18,26 @@ export function isInView(
   currentInd: number,
   index: number,
   slidesToShow: number,
-  numberOfSlides: number
+  numberOfSlides: number,
+  isLoop: boolean = true
 ): boolean {
-  const startInd =
-    (currentInd - slidesToShow + numberOfSlides) % numberOfSlides;
-  const endInd = (currentInd + slidesToShow) % numberOfSlides;
+  if (isLoop) {
+    // Logic when looping is enabled
+    const startInd =
+      (currentInd - slidesToShow + numberOfSlides) % numberOfSlides;
+    const endInd = (currentInd + slidesToShow) % numberOfSlides;
 
-  if (startInd < endInd) {
-    return index >= startInd && index <= endInd;
+    if (startInd < endInd) {
+      return index >= startInd && index <= endInd;
+    } else {
+      return index >= startInd || index <= endInd;
+    }
   } else {
-    return index >= startInd || index <= endInd;
+    // Logic when looping is disabled
+    const startInd = Math.max(currentInd - slidesToShow, 0);
+    const endInd = Math.min(currentInd + slidesToShow, numberOfSlides - 1);
+
+    return index >= startInd && index <= endInd;
   }
 }
 

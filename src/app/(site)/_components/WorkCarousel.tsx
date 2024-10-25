@@ -296,29 +296,42 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
             >
               <CarouselContent className="ml-0">
                 {works[currentGroupInd].Project.map((project, index) => {
+                  console.log(
+                    currentProjectInd,
+                    index,
+                    works[currentGroupInd].Project.length,
+                    isInView(
+                      currentProjectInd,
+                      index,
+                      0,
+                      works[currentGroupInd].Project.length,
+                      false
+                    ),
+                    works[currentGroupInd].Project[index].title
+                  );
                   return (
                     <CarouselItem
                       isActive
                       key={project.secondaryVideoUrl}
                       className="pl-0 bg-black aspect-video overflow-hidden relative"
                     >
-                      <ImageCustom
-                        key={index}
-                        src={
-                          isInView(
-                            currentProjectInd,
-                            index,
-                            1,
-                            works[currentGroupInd].Project.length
-                          )
-                            ? project.secondaryVideoUrl
-                            : ""
-                        }
-                        alt={project.title}
-                        width={400}
-                        height={250}
-                        className="w-auto mx-auto h-full"
-                      />
+                      {isInView(
+                        currentProjectInd,
+                        index,
+                        0,
+                        works[currentGroupInd].Project.length,
+                        false
+                      ) && (
+                        <ImageCustom
+                          key={index}
+                          src={project.secondaryVideoUrl}
+                          alt={project.title}
+                          width={400}
+                          height={250}
+                          loaderSize={0.4}
+                          className="w-auto mx-auto h-full"
+                        />
+                      )}
                     </CarouselItem>
                   );
                 })}
@@ -398,23 +411,23 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                     key={project.primaryVideoUrl}
                     className="pl-0"
                   >
-                    <ImageCustom
-                      src={
-                        isInView(
-                          currentProjectInd,
-                          index,
-                          1,
-                          works[currentGroupInd].Project.length
-                        )
-                          ? project.primaryVideoUrl
-                          : ""
-                      }
-                      alt={project.title}
-                      width={800}
-                      height={600}
-                      onLoad={() => console.log("loaded")}
-                      className="w-full aspect-video"
-                    />
+                    {isInView(
+                      currentProjectInd,
+                      index,
+                      0,
+                      works[currentGroupInd].Project.length,
+                      false
+                    ) && (
+                      <ImageCustom
+                        src={project.primaryVideoUrl}
+                        alt={project.title}
+                        width={800}
+                        height={600}
+                        loaderSize={0.6}
+                        onLoad={() => console.log("loaded")}
+                        className="w-full aspect-video"
+                      />
+                    )}
                   </CarouselItem>
                 );
               })}
