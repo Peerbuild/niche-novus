@@ -14,6 +14,8 @@ import {
 import { createWebpDeliveryUrl, isUploading } from "@/lib/utils";
 import { useSync } from "@/providers/SyncProvider";
 import { useQueryClient } from "@tanstack/react-query";
+import { revalidatePath } from "next/cache";
+import { revalidateApp } from "@/app/actions/revalidateApp";
 
 const DEBOUNCE_TIME = 500;
 
@@ -105,6 +107,7 @@ export default function useAutoSaveForm<T extends FieldValues>(
 
       await submitAction({ ...values, ...variables });
       await queryClient.invalidateQueries({ queryKey });
+      await revalidateApp();
       setSyncing(false);
     }
 
