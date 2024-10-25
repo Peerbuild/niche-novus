@@ -15,6 +15,7 @@ import FeatherIcon from "feather-icons-react";
 import { Input } from "@/components/ui/input";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProjects } from "@/app/actions/project";
+import { revalidateApp } from "@/app/actions/revalidateApp";
 
 const ClientContent = ({
   initialProjects,
@@ -49,8 +50,9 @@ export const ClientHeader = ({ client }: { client: Client }) => {
     if (name === client.name) {
       return;
     }
-    const timeout = setTimeout(() => {
-      updateClient({
+    const timeout = setTimeout(async () => {
+      await revalidateApp();
+      await updateClient({
         id: client.id,
         name,
       });

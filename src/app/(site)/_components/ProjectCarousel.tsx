@@ -52,7 +52,7 @@ const ProjectCaraousel = ({ projects }: { projects: Work[] }) => {
   const [currentInd, setCurrentInd] = useState(0);
 
   return (
-    <div className="w-full  max-w-[58rem] mx-auto   py-20 relative overflow-hidden">
+    <div className="w-full  max-w-[62rem] mx-auto   py-20 relative overflow-hidden">
       <Carousel
         opts={{ loop: true }}
         plugins={[
@@ -92,7 +92,7 @@ const ProjectCaraousel = ({ projects }: { projects: Work[] }) => {
           })}
         </CarouselContent>
         <div className="  max-w-40 md:max-w-64 mt-10 space-y-2 mx-auto text-base ">
-          <div className="-translate-y-20 md:-translate-y-28">
+          <div className="-translate-y-20 md:-translate-y-32">
             <AnimatePresence>
               <motion.h2
                 key={currentInd}
@@ -111,7 +111,7 @@ const ProjectCaraousel = ({ projects }: { projects: Work[] }) => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -10, opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="text-sm md:text-base text-justify absolute mt-6 md:mt-12"
+                className="text-sm md:text-base text-justify absolute mt-6 md:mt-14"
               >
                 {projects[currentInd].description}
               </motion.p>

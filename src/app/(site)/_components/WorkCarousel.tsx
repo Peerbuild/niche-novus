@@ -294,7 +294,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
               }}
               className="overflow-hidden flex-[0_0_40%]"
             >
-              <CarouselContent>
+              <CarouselContent className="ml-0">
                 {works[currentGroupInd].Project.map((project, index) => {
                   return (
                     <CarouselItem
@@ -317,7 +317,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                         alt={project.title}
                         width={400}
                         height={250}
-                        className="w-44 md:w-auto mx-auto h-full"
+                        className="w-auto mx-auto h-full"
                       />
                     </CarouselItem>
                   );
