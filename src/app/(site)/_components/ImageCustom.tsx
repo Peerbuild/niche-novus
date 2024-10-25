@@ -19,9 +19,8 @@ const ImageCustom = ({
       <Image
         {...props}
         alt={alt}
-        className="opacity-0"
         onLoad={() => {
-          setIsLoaded(true);
+          setIsLoaded(false);
         }}
       />
     </div>
