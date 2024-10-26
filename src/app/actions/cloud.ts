@@ -20,3 +20,8 @@ export const getSignature = async ({
 
   return { timestamp, signature };
 };
+
+export const getUsageLimits = async () => {
+  const limits = await cloudinary.api.usage();
+  return limits;
+};

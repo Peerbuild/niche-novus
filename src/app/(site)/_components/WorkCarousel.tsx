@@ -1,6 +1,6 @@
 "use client";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import Image from "next/image";
+import { motion } from "framer-motion";
 import {
   Carousel,
   CarouselContent,
@@ -235,17 +235,21 @@ const _works = [
 const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
   const [currentGroupInd, setCurrentGroupInd] = useState(0);
   const [currentProjectInd, setCurrentProjectInd] = useState(0);
+  const [notEnoughtToLoop, setNotEnoughtToLoop] = useState(false);
 
   return (
     <div className="w-full space-y-14 md:space-y-20  md:left-1/2 md:-translate-x-1/2 relative overflow-hidden md:overflow-hidden">
       <Carousel
         opts={{ loop: true, watchDrag: true }}
         setApi={(api) => {
-          api?.scrollTo(currentGroupInd);
+          if (api) {
+            api?.scrollTo(currentGroupInd);
+            setNotEnoughtToLoop(!api.internalEngine().slideLooper.canLoop());
+          }
         }}
         setCurrentInd={setCurrentGroupInd}
         setNestedInd={setCurrentProjectInd}
-        className="max-w-screen-xl mx-auto overflow-hidden"
+        className="max-w-screen-xl   mx-auto overflow-hidden"
         plugins={
           [
             // Autoplay({
@@ -255,35 +259,49 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
           ]
         }
       >
-        <div className="absolute w-full h-full bg-gradient-to-l pointer-events-none from-background via-transparent to-background z-20"></div>
-        <CarouselContent className=" ">
-          {works?.map((work, index) => (
-            <CarouselItem
-              className={cn(
-                "basis-auto  md:pl-10 pl-8",
-                index === currentGroupInd && "md:pl-16 md:pr-6",
-                index === 0 && "md:pl-16"
-              )}
-              isActive={index === currentGroupInd}
-              key={work.id}
-            >
-              <div
+        {!notEnoughtToLoop && (
+          <div className="absolute w-full h-full bg-gradient-to-l pointer-events-none from-background via-transparent to-background z-20"></div>
+        )}
+        <CarouselContent className={notEnoughtToLoop ? "justify-center" : ""}>
+          {works?.map((work, index) => {
+            return (
+              <CarouselItem
                 className={cn(
-                  "uppercase opacity-50 transition-opacity cursor-pointer  font-medium",
-                  index === currentGroupInd &&
-                    "scale-110 md:scale-125  opacity-100 "
+                  "basis-auto  md:pl-10 pl-8",
+                  index === currentGroupInd && "md:pl-16 md:pr-6",
+                  index === 0 && "md:pl-16"
                 )}
-                onClick={() => {
-                  setCurrentGroupInd(index);
-                  setCurrentProjectInd(0);
-                }}
+                isActive={index === currentGroupInd}
+                key={work.id}
               >
-                {work.name}
-              </div>
-            </CarouselItem>
-          ))}
+                <div
+                  className={cn(
+                    "uppercase text-center opacity-50 transition-opacity cursor-pointer  font-medium",
+                    index === currentGroupInd &&
+                      "scale-110 md:scale-125  opacity-100 "
+                  )}
+                  onClick={() => {
+                    setCurrentGroupInd(index);
+                    setCurrentProjectInd(0);
+                  }}
+                >
+                  {work.name}
+                </div>
+                {notEnoughtToLoop && (
+                  <div
+                    className={cn(
+                      "w-20 h-0.5 bg-foreground/40 transition-opacity mx-auto mt-4 rounded-full opacity-0",
+                      index === currentGroupInd && "opacity-100"
+                    )}
+                  ></div>
+                )}
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
-        <div className="w-20 h-0.5 bg-foreground/40 mx-auto mt-4 rounded-full translate-x-3"></div>
+        {!notEnoughtToLoop && (
+          <div className="w-20 h-0.5 bg-foreground/40 mx-auto mt-4 rounded-full translate-x-3"></div>
+        )}
       </Carousel>
       <div className="flex gap-6 md:gap-6 2xl:gap-24  px-8   xl:px-48 flex-col-reverse md:flex-row  items-center max-w-screen-2xl mx-auto">
         <div className="flex-[0.4_0_0%] space-y-6">

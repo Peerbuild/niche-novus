@@ -7,7 +7,7 @@ const SidebarToggle = () => {
   const { isOpen, setIsOpen } = useSidebar();
   return (
     <div
-      className="lg:hidden relative z-30 "
+      className="md:hidden relative z-30 "
       onClick={() => setIsOpen((isOpen) => !isOpen)}
     >
       <FeatherIcon

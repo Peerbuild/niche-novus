@@ -55,6 +55,7 @@ export const ClientHeader = ({ client }: { client: Client }) => {
       await updateClient({
         id: client.id,
         name,
+        order: client.order,
       });
     }, 500);
 

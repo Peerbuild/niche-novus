@@ -15,8 +15,11 @@ const AddClientButton = ({}: {}) => {
     onMutate: () => {
       queryClient.setQueryData<ClientWithProjects[]>(["clients"], (prev) => {
         if (prev === undefined)
-          return [{ id: "", name: "New Client", Project: [] }];
-        return [...prev, { id: "", name: "New Client", Project: [] }];
+          return [{ id: "", name: "New Client", Project: [], order: -1 }];
+        return [
+          ...prev,
+          { id: "", name: "New Client", Project: [], order: -1 },
+        ];
       });
     },
     onSettled: async () => {
@@ -30,6 +33,7 @@ const AddClientButton = ({}: {}) => {
       id: "",
       name: "New Client",
       Project: [],
+      order: -1,
     });
   };
 

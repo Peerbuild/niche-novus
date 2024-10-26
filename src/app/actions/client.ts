@@ -33,9 +33,12 @@ export const updateClient = async (data: Client) => {
       return new ActionResponse("success").json();
     }
 
+    const count = await prisma.client.count();
+
     await prisma.client.create({
       data: {
         name: parsedData.name,
+        order: count,
       },
     });
 
@@ -48,8 +51,82 @@ export const updateClient = async (data: Client) => {
   }
 };
 
+export const updateClientOrder = async (data: {
+  id: string;
+  oldIndex: number;
+  newIndex: number;
+}) => {
+  const session = await auth();
+  if (!session) {
+    return new ActionResponse("error").json();
+  }
+
+  try {
+    if (data.oldIndex === data.newIndex) {
+      return new ActionResponse("success").json();
+    }
+
+    const queries = [];
+
+    if (data.newIndex > data.oldIndex) {
+      queries.push(
+        prisma.client.updateMany({
+          where: {
+            order: {
+              gt: data.oldIndex,
+              lte: data.newIndex,
+            },
+          },
+          data: {
+            order: {
+              decrement: 1,
+            },
+          },
+        })
+      );
+    } else {
+      queries.push(
+        prisma.client.updateMany({
+          where: {
+            order: {
+              gte: data.newIndex,
+              lt: data.oldIndex,
+            },
+          },
+          data: {
+            order: {
+              increment: 1,
+            },
+          },
+        })
+      );
+    }
+
+    queries.push(
+      prisma.client.update({
+        where: {
+          id: data.id,
+        },
+        data: {
+          order: data.newIndex,
+        },
+      })
+    );
+
+    await Promise.all(queries);
+
+    return new ActionResponse("success").json();
+  } catch (error: any) {
+    console.log(error.message);
+    return new ActionResponse("error").json();
+  }
+};
+
 export const getClients = async () => {
   const clients = await prisma.client.findMany({
+    orderBy: {
+      order: "asc",
+    },
     include: {
       Project: true,
     },

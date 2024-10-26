@@ -19,7 +19,6 @@ import { Gallery } from "@prisma/client";
 import { isUploading } from "@/lib/utils";
 
 const GalleryForm = ({ item }: { item?: Gallery }) => {
-  const queryClient = useQueryClient();
   const [image, setImage] = React.useState<string>(item?.imageUrl || "");
   const { form, progress } = useAutoSaveForm(
     updateGallery,
@@ -36,14 +35,11 @@ const GalleryForm = ({ item }: { item?: Gallery }) => {
   const fileRef = form.register("imageUrl");
 
   useEffect(() => {
-    if (form.formState.isSubmitSuccessful && form.formState.isDirty) {
+    if (form.formState.isSubmitSuccessful && form.formState.isDirty && !item) {
       form.setValue("title", "");
       setImage("");
-      queryClient.invalidateQueries({
-        queryKey: ["gallery"],
-      });
     }
-  }, [form.formState.isSubmitSuccessful, form, queryClient]);
+  }, [form.formState.isSubmitSuccessful, form, item]);
 
   return (
     <Form {...form}>
