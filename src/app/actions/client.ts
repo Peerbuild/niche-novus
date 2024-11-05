@@ -5,6 +5,8 @@ import { Client } from "@prisma/client";
 import { z } from "zod";
 import { deleteProject } from "./project";
 import { auth } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
+import { revalidateApp } from "./revalidateApp";
 
 export const updateClient = async (data: Client) => {
   const session = await auth();
@@ -161,6 +163,7 @@ export const deleteClient = async (clientId: string) => {
     });
 
     console.log(`Client with id:${clientId} has been deleted`);
+    await revalidateApp();
 
     return new ActionResponse("success").json();
   } catch (error: any) {
