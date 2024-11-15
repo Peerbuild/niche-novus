@@ -9,6 +9,7 @@ import { getWorks } from "@/app/actions/work";
 
 const Projects = async () => {
   const projects = await getWorks();
+  if (!projects.length) return null;
   return (
     <section
       id="projects"

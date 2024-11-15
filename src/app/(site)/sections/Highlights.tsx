@@ -3,6 +3,8 @@ import { getGallery } from "@/app/actions/gallery";
 
 const Highlights = async () => {
   const gallery = await getGallery();
+
+  if (!gallery.length) return null;
   return (
     <section className="pt-32 pb-20 md:pt-20 md:pb-60   w-full  overflow-hidden">
       <HighlightCarousel images={gallery} />

@@ -5,6 +5,7 @@ import { getClients } from "@/app/actions/client";
 
 const Work = async () => {
   const works = await getClients();
+  if (!works.length) return null;
   return (
     <SectionWrapper
       id="work"

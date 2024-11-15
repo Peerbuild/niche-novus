@@ -14,40 +14,6 @@ import Autoplay from "embla-carousel-autoplay";
 import Video from "./Video";
 import { Work } from "@prisma/client";
 
-const projects = [
-  {
-    title: "slow rush",
-    description:
-      "In a towering megacity, time blurs as people chase elusive dreams, lost in the relentless pace of progress",
-    image: "/projects/project1.mp4",
-  },
-  {
-    title: "the architect2.",
-    description: "One-stop2",
-    image: "/projects/project2.mp4",
-  },
-  {
-    title: "the architect3.",
-    description: "One-stop3",
-    image: "/projects/project3.mp4",
-  },
-  {
-    title: "the architect3.",
-    description: "One-stop3",
-    image: "/projects/project1.mp4",
-  },
-  {
-    title: "the architect3.",
-    description: "One-stop3",
-    image: "/projects/project2.mp4",
-  },
-  {
-    title: "the architect3.",
-    description: "One-stop3",
-    image: "/projects/project3.mp4",
-  },
-];
-
 const ProjectCaraousel = ({ projects }: { projects: Work[] }) => {
   const [currentInd, setCurrentInd] = useState(0);
 
@@ -92,32 +58,15 @@ const ProjectCaraousel = ({ projects }: { projects: Work[] }) => {
           })}
         </CarouselContent>
         <div className="  max-w-40 md:max-w-64 mt-10 space-y-2 mx-auto text-base ">
-          <div className="-translate-y-20 md:-translate-y-32">
-            <AnimatePresence>
-              <motion.h2
-                key={currentInd}
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -10, opacity: 0 }}
-                className="absolute md:text-xl font-semibold"
-              >
-                {projects[currentInd].title}
-              </motion.h2>
-            </AnimatePresence>
-            <AnimatePresence>
-              <motion.p
-                key={currentInd}
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -10, opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                className="text-sm md:text-base text-justify absolute mt-6 md:mt-14"
-              >
-                {projects[currentInd].description}
-              </motion.p>
-            </AnimatePresence>
+          <div className="-top-20 min-h-16 lg:min-h-48 -translate-y-20 md:-top-32">
+            <h2 key={currentInd} className="md:text-xl font-semibold">
+              {projects[currentInd].title}
+            </h2>
+            <p className="text-sm md:text-base text-justify mt-2 ">
+              {projects[currentInd].description}
+            </p>
           </div>
-          <div className=" pt-14  lg:block w-fit mx-auto space-x-8">
+          <div className="  lg:block w-fit mx-auto space-x-8">
             <CarouselPrevious size={"icon"} variant={"outline"} />
             <CarouselNext size={"icon"} variant={"outline"} />
           </div>
