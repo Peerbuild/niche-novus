@@ -46,7 +46,7 @@ const HighlightCarousel = ({ images }: { images: Gallery[] }) => {
                 }
                 alt="Highlights"
                 className={cn(
-                  "transition-all w-full h-full object-cover duration-1000 ",
+                  "transition-all aspect-square w-full h-full object-cover duration-1000 ",
                   (index === currentInd + 1 ||
                     index === currentInd + 1 - images.length) &&
                     "rotate-12 translate-y-8 md:translate-y-[15%]",

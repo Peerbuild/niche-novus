@@ -33,7 +33,7 @@ const WorksForm = ({ work }: { work: Work }) => {
         <form className="space-y-10">
           <VideoInput
             name="Video"
-            subtitle="Size Limit:1.5mb"
+            subtitle="Size Limit:2.5mb"
             fieldName="videoUrl"
             register={form.register}
             uploadProgress={progress["videoUrl"]}
