@@ -40,7 +40,7 @@ const HighlightCarousel = ({ images }: { images: Gallery[] }) => {
             >
               <Image
                 src={
-                  isInView(currentInd, index, 3, images.length)
+                  isInView(currentInd, index, 5, images.length)
                     ? image.imageUrl
                     : ""
                 }
