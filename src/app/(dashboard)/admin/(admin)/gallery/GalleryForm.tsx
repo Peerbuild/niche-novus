@@ -5,33 +5,38 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import useAutoSaveForm from "@/hooks/useAutoSaveForm";
 import { gallerySchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import FeatherIcon from "feather-icons-react";
 import Image from "next/image";
-import { useQueryClient } from "@tanstack/react-query";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import GalleryActions from "./GalleryActions";
 import { Gallery } from "@prisma/client";
-import { isUploading } from "@/lib/utils";
+import { cn, isUploading } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { getSignature } from "@/app/actions/cloud";
+import axios from "axios";
+import { revalidateApp } from "@/app/actions/revalidateApp";
+import { useSync } from "@/providers/SyncProvider";
 
 const GalleryForm = ({ item }: { item?: Gallery }) => {
+  const queryClient = useQueryClient();
+  const { setSyncing } = useSync();
+  const [progress, setProgress] = useState<Record<string, number>>({});
   const [image, setImage] = React.useState<string>(item?.imageUrl || "");
-  const { form, progress } = useAutoSaveForm(
-    updateGallery,
-    {
-      resolver: zodResolver(gallerySchema),
-      defaultValues: {
-        title: item?.title,
-        imageUrl: image,
-      },
+  const [imageFile, setImageFile] = React.useState<File | null>(null);
+  const form = useForm({
+    resolver: zodResolver(gallerySchema),
+    defaultValues: {
+      title: item?.title,
+      imageUrl: image,
     },
-    ["gallery"],
-    { id: item?.id || "" }
-  );
+  });
   const fileRef = form.register("imageUrl");
 
   useEffect(() => {
@@ -41,9 +46,54 @@ const GalleryForm = ({ item }: { item?: Gallery }) => {
     }
   }, [form.formState.isSubmitSuccessful, form, item]);
 
+  const onSubmit = form.handleSubmit(async (data) => {
+    if (!data.title || !image) return;
+    setSyncing(true);
+
+    let result: any = { data: { secure_url: image } };
+    if (imageFile) {
+      const { timestamp, signature } = await getSignature({
+        shouldTransform: false,
+      });
+      const formData = new FormData();
+
+      formData.append("file", imageFile);
+      formData.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!);
+      formData.append("signature", signature);
+      formData.append("timestamp", timestamp.toString());
+      formData.append("folder", "nichenovus");
+
+      const endpoint = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
+      result = await axios.post(endpoint, formData, {
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.lengthComputable && progressEvent.total) {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setProgress((prev) => ({ ...prev, imageUrl: percentCompleted }));
+          }
+        },
+      });
+    }
+
+    await updateGallery({
+      title: data.title,
+      id: item?.id || "",
+      imageUrl: result.data.secure_url,
+    });
+    form.reset({
+      title: item ? data.title : "",
+      imageUrl: item ? result.data.secure_url : "",
+    });
+    setImage(item ? result.data.secure_url : "");
+    await queryClient.invalidateQueries({ queryKey: ["gallery"] });
+    await revalidateApp();
+    setSyncing(false);
+  });
+
   return (
     <Form {...form}>
-      <form className="space-y-4">
+      <form onSubmit={onSubmit} className="space-y-4">
         <FormField
           name="imageUrl"
           render={({ field }) => {
@@ -83,6 +133,7 @@ const GalleryForm = ({ item }: { item?: Gallery }) => {
                     {...fileRef}
                     onChange={(e) => {
                       if (e.target.files?.[0]) {
+                        setImageFile(e.target.files?.[0]);
                         setImage(URL.createObjectURL(e.target.files?.[0]));
                       }
                       field.onChange(e.target.files?.[0] ?? undefined);
@@ -105,6 +156,14 @@ const GalleryForm = ({ item }: { item?: Gallery }) => {
             );
           }}
         />
+        <div
+          className={cn(
+            "text-sm flex gap-2 text-muted-foreground -translate-y-12 transition-transform w-fit ml-auto -z-10 relative",
+            form.formState.isValid && form.formState.isDirty && "-translate-y-2"
+          )}
+        >
+          Press <FeatherIcon icon="corner-down-left" size={14} /> to save
+        </div>
       </form>
     </Form>
   );

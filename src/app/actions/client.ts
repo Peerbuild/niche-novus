@@ -116,6 +116,7 @@ export const updateClientOrder = async (data: {
     );
 
     await Promise.all(queries);
+    await revalidateApp();
 
     return new ActionResponse("success").json();
   } catch (error: any) {
