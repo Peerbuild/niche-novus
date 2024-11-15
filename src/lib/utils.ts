@@ -22,7 +22,6 @@ export function isInView(
   isLoop: boolean = true
 ): boolean {
   if (isLoop) {
-    console.log(currentInd, index, slidesToShow, numberOfSlides);
     // Logic when looping is enabled
     const startInd =
       (currentInd - slidesToShow + numberOfSlides) % numberOfSlides;
