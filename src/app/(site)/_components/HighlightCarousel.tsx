@@ -40,7 +40,13 @@ const HighlightCarousel = ({ images }: { images: Gallery[] }) => {
             >
               <Image
                 src={
-                  isInView(currentInd, index, 5, images.length)
+                  isInView(
+                    currentInd,
+                    index,
+                    images.length > 6 ? 3 : 5,
+                    images.length,
+                    images.length >= 5 ? true : false
+                  )
                     ? image.imageUrl
                     : ""
                 }
@@ -59,7 +65,8 @@ const HighlightCarousel = ({ images }: { images: Gallery[] }) => {
                   (index === currentInd - 2 ||
                     index === images.length + (currentInd - 2)) &&
                     "-rotate-[25deg] translate-y-[58%]",
-                  index !== currentInd && "saturate-0"
+                  index !== currentInd && "saturate-0",
+                  images.length < 5 && "md:rotate-0  md:translate-y-0"
                 )}
                 width={400}
                 height={300}

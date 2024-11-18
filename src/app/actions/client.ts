@@ -32,6 +32,7 @@ export const updateClient = async (data: Client) => {
 
       console.log(`Client ${data.name} has been updated`);
 
+      await revalidateApp();
       return new ActionResponse("success").json();
     }
 
@@ -44,6 +45,7 @@ export const updateClient = async (data: Client) => {
       },
     });
 
+    await revalidateApp();
     console.log(`New Client ${data.name} has been created`);
 
     return new ActionResponse("success").json();

@@ -314,6 +314,7 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
             >
               <CarouselContent className="ml-0">
                 {works[currentGroupInd].Project.map((project, index) => {
+                  if (works[currentGroupInd].Project.length === 0) return null;
                   return (
                     <CarouselItem
                       isActive
@@ -357,31 +358,36 @@ const WorkCarousel = ({ works }: { works: ClientWithProjects[] }) => {
                 ]}
               >
                 <CarouselContent>
-                  {works[currentGroupInd].Project.map((project, index) => (
-                    <CarouselItem
-                      className="basis-auto"
-                      isActive={index === currentProjectInd}
-                      key={project.title}
-                    >
-                      <h3
-                        className={cn(
-                          "text-sm  lg:text-base opacity-50 transition-opacity  cursor-pointer",
-                          index === currentProjectInd && "opacity-100"
-                        )}
-                        onClick={() => setCurrentProjectInd(index)}
+                  {works[currentGroupInd].Project.map((project, index) => {
+                    if (works[currentGroupInd].Project.length === 0)
+                      return null;
+                    return (
+                      <CarouselItem
+                        className="basis-auto"
+                        isActive={index === currentProjectInd}
+                        key={project.title}
                       >
-                        {works[currentGroupInd].Project[index].title}{" "}
-                        {index !==
-                          works[currentGroupInd].Project.length - 1 && (
-                          <span className="pl-2">/</span>
-                        )}
-                      </h3>
-                    </CarouselItem>
-                  ))}
+                        <h3
+                          className={cn(
+                            "text-sm  lg:text-base opacity-50 transition-opacity  cursor-pointer",
+                            index === currentProjectInd && "opacity-100"
+                          )}
+                          onClick={() => setCurrentProjectInd(index)}
+                        >
+                          {works[currentGroupInd].Project[index].title}{" "}
+                          {index !==
+                            works[currentGroupInd].Project.length - 1 && (
+                            <span className="pl-2">/</span>
+                          )}
+                        </h3>
+                      </CarouselItem>
+                    );
+                  })}
                 </CarouselContent>
               </Carousel>
               <p className="lg:text-base  text-sm text-justify">
-                {works[currentGroupInd].Project[currentProjectInd].description}
+                {works[currentGroupInd].Project[currentProjectInd]
+                  ?.description || ""}
               </p>
             </div>
           </div>

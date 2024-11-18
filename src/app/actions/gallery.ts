@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import cloudinary, { getCloudinaryId } from "@/lib/cloudinary";
 import prisma from "@/lib/prisma";
 import { Gallery } from "@prisma/client";
+import { revalidateApp } from "./revalidateApp";
 
 export const deleteImage = async (image: Gallery) => {
   const session = await auth();
@@ -19,6 +20,7 @@ export const deleteImage = async (image: Gallery) => {
       },
     });
 
+    await revalidateApp();
     return new ActionResponse("success").json();
   } catch (error: any) {
     console.error(error.message);
@@ -48,6 +50,8 @@ export const updateGallery = async (data: Gallery) => {
           imageUrl: data.imageUrl,
         },
       });
+
+      await revalidateApp();
       return new ActionResponse("success").json();
     }
 
@@ -58,6 +62,7 @@ export const updateGallery = async (data: Gallery) => {
       },
     });
 
+    await revalidateApp();
     return new ActionResponse("success").json();
   } catch (error: any) {
     console.error(error.message);

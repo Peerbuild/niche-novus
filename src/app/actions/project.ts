@@ -5,6 +5,7 @@ import { ActionResponse } from "@/lib/ActionResponse";
 import { Project } from "@prisma/client";
 import cloudinary, { getCloudinaryId } from "@/lib/cloudinary";
 import { auth } from "@/lib/auth";
+import { revalidateApp } from "./revalidateApp";
 
 export const updateProject = async (data: Project) => {
   const session = await auth();
@@ -28,9 +29,11 @@ export const updateProject = async (data: Project) => {
 
       console.log("New Project has been created!", data);
 
+      await revalidateApp();
       return new ActionResponse("success").json();
     }
 
+    await revalidateApp();
     await prisma.project.update({
       where: {
         id,
@@ -93,6 +96,7 @@ export const deleteProject = async (projectId: string) => {
 
     console.log("Project has been deleted");
 
+    await revalidateApp();
     return new ActionResponse("success").json();
   } catch (error: any) {
     console.log(error.message);

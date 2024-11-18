@@ -3,6 +3,7 @@ import { ActionResponse } from "@/lib/ActionResponse";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { Work } from "@prisma/client";
+import { revalidateApp } from "./revalidateApp";
 
 export const updateWork = async (data: Work) => {
   const session = await auth();
@@ -18,6 +19,7 @@ export const updateWork = async (data: Work) => {
       data: workData,
     });
 
+    await revalidateApp();
     return new ActionResponse("success").json();
   } catch (error: any) {
     console.error(error.message);
@@ -37,6 +39,7 @@ export const createWork = async (data: Work) => {
       data: workData,
     });
 
+    await revalidateApp();
     return new ActionResponse("success").json();
   } catch (error: any) {
     console.error(error.message);
@@ -62,6 +65,7 @@ export const removeWork = async (id: string) => {
       },
     });
 
+    await revalidateApp();
     return new ActionResponse("success").json();
   } catch (error: any) {
     console.error(error.message);
