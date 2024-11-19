@@ -55,7 +55,7 @@ export const updateGallery = async (data: Gallery) => {
       return new ActionResponse("success").json();
     }
 
-    await prisma.gallery.create({
+    const image = await prisma.gallery.create({
       data: {
         title: data.title,
         imageUrl: data.imageUrl,
@@ -63,7 +63,7 @@ export const updateGallery = async (data: Gallery) => {
     });
 
     await revalidateApp();
-    return new ActionResponse("success").json();
+    return image;
   } catch (error: any) {
     console.error(error.message);
     return new ActionResponse("error").json();

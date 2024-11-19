@@ -11,27 +11,40 @@ import { useQuery } from "@tanstack/react-query";
 import WorksForm from "./WorksForm";
 import AddWorkButton from "./AddWorkButton";
 import RemoveWorkButton from "./RemoveWorkButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Work } from "@prisma/client";
 
 export default function Page() {
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState({
-    id: [""],
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState<{
+    id: string[];
+  }>({
+    id: [],
   });
+  const [works, setWorks] = useState<Work[]>([]);
   const query = useQuery({
     queryKey: ["works"],
     queryFn: async () => await getWorks(),
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getWorks();
+      setWorks(data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="text-center max-w-screen-md">
       <Accordion type="multiple">
-        {query.data?.map((work) => {
+        {works.map((work, i) => {
           return (
-            <AccordionItem key={work.id} value={work.id}>
+            <AccordionItem key={work.id} value={work.id + i}>
               <AccordionTrigger
                 className="gap-4"
-                disabled={hasUnsavedChanges.id.includes(work.id) ? true : false}
+                // disabled={hasUnsavedChanges.id.includes(work.id) ? true : false}
               >
                 <div className="flex justify-between items-center w-full">
                   <h2
@@ -43,12 +56,13 @@ export default function Page() {
                   >
                     {work.title}
                   </h2>
-                  <RemoveWorkButton workId={work.id} />
+                  <RemoveWorkButton setWorks={setWorks} workId={work.id} />
                 </div>
               </AccordionTrigger>
               <AccordionContent>
                 <WorksForm
                   work={work}
+                  setWorks={setWorks}
                   setHasUnsavedChanges={setHasUnsavedChanges}
                 />
               </AccordionContent>
@@ -56,7 +70,7 @@ export default function Page() {
           );
         })}
       </Accordion>
-      <AddWorkButton />
+      <AddWorkButton setWorks={setWorks} />
     </div>
   );
 }

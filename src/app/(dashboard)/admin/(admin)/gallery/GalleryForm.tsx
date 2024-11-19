@@ -11,7 +11,7 @@ import useAutoSaveForm from "@/hooks/useAutoSaveForm";
 import { gallerySchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import FeatherIcon from "feather-icons-react";
 import Image from "next/image";
 import { QueryClient, useQueryClient } from "@tanstack/react-query";
@@ -24,7 +24,15 @@ import axios from "axios";
 import { revalidateApp } from "@/app/actions/revalidateApp";
 import { useSync } from "@/providers/SyncProvider";
 
-const GalleryForm = ({ item }: { item?: Gallery }) => {
+const GalleryForm = ({
+  item,
+  gallery,
+  setGallery,
+}: {
+  item?: Gallery;
+  gallery: Gallery[];
+  setGallery: Dispatch<SetStateAction<Gallery[]>>;
+}) => {
   const queryClient = useQueryClient();
   const { setSyncing } = useSync();
   const [progress, setProgress] = useState<Record<string, number>>({});
@@ -76,11 +84,22 @@ const GalleryForm = ({ item }: { item?: Gallery }) => {
       });
     }
 
-    await updateGallery({
+    console.log(item?.id);
+    const imageData = await updateGallery({
       title: data.title,
       id: item?.id || "",
       imageUrl: result.data.secure_url,
     });
+    if (!item) {
+      setGallery((prev) => [
+        ...prev,
+        {
+          title: data.title!,
+          id: imageData.id,
+          imageUrl: result.data.secure_url,
+        },
+      ]);
+    }
     form.reset({
       title: item ? data.title : "",
       imageUrl: item ? result.data.secure_url : "",
@@ -101,7 +120,9 @@ const GalleryForm = ({ item }: { item?: Gallery }) => {
               <FormItem>
                 {image ? (
                   <div className="relative rounded-lg overflow-hidden aspect-square">
-                    {item && <GalleryActions image={item} />}
+                    {item && (
+                      <GalleryActions setGallery={setGallery} image={item} />
+                    )}
                     <div
                       style={{ width: `${100 - progress.imageUrl}%` }}
                       className="absolute  h-full right-0 bg-black/50"

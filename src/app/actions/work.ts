@@ -12,7 +12,7 @@ export const updateWork = async (data: Work) => {
   }
   try {
     const { id, ...workData } = data;
-    await prisma.work.update({
+    const work = await prisma.work.update({
       where: {
         id: id,
       },
@@ -20,7 +20,7 @@ export const updateWork = async (data: Work) => {
     });
 
     await revalidateApp();
-    return new ActionResponse("success").json();
+    return work;
   } catch (error: any) {
     console.error(error.message);
     return new ActionResponse("error").json();
@@ -35,12 +35,12 @@ export const createWork = async (data: Work) => {
   console.log(data);
   try {
     const { id, ...workData } = data;
-    await prisma.work.create({
+    const work = await prisma.work.create({
       data: workData,
     });
 
     await revalidateApp();
-    return new ActionResponse("success").json();
+    return work;
   } catch (error: any) {
     console.error(error.message);
     return new ActionResponse("error").json();

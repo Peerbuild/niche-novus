@@ -4,10 +4,14 @@ import { workSchema } from "@/lib/schema";
 import { Work } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import FeatherIcon from "feather-icons-react";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { z } from "zod";
 
-const AddWorkButton = () => {
+const AddWorkButton = ({
+  setWorks,
+}: {
+  setWorks: Dispatch<SetStateAction<Work[]>>;
+}) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (newWork: Work) => await createWork(newWork),
@@ -34,19 +38,29 @@ const AddWorkButton = () => {
     mutationKey: ["addWork"],
   });
 
-  return (
-    <Button
-      size={"lg"}
-      onClick={() =>
-        mutation.mutate({
+  const handleAddWork = async () => {
+    // const newWork = await createWork({
+    //   id: "",
+    //   title: "New Work",
+    //   description: "Description",
+    //   videoUrl: "",
+    // });
+
+    setWorks((prev) => {
+      return [
+        ...prev,
+        {
           id: "",
           title: "New Work",
           description: "Description",
           videoUrl: "",
-        })
-      }
-      className="gap-2"
-    >
+        },
+      ];
+    });
+  };
+
+  return (
+    <Button size={"lg"} onClick={handleAddWork} className="gap-2">
       <FeatherIcon icon="plus" size={18} />
       Add Project
     </Button>

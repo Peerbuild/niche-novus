@@ -6,7 +6,7 @@ import useAutoSaveForm from "@/hooks/useAutoSaveForm";
 import { workSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { updateWork } from "@/app/actions/work";
+import { createWork, getWorks, updateWork } from "@/app/actions/work";
 import { progress } from "framer-motion";
 import { Path, PathValue, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -20,9 +20,11 @@ import FeatherIcon from "feather-icons-react";
 
 const WorksForm = ({
   work,
+  setWorks,
   setHasUnsavedChanges,
 }: {
   work: Work;
+  setWorks: Dispatch<SetStateAction<Work[]>>;
   setHasUnsavedChanges: Dispatch<
     SetStateAction<{
       id: string[];
@@ -90,18 +92,39 @@ const WorksForm = ({
               },
             });
           }
-          await updateWork({
-            description: data.description,
-            id: work.id,
-            title: data.title,
-            videoUrl: result.data.secure_url,
-          });
+          if (work.id) {
+            const updatedWork = await updateWork({
+              description: data.description,
+              id: work.id,
+              title: data.title,
+              videoUrl: result.data.secure_url,
+            });
+            setWorks((prev) => {
+              return prev.toSpliced(
+                prev.findIndex((w) => w.id === work.id),
+                1,
+                updatedWork
+              );
+            });
+          } else {
+            await createWork({
+              id: "",
+              description: data.description,
+              title: data.title,
+              videoUrl: result.data.secure_url,
+            });
+            const works = await getWorks();
+            setWorks(works);
+          }
           form.reset({
             title: data.title,
             description: data.description,
             videoUrl: result.data.secure_url,
           });
-          await queryClient.invalidateQueries({ queryKey: ["works"] });
+          await queryClient.invalidateQueries({
+            queryKey: ["works"],
+            refetchType: "all",
+          });
           await revalidateApp();
           setSyncing(false);
           setHasUnsavedChanges((prev) => {

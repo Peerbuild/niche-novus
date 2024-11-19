@@ -77,7 +77,7 @@ export const gallerySchema = z.object({
       : z
           .instanceof(File)
           .refine((file) => {
-            return !file || file.size <= MAX_UPLOAD_SIZE;
+            return !file || file.size <= WORKS_MAX_UPLOAD_SIZE;
           }, "File size must be less than 1.5mb")
           .refine((file) => {
             return file.type.includes("image");

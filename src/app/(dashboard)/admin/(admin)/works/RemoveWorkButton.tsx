@@ -3,9 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Work } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import FeatherIcon from "feather-icons-react";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
-const RemoveWorkButton = ({ workId }: { workId: string }) => {
+const RemoveWorkButton = ({
+  workId,
+  setWorks,
+}: {
+  workId: string;
+  setWorks: Dispatch<SetStateAction<Work[]>>;
+}) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async () => await removeWork(workId),
@@ -21,8 +27,15 @@ const RemoveWorkButton = ({ workId }: { workId: string }) => {
       });
     },
   });
+
+  const handleDeleteWork = async () => {
+    setWorks((prev) => {
+      return prev.filter((work) => work.id !== workId);
+    });
+    await removeWork(workId);
+  };
   return (
-    <Button size={"icon"} variant={"ghost"} onClick={() => mutation.mutate()}>
+    <Button size={"icon"} variant={"ghost"} onClick={handleDeleteWork}>
       <FeatherIcon icon="trash-2" size={18} />
     </Button>
   );
