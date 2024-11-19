@@ -23,10 +23,14 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 
 export default function Page() {
   const queryClient = useQueryClient();
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState({
+    projectIds: [""],
+    clientIds: [""],
+  });
   const [data, setData] = useState<ClientWithProjects[]>([]);
   const query = useQuery({
     queryKey: ["clients"],
@@ -80,12 +84,23 @@ export default function Page() {
             {data.map((client, i) => {
               return (
                 <Draggable key={client.id} id={client.id}>
-                  <ClientAccordion client={client} />
+                  <ClientAccordion
+                    hasUnsavedChanges={hasUnsavedChanges}
+                    client={client}
+                    setHasUnsavedChanges={setHasUnsavedChanges}
+                  />
                 </Draggable>
               );
             })}
             {variables.map((client: ClientWithProjects) => {
-              return <ClientAccordion key={uuid()} client={client} />;
+              return (
+                <ClientAccordion
+                  hasUnsavedChanges={hasUnsavedChanges}
+                  key={uuid()}
+                  client={client}
+                  setHasUnsavedChanges={setHasUnsavedChanges}
+                />
+              );
             })}
           </Accordion>
         </SortableContext>
@@ -95,14 +110,32 @@ export default function Page() {
   );
 }
 
-const ClientAccordion = ({ client }: { client: ClientWithProjects }) => {
+const ClientAccordion = ({
+  client,
+  hasUnsavedChanges,
+  setHasUnsavedChanges,
+}: {
+  client: ClientWithProjects;
+  hasUnsavedChanges: {
+    projectIds: string[];
+    clientIds: string[];
+  };
+  setHasUnsavedChanges: Dispatch<
+    SetStateAction<{ projectIds: string[]; clientIds: string[] }>
+  >;
+}) => {
   return (
     <AccordionItem value={uuid()} className="flex-1">
       <AccordionTrigger className="gap-4">
         <ClientHeader client={client} />
       </AccordionTrigger>
       <AccordionContent className="text-center">
-        <ClientContent clientId={client.id} initialProjects={client.Project} />
+        <ClientContent
+          hasUnsavedChanges={hasUnsavedChanges}
+          setHasUnsavedChanges={setHasUnsavedChanges}
+          clientId={client.id}
+          initialProjects={client.Project}
+        />
       </AccordionContent>
     </AccordionItem>
   );

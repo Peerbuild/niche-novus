@@ -13,20 +13,26 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { cn, isUploading } from "@/lib/utils";
+import { cn, createWebpDeliveryUrl, isUploading } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { UseFormSetFocus } from "react-hook-form";
+import { Path, PathValue, useForm, UseFormSetFocus } from "react-hook-form";
 import FeatherIcon from "feather-icons-react";
 import { Project } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { progress } from "framer-motion";
+import { getSignature } from "@/app/actions/cloud";
+import { revalidateApp } from "@/app/actions/revalidateApp";
+import { useSync } from "@/providers/SyncProvider";
+import axios from "axios";
 
 const ProjectForm = ({ project }: { project: Project }) => {
-  console.log(project.primaryVideoUrl);
-  const { form, progress } = useAutoSaveForm<
+  const queryClient = useQueryClient();
+  const [progress, setProgress] = React.useState<Record<string, number>>({});
+  const { setSyncing } = useSync();
+  const form = useForm<
     z.infer<typeof projectSchema> & { id: string; clientId: string }
   >(
-    updateProject,
     {
       resolver: zodResolver(projectSchema),
       defaultValues: {
@@ -35,11 +41,110 @@ const ProjectForm = ({ project }: { project: Project }) => {
         primaryVideoUrl: project.primaryVideoUrl,
         secondaryVideoUrl: project.secondaryVideoUrl,
       },
-    },
-    ["projects", project.clientId],
-    { id: project.id, clientId: project.clientId },
-    true
+    }
+    // ["projects", project.clientId],
+    // { id: project.id, clientId: project.clientId },
+    // true
   );
+
+  useEffect(() => {
+    const onSubmit = async (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        form.handleSubmit(async (data) => {
+          console.log("submit");
+          setSyncing(true);
+
+          const uploadRequests = [];
+          const fileKeys = [];
+
+          for (const key in data) {
+            if (data[key as keyof typeof data] instanceof File) {
+              const file = data[key as keyof typeof data] as File;
+              const type = file.type.split("/")[0];
+
+              const { timestamp, signature } = await getSignature({
+                shouldTransform: true && type !== "image",
+              });
+
+              const formData = new FormData();
+
+              formData.append("file", file);
+              formData.append(
+                "api_key",
+                process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!
+              );
+              formData.append("signature", signature);
+              true &&
+                type !== "image" &&
+                formData.append("transformation", "w_800");
+              formData.append("timestamp", timestamp.toString());
+              formData.append("folder", "nichenovus");
+
+              const endpoint = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/${type}/upload`;
+              uploadRequests.push(
+                axios.post(endpoint, formData, {
+                  onUploadProgress: (progressEvent) => {
+                    if (progressEvent.lengthComputable && progressEvent.total) {
+                      const percentCompleted = Math.round(
+                        (progressEvent.loaded * 100) / progressEvent.total
+                      );
+                      setProgress((prev) => ({
+                        ...prev,
+                        [key]: percentCompleted,
+                      }));
+                    }
+                  },
+                })
+              );
+
+              fileKeys.push(key);
+            }
+          }
+
+          const results = await Promise.all(uploadRequests);
+
+          for (let i = 0; i < results.length; i++) {
+            const { secure_url } = results[i].data;
+            data[fileKeys[i] as keyof typeof data] =
+              createWebpDeliveryUrl(secure_url);
+          }
+
+          await updateProject({
+            id: project.id,
+            clientId: project.clientId,
+            description: data.description,
+            primaryVideoUrl: data.primaryVideoUrl || project.primaryVideoUrl,
+            secondaryVideoUrl:
+              data.secondaryVideoUrl || project.secondaryVideoUrl,
+            title: data.title,
+          });
+          form.reset({
+            title: data.title,
+            description: data.description,
+            primaryVideoUrl: data.primaryVideoUrl || project.primaryVideoUrl,
+            secondaryVideoUrl:
+              data.secondaryVideoUrl || project.secondaryVideoUrl,
+          });
+          await queryClient.invalidateQueries({
+            queryKey: ["clients"],
+          });
+          await queryClient.invalidateQueries({
+            queryKey: ["projects", { clientId: project.clientId }],
+          });
+          await revalidateApp();
+          setSyncing(false);
+        })();
+      }
+    };
+
+    if (form.formState.isDirty && form.formState.isValid) {
+      document.addEventListener("keydown", onSubmit);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", onSubmit);
+    };
+  }, [form, form.formState, queryClient]);
 
   return (
     <div className="py-4">
@@ -80,6 +185,17 @@ const ProjectForm = ({ project }: { project: Project }) => {
                   uploadProgress={progress}
                   maxLimit={{ description: 150 }}
                 />
+                <div
+                  className={cn(
+                    "text-sm flex gap-2 text-muted-foreground  -translate-y-14 transition-transform w-fit mx-auto  relative z-0 ",
+                    form.formState.isValid &&
+                      form.formState.isDirty &&
+                      "-translate-y-4"
+                  )}
+                >
+                  Press <FeatherIcon icon="corner-down-left" size={14} /> to
+                  save
+                </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>

@@ -31,7 +31,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 }) => {
   const { getValues } = useFormContext();
   return (
-    <div className="text-left flex md:flex-row flex-col gap-8 md:gap-24 md:items-center max-w-xl">
+    <div className="text-left flex md:flex-row flex-col relative z-20 gap-8 md:gap-24 md:items-center max-w-xl">
       <div className="space-y-2">
         <div className="text-xl">{capitalize(name)}</div>
         <div className="text-muted-foreground">{subtitle}</div>

@@ -7,9 +7,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { cn, isInView } from "@/lib/utils";
-import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { motion } from "framer-motion";
 import Autoplay from "embla-carousel-autoplay";
 import Video from "./Video";
 import { Work } from "@prisma/client";
@@ -59,10 +57,13 @@ const ProjectCaraousel = ({ projects }: { projects: Work[] }) => {
         </CarouselContent>
         <div className="  max-w-40 md:max-w-64 mt-10 space-y-2 mx-auto text-base ">
           <div className="-top-20 min-h-16 lg:min-h-48 -translate-y-20 md:-top-32">
-            <h2 key={currentInd} className="md:text-xl font-semibold">
+            <h2
+              key={currentInd}
+              className="md:text-xl font-semibold leading-tight"
+            >
               {projects[currentInd].title}
             </h2>
-            <p className="text-sm md:text-base text-justify mt-2 ">
+            <p className="text-sm md:text-base text-justify mt-4 ">
               {projects[currentInd].description}
             </p>
           </div>
