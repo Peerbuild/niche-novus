@@ -27,10 +27,6 @@ import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 
 export default function Page() {
   const queryClient = useQueryClient();
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState({
-    projectIds: [""],
-    clientIds: [""],
-  });
   const [data, setData] = useState<ClientWithProjects[]>([]);
   const query = useQuery({
     queryKey: ["clients"],
@@ -84,23 +80,12 @@ export default function Page() {
             {data.map((client, i) => {
               return (
                 <Draggable key={client.id} id={client.id}>
-                  <ClientAccordion
-                    hasUnsavedChanges={hasUnsavedChanges}
-                    client={client}
-                    setHasUnsavedChanges={setHasUnsavedChanges}
-                  />
+                  <ClientAccordion client={client} />
                 </Draggable>
               );
             })}
             {variables.map((client: ClientWithProjects) => {
-              return (
-                <ClientAccordion
-                  hasUnsavedChanges={hasUnsavedChanges}
-                  key={uuid()}
-                  client={client}
-                  setHasUnsavedChanges={setHasUnsavedChanges}
-                />
-              );
+              return <ClientAccordion key={uuid()} client={client} />;
             })}
           </Accordion>
         </SortableContext>
@@ -110,32 +95,14 @@ export default function Page() {
   );
 }
 
-const ClientAccordion = ({
-  client,
-  hasUnsavedChanges,
-  setHasUnsavedChanges,
-}: {
-  client: ClientWithProjects;
-  hasUnsavedChanges: {
-    projectIds: string[];
-    clientIds: string[];
-  };
-  setHasUnsavedChanges: Dispatch<
-    SetStateAction<{ projectIds: string[]; clientIds: string[] }>
-  >;
-}) => {
+const ClientAccordion = ({ client }: { client: ClientWithProjects }) => {
   return (
     <AccordionItem value={uuid()} className="flex-1">
       <AccordionTrigger className="gap-4">
         <ClientHeader client={client} />
       </AccordionTrigger>
       <AccordionContent className="text-center">
-        <ClientContent
-          hasUnsavedChanges={hasUnsavedChanges}
-          setHasUnsavedChanges={setHasUnsavedChanges}
-          clientId={client.id}
-          initialProjects={client.Project}
-        />
+        <ClientContent clientId={client.id} initialProjects={client.Project} />
       </AccordionContent>
     </AccordionItem>
   );
