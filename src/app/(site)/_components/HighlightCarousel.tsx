@@ -52,19 +52,19 @@ const HighlightCarousel = ({ images }: { images: Gallery[] }) => {
                 }
                 alt="Highlights"
                 className={cn(
-                  "transition-all aspect-square w-full h-full object-cover duration-1000 ",
+                  "transition-all aspect-[4/5] w-full h-full object-cover duration-1000 ",
                   (index === currentInd + 1 ||
                     index === currentInd + 1 - images.length) &&
-                    "rotate-12 translate-y-8 md:translate-y-[15%]",
+                    "rotate-12 translate-y-8 md:translate-y-[12%]",
                   (index === currentInd + 2 ||
                     index === currentInd + 2 - images.length) &&
-                    "rotate-[25deg] translate-y-[58%]",
+                    "rotate-[25deg] translate-y-[54%]",
                   (index === currentInd - 1 ||
                     index === images.length + (currentInd - 1)) &&
-                    "-rotate-12 translate-y-8 md:translate-y-[15%]",
+                    "-rotate-12 translate-y-8 md:translate-y-[12%]",
                   (index === currentInd - 2 ||
                     index === images.length + (currentInd - 2)) &&
-                    "-rotate-[25deg] translate-y-[58%]",
+                    "-rotate-[25deg] translate-y-[54%]",
                   index !== currentInd && "saturate-0",
                   images.length < 5 && "md:rotate-0  md:translate-y-0"
                 )}
