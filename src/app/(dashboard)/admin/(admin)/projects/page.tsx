@@ -58,10 +58,19 @@ export default function Page() {
     });
   };
 
+  // useEffect(() => {
+  //   console.log(query.data);
+  //   if (query.data) setData(query.data);
+  // }, [query.data, data]);
+
   useEffect(() => {
-    console.log(query.data);
-    if (query.data) setData(query.data);
-  }, [query.data, data]);
+    const fetchData = async () => {
+      const clients = await getClients();
+      setData(clients);
+    };
+
+    fetchData();
+  }, []);
 
   if (!query.data) return null;
 
@@ -80,26 +89,38 @@ export default function Page() {
             {data.map((client, i) => {
               return (
                 <Draggable key={client.id} id={client.id}>
-                  <ClientAccordion client={client} />
+                  <ClientAccordion setData={setData} client={client} />
                 </Draggable>
               );
             })}
             {variables.map((client: ClientWithProjects) => {
-              return <ClientAccordion key={uuid()} client={client} />;
+              return (
+                <ClientAccordion
+                  key={uuid()}
+                  setData={setData}
+                  client={client}
+                />
+              );
             })}
           </Accordion>
         </SortableContext>
       </DndContext>
-      <AddClientButton />
+      <AddClientButton setData={setData} />
     </div>
   );
 }
 
-const ClientAccordion = ({ client }: { client: ClientWithProjects }) => {
+const ClientAccordion = ({
+  client,
+  setData,
+}: {
+  client: ClientWithProjects;
+  setData: Dispatch<SetStateAction<ClientWithProjects[]>>;
+}) => {
   return (
-    <AccordionItem value={uuid()} className="flex-1">
+    <AccordionItem value={client.id} className="flex-1">
       <AccordionTrigger className="gap-4">
-        <ClientHeader client={client} />
+        <ClientHeader setData={setData} client={client} />
       </AccordionTrigger>
       <AccordionContent className="text-center">
         <ClientContent clientId={client.id} initialProjects={client.Project} />

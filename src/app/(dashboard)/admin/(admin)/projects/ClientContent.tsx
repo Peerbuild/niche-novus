@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProjects } from "@/app/actions/project";
 import { revalidateApp } from "@/app/actions/revalidateApp";
+import { ClientWithProjects } from "@/lib/types";
 
 const ClientContent = ({
   initialProjects,
@@ -24,23 +25,45 @@ const ClientContent = ({
   initialProjects: Project[];
   clientId: string;
 }) => {
-  const { data: projects } = useQuery({
-    queryFn: async () => await getProjects(clientId),
-    queryKey: ["projects", { clientId }],
-    initialData: initialProjects,
-  });
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  // const { data: projects } = useQuery({
+  //   queryFn: async () => await getProjects(clientId),
+  //   queryKey: ["projects", { clientId }],
+  //   initialData: initialProjects,
+  // });
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const projects = await getProjects(clientId);
+      setProjects(projects);
+    };
+
+    fetchProjects();
+  }, [clientId]);
 
   return (
     <div>
       {projects.map((project) => {
-        return <ProjectForm key={project.title} project={project} />;
+        return (
+          <ProjectForm
+            setProjects={setProjects}
+            key={project.id}
+            project={project}
+          />
+        );
       })}
-      <AddProjectButton clientId={clientId} />
+      <AddProjectButton setProjects={setProjects} clientId={clientId} />
     </div>
   );
 };
 
-export const ClientHeader = ({ client }: { client: Client }) => {
+export const ClientHeader = ({
+  client,
+  setData,
+}: {
+  client: Client;
+  setData: Dispatch<SetStateAction<ClientWithProjects[]>>;
+}) => {
   const renamingState = useState(false);
   const queryClient = useQueryClient();
   const [name, setName] = useState(client.name);
@@ -81,6 +104,7 @@ export const ClientHeader = ({ client }: { client: Client }) => {
         renamingState={renamingState}
         inputRef={inputRef}
         clientId={client.id}
+        setData={setData}
       />
     </div>
   );
@@ -90,10 +114,12 @@ export const ClientActionButtons = ({
   renamingState,
   inputRef,
   clientId,
+  setData,
 }: {
   renamingState: [boolean, Dispatch<SetStateAction<boolean>>];
   inputRef: React.RefObject<HTMLInputElement>;
   clientId: string;
+  setData: Dispatch<SetStateAction<ClientWithProjects[]>>;
 }) => {
   const queryClient = useQueryClient();
   const [renaming, setRenaming] = renamingState;
@@ -112,6 +138,11 @@ export const ClientActionButtons = ({
 
     mutationKey: ["removeClient"],
   });
+
+  const handleDeleteClient = async () => {
+    setData((prev) => prev.filter((client) => client.id !== clientId));
+    await deleteClient(clientId);
+  };
 
   useEffect(() => {
     if (renaming) {
@@ -134,7 +165,7 @@ export const ClientActionButtons = ({
       <Button
         onClick={(e) => {
           e.stopPropagation();
-          mutation.mutate();
+          handleDeleteClient();
         }}
         variant={"ghost"}
         size={"icon"}

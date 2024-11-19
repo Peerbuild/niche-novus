@@ -26,7 +26,13 @@ import { revalidateApp } from "@/app/actions/revalidateApp";
 import { useSync } from "@/providers/SyncProvider";
 import axios from "axios";
 
-const ProjectForm = ({ project }: { project: Project }) => {
+const ProjectForm = ({
+  project,
+  setProjects,
+}: {
+  project: Project;
+  setProjects: Dispatch<SetStateAction<Project[]>>;
+}) => {
   const queryClient = useQueryClient();
   const [progress, setProgress] = React.useState<Record<string, number>>({});
   const { setSyncing } = useSync();
@@ -125,6 +131,22 @@ const ProjectForm = ({ project }: { project: Project }) => {
             secondaryVideoUrl:
               data.secondaryVideoUrl || project.secondaryVideoUrl,
           });
+          setProjects((prev) => {
+            return prev.map((project) => {
+              if (project.id === data.id) {
+                return {
+                  ...project,
+                  title: data.title,
+                  description: data.description,
+                  primaryVideoUrl:
+                    data.primaryVideoUrl || project.primaryVideoUrl,
+                  secondaryVideoUrl:
+                    data.secondaryVideoUrl || project.secondaryVideoUrl,
+                };
+              }
+              return project;
+            });
+          });
           await queryClient.invalidateQueries({
             queryKey: ["clients"],
           });
@@ -149,11 +171,15 @@ const ProjectForm = ({ project }: { project: Project }) => {
   return (
     <div className="py-4">
       <Form {...form}>
-        <form className=" bg-card rounded-xl">
+        <form
+          className=" bg-card rounded-xl"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <Accordion className="px-8 " type="single" collapsible>
             <AccordionItem value={project.title}>
               <AccordionTrigger className="gap-8 py-5">
                 <ProjectHeader
+                  setProjects={setProjects}
                   setFocus={form.setFocus}
                   uploadProgress={progress}
                   project={project}
@@ -208,9 +234,11 @@ const ProjectForm = ({ project }: { project: Project }) => {
 const ProjectHeader = ({
   setFocus,
   project,
+  setProjects,
   uploadProgress,
 }: {
   setFocus: UseFormSetFocus<z.infer<typeof projectSchema>>;
+  setProjects: Dispatch<SetStateAction<Project[]>>;
   project: Project;
   uploadProgress: Record<string, number>;
 }) => {
@@ -240,6 +268,7 @@ const ProjectHeader = ({
         ></FormField>
       </div>
       <ProjectControls
+        setProjects={setProjects}
         renamingState={renamingState}
         setFocus={setFocus}
         project={project}
@@ -251,10 +280,12 @@ const ProjectHeader = ({
 const ProjectControls = ({
   renamingState,
   setFocus,
+  setProjects,
   project,
 }: {
   renamingState: [boolean, Dispatch<SetStateAction<boolean>>];
   setFocus: UseFormSetFocus<z.infer<typeof projectSchema>>;
+  setProjects: Dispatch<SetStateAction<Project[]>>;
   project: Project;
 }) => {
   const projectId = project.id;
@@ -280,6 +311,12 @@ const ProjectControls = ({
     mutationKey: ["removeProject"],
   });
 
+  const handleDeleteProject = async () => {
+    setProjects((prev) => prev.filter((project) => project.id !== projectId));
+    await deleteProject(projectId);
+    await revalidateApp();
+  };
+
   useEffect(() => {
     if (renaming) {
       setFocus("title", { shouldSelect: true });
@@ -302,7 +339,7 @@ const ProjectControls = ({
       <Button
         onClick={async (e) => {
           e.stopPropagation();
-          mutation.mutate();
+          handleDeleteProject();
         }}
         variant={"ghost"}
         size={"icon"}

@@ -23,14 +23,14 @@ export const updateProject = async (data: Project) => {
     });
 
     if (!id) {
-      await prisma.project.create({
+      const newProject = await prisma.project.create({
         data: projectData,
       });
 
       console.log("New Project has been created!", data);
 
       await revalidateApp();
-      return new ActionResponse("success").json();
+      return newProject;
     }
 
     await revalidateApp();

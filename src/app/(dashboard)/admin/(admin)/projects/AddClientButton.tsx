@@ -7,7 +7,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import FeatherIcon from "feather-icons-react";
 import { Dispatch, SetStateAction } from "react";
 
-const AddClientButton = ({}: {}) => {
+const AddClientButton = ({
+  setData,
+}: {
+  setData: Dispatch<SetStateAction<ClientWithProjects[]>>;
+}) => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: async (newClient: { Project: Project[] } & Client) =>
@@ -28,19 +32,28 @@ const AddClientButton = ({}: {}) => {
 
     mutationKey: ["addClient"],
   });
-  const handleAddProject = async () => {
-    mutate({
+  const handleAddClient = async () => {
+    setData((prev) => [
+      ...prev,
+      { id: "", name: "New Client", Project: [], order: -1 },
+    ]);
+    const newClient = await updateClient({
       id: "",
       name: "New Client",
-      Project: [],
       order: -1,
     });
+    setData((prev) => {
+      return prev.toSpliced(
+        prev.findIndex((client) => client.id === ""),
+        1,
+        newClient
+      );
+    });
   };
-
   return (
     <Button
       className=" w-fit mx-auto gap-2"
-      onClick={handleAddProject}
+      onClick={handleAddClient}
       size={"lg"}
     >
       <FeatherIcon icon="plus" size={20} />

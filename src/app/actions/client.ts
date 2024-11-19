@@ -23,32 +23,38 @@ export const updateClient = async (data: Client) => {
         },
       });
 
-      await prisma.client.update({
+      const updatedClient = await prisma.client.update({
         where: {
           id: isClientExist?.id,
         },
         data: parsedData,
+        include: {
+          Project: true,
+        },
       });
 
       console.log(`Client ${data.name} has been updated`);
 
       await revalidateApp();
-      return new ActionResponse("success").json();
+      return updatedClient;
     }
 
     const count = await prisma.client.count();
 
-    await prisma.client.create({
+    const newClient = await prisma.client.create({
       data: {
         name: parsedData.name,
         order: count,
+      },
+      include: {
+        Project: true,
       },
     });
 
     await revalidateApp();
     console.log(`New Client ${data.name} has been created`);
 
-    return new ActionResponse("success").json();
+    return newClient;
   } catch (error: any) {
     console.log(error.message);
     return new ActionResponse("error").json();

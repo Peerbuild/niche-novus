@@ -13,7 +13,7 @@ export default function Layout({
           <Sidebar />
           <div className="w-full px-4 flex-1 md:ml-72">
             <Header />
-            <div className="my-4 max-w-screen-2xl">{children}</div>
+            <div className="my-4 max-w-screen-2xl mb-28">{children}</div>
           </div>
         </SyncProvider>
       </SidebarProvider>

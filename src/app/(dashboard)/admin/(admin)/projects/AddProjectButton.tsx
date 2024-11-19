@@ -1,14 +1,18 @@
 "use client";
 import { updateProject } from "@/app/actions/project";
 import { Button } from "@/components/ui/button";
-import { projectSchema } from "@/lib/schema";
 import { Project } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import FeatherIcon from "feather-icons-react";
 import { Dispatch, SetStateAction } from "react";
-import { z } from "zod";
 
-const AddProjectButton = ({ clientId }: { clientId: string }) => {
+const AddProjectButton = ({
+  clientId,
+  setProjects,
+}: {
+  clientId: string;
+  setProjects: Dispatch<SetStateAction<Project[]>>;
+}) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (newProject: Project) => await updateProject(newProject),
@@ -29,19 +33,39 @@ const AddProjectButton = ({ clientId }: { clientId: string }) => {
     mutationKey: ["addProject"],
   });
 
+  const handleAddProject = async () => {
+    setProjects((prev) => [
+      ...prev,
+      {
+        id: "",
+        title: "New Project",
+        description: "",
+        primaryVideoUrl: "",
+        secondaryVideoUrl: "",
+        clientId,
+      },
+    ]);
+    const newProject = await updateProject({
+      id: "",
+      title: "New Project",
+      description: "",
+      primaryVideoUrl: "",
+      secondaryVideoUrl: "",
+      clientId,
+    });
+    setProjects((prev) => {
+      return prev.toSpliced(
+        prev.findIndex((project) => project.id === ""),
+        1,
+        newProject
+      );
+    });
+  };
+
   return (
     <Button
       className=" w-fit mx-auto gap-2"
-      onClick={() =>
-        mutation.mutate({
-          id: "",
-          clientId,
-          description: "",
-          title: "New Project",
-          primaryVideoUrl: "",
-          secondaryVideoUrl: "",
-        })
-      }
+      onClick={handleAddProject}
       size={"lg"}
     >
       <FeatherIcon icon="plus" size={20} />
