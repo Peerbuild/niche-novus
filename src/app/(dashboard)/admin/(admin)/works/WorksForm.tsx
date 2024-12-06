@@ -42,7 +42,7 @@ const WorksForm = ({
         description: work.description,
         videoUrl: work.videoUrl,
       },
-    }
+    },
     // ["works"],
     // { id: work.id }
   );
@@ -68,7 +68,7 @@ const WorksForm = ({
             formData.append("file", file);
             formData.append(
               "api_key",
-              process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!
+              process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!,
             );
             formData.append("signature", signature);
             false &&
@@ -82,7 +82,7 @@ const WorksForm = ({
               onUploadProgress: (progressEvent) => {
                 if (progressEvent.lengthComputable && progressEvent.total) {
                   const percentCompleted = Math.round(
-                    (progressEvent.loaded * 100) / progressEvent.total
+                    (progressEvent.loaded * 100) / progressEvent.total,
                   );
                   setProgress((prev) => ({
                     ...prev,
@@ -103,7 +103,7 @@ const WorksForm = ({
               return prev.toSpliced(
                 prev.findIndex((w) => w.id === work.id),
                 1,
-                updatedWork
+                updatedWork,
               );
             });
           } else {
@@ -170,7 +170,7 @@ const WorksForm = ({
         <form className="space-y-10" onSubmit={(e) => e.preventDefault()}>
           <VideoInput
             name="Video"
-            subtitle="Size Limit:2.5mb"
+            subtitle="Size Limit:5mb"
             fieldName="videoUrl"
             register={form.register}
             uploadProgress={progress["videoUrl"]}
@@ -189,7 +189,7 @@ const WorksForm = ({
               "text-sm flex gap-2 text-muted-foreground -translate-y-14 transition-transform w-fit mx-auto  -z-10 relative",
               form.formState.isValid &&
                 form.formState.isDirty &&
-                "-translate-y-6"
+                "-translate-y-6",
             )}
           >
             Press <FeatherIcon icon="corner-down-left" size={14} /> to save

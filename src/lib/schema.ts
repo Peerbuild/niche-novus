@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const MAX_UPLOAD_SIZE = 25 * 1024 * 1024;
-const WORKS_MAX_UPLOAD_SIZE = 2.5 * 1024 * 1024;
+const WORKS_MAX_UPLOAD_SIZE = 5 * 1024 * 1024;
 
 export const aboutSchema = z.object({
   introduction: z.string().min(1).max(200),
